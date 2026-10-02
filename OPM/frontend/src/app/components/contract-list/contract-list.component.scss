@@ -1,0 +1,27 @@
+.card1 {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+  
+  .card1:active {
+    transform: scale(0.95); /* Stronger scale down effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Stronger shadow effect */
+  }
+  .passenger-info {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+  .icon-hover {
+    padding: 7px;
+    transition: background-color 0.3s, transform 0.3s;
+    border-radius: 4px;
+  }
+  
+  .icon-hover:hover {
+    background-color: rgba(0, 0, 0, 0.268); /* Light background on hover */
+    transform: scale(1.1); /* Slightly increases the size on hover */
+  }
+

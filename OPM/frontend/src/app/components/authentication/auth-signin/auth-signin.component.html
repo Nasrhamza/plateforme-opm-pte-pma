@@ -1,0 +1,65 @@
+<div class="auth-wrapper">
+  <div class="auth-content container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow-lg overflow-hidden" style="max-width: 1100px; width: 100%; border-radius: 10px;">
+      <div class="row g-0">
+        <!-- Left Content -->
+        <div class="col-xl-6 p-5">
+          <div class="text-center mb-4 d-flex justify-content-center align-items-center gap-3">
+            <img src="assets/logo/Logo-Prologic.png" alt="Logo 2" class="img-fluid mb-2" width="120px"
+              style="border-right: 2px solid #ddd; padding-right: 15px;">
+            <img src="assets/logo/logoBlue.png" alt="Logo 1" class="img-fluid mb-3" width="120px"
+              style="padding-left: 15px;">
+          </div>
+          <h5 class="text-center text-muted fw-bold mb-4">Welcome Back!</h5>
+          <hr>
+          <form [formGroup]="form" (ngSubmit)="signIn()">
+            <!-- Email Input -->
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="feather icon-mail"></i></span>
+                <input type="email" formControlName="email" class="form-control" placeholder="Email address">
+              </div>
+              <div *ngIf="form.get('email').errors && form.get('email').touched" class="text-danger mt-1">
+                * Email is required.
+              </div>
+            </div>
+            <!-- Password Input -->
+            <div class="mb-3">
+              <div class="input-group">
+                <span class="input-group-text"><i class="feather icon-lock"></i></span>
+                <input [type]="showPassword ? 'text' : 'password'" formControlName="password" class="form-control"
+                  placeholder="Password">
+                <span class="input-group-text cursor-pointer" (click)="togglePasswordVisibility()">
+                  <i [ngClass]="showPassword ? 'feather icon-eye-off' : 'feather icon-eye'"></i>
+                </span>
+              </div>
+              <div *ngIf="form.get('password').errors && form.get('password').touched" class="text-danger mt-1">
+                * Password is required.
+              </div>
+              <!-- Forgot Password Link -->
+              <div class="text-end mt-2">
+                <a [routerLink]="['/auth/forgot-password']" class="text-primary fw-bold">Forgot Password?</a>
+              </div>
+            </div>
+
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100 py-2">
+              <span *ngIf="!isLoggingIn">Login</span>
+              <i *ngIf="isLoggingIn" class="pi pi-spinner pi-spin"></i>
+            </button>
+          </form>
+          <!-- Signup Redirect -->
+          <p class="text-center text-muted mt-4">Don’t have an account?
+            <a [routerLink]="['/auth/signup']" class="fw-bold text-primary">Sign up</a>
+          </p>
+        </div>
+        <!-- Right Content -->
+        <div class="col-xl-6 d-none d-xl-block">
+          <img src="assets/images/signIn.png" alt="Sign In Illustration" class="img-fluid h-90 mt-5"
+            style="object-fit: cover;">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<mat-card class="shadow-none b-radius-30">
+    <mat-card-content class="p-0">
+      <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="d-flex align-items-center">
+              <mat-icon>
+                <i-tabler name="user-circle" class="icon-20 m-r-8"></i-tabler>
+              </mat-icon>
+            </div>
+            {{ 'Account' | translate }}
+          </ng-template>
+          <mat-card-content class="p-y-24 b-t-1">
+            <app-account-settings-profile></app-account-settings-profile>
+          </mat-card-content>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="d-flex align-items-center">
+              <mat-icon>
+                <i-tabler name="lock" class="icon-20 m-r-8"></i-tabler>
+              </mat-icon>
+            </div>
+            {{ 'Security' | translate }}
+          </ng-template>
+          <mat-card-content class="p-y-24 b-t-1">
+            <app-account-settings-security></app-account-settings-security>
+          </mat-card-content>
+        </mat-tab>
+      </mat-tab-group>
+     
+    </mat-card-content>
+  </mat-card>
+  
+

@@ -1,0 +1,16 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Change user role' | translate }}
+</h5>
+
+<mat-dialog-content style="max-width: 700px">
+    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Roles' | translate }}</mat-label>
+    <mat-form-field appearance="outline" class="w-100">
+        <mat-select [formControl]="role">
+            @for(role of ['Admin', 'Engineer', 'Team Leader', 'Client']; track role){
+            <mat-option [value]="role">{{ role }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <button mat-flat-button color="primary" class="w-100" [disabled]="!role.valid" (click)="submit()">
+        {{ 'Submit' | translate }}
+    </button>
+</mat-dialog-content>

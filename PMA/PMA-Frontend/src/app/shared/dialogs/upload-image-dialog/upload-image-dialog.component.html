@@ -1,0 +1,19 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Upload image' | translate }}</h5>
+
+<mat-dialog-content style="max-width: 600px">
+    <form class="m-t-30">
+        <!-- image upload -->
+        <div class="d-flex align-items-center m-b-16">
+            @if(selectedImagePreview){
+            <img class="mat-card-avatar" [src]="selectedImagePreview" class="rounded-circle" width="70"
+                style="aspect-ratio: 1/1;object-fit: cover;" />
+            }
+            <button mat-flat-button color="primary" class="{{selectedImagePreview ? 'm-l-16' : ''}} input-file-button">
+                <input type="file" (change)="selectFile($event)" />
+            </button>
+        </div>
+        <button mat-flat-button color="primary" class="w-100" [disabled]="!selectedImagePreview" (click)="handleUpload()">
+            {{ 'Submit' | translate }}
+        </button>
+    </form>
+</mat-dialog-content>

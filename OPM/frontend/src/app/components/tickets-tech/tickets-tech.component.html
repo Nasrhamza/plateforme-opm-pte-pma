@@ -1,0 +1,511 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-12 mb-3">
+            <div class="col-xl-12">
+                <div class="card proj-progress-card">
+                    <div class="card-body p-2">
+                        <div class="row d-flex justify-content-around align-items-center">
+                            <!-- All Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'all' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('all')">
+                                <h6 class="small-text">{{ 'All Tickets' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-red">{{ allTickets.length }}</span>
+                                </h5>
+                            </div>
+
+                            <!-- Not Assigned Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'notAssigned' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('notAssigned')">
+                                <h6 class="small-text">{{ 'Not Assigned' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-yellow">{{ notAssignedCount }}</span>
+                                </h5>
+                            </div>
+
+                            <!-- Assigned Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'assigned' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('assigned')">
+                                <h6 class="small-text">{{ 'Assigned' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-blue">{{ assignedCount }}</span>
+                                </h5>
+                            </div>
+
+                            <!-- In Progress Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'inProgress' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('inProgress')">
+                                <h6 class="small-text">{{ 'In Progress' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-orange">{{ inProgressCount }}</span>
+                                </h5>
+                            </div>
+                            <!-- On Hold Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'onHold' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('onHold')">
+                                <h6 class="small-text">{{ 'On Hold' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-gray">{{ onHoldCount }}</span>
+                                </h5>
+                            </div>
+                            <!-- Completed Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'completed' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('completed')">
+                                <h6 class="small-text">{{ 'Resolved' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-green">{{ resolvedCount }}</span>
+                                </h5>
+                            </div>
+
+                            <!-- Closed Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'closed' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('closed')">
+                                <h6 class="small-text">{{ 'Closed' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-purple">{{ closedCount }}</span>
+                                </h5>
+                            </div>
+
+                            <!-- Deleted Tickets -->
+                            <div class="col ticket-category text-center d-flex justify-content-center align-items-center"
+                                [ngStyle]="{ 'background-color': selectedFilter === 'deleted' ? '#e3f2fd' : 'transparent' }"
+                                (click)="handleFilter('deleted')">
+                                <h6 class="small-text">{{ 'Deleted' | translate }}</h6>
+                                <h5 class="m-0">
+                                    <span class="text-c-red">{{ deletedCount }}</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card cardSize">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col text-left mt-2">
+                        <h6>
+                            {{'Ticket List' | translate }}
+                        </h6>
+                    </div>
+                    <div class="col text-right">
+                        <div class="input-group"
+                            style="display: flex; justify-content: flex-end; align-items: center;background-color: transparent;">
+                            <!-- Search Input with smaller width -->
+                            <input type="text" class="form-control form-control-sm" placeholder="search..."
+                                [(ngModel)]="term" style="max-width:250px; background-color: #EFF3F6;">
+                            <!-- Add Button
+                            <button id="edit-btn" type="button"
+                                class="btn btn-primary waves-effect waves-light f-right ml-2 max-height=20px"
+                                (click)="openAddTickets()">
+                                <i class="fas fa-plus"></i>
+                                {{'Ticket' | translate }}
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body ">
+                <div class="row help-desk mt-2 ml-5 " [ngClass]="size">
+                    <div class="col-xl-8 col-lg-12 filter-bar"
+                        *ngFor="let ticket of allFiltredTickets | filter: term; let i = index">
+                        <div class="ticket-block  align-items-center ">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <img class="media-object wid-55 img-radius"
+                                        src="{{fileurl + ticket.clientId.image.fileName}}"
+                                        style="width:50px; height:50px;">
+                                </div>
+                                <div class="col">
+                                    <div class="card hd-body"
+                                        [ngStyle]="{'border-left': '3px solid ' + getStatusColor(ticket.status)}">
+                                        <div class="row align-items-center">
+                                            <div class="col border-right pr-0">
+                                                <div class="card-body inner-center">
+                                                    <div class="ticket-customer font-weight-bold"> <i
+                                                            class="fas fa-ticket-alt mr-2 f-14"></i> Ticket N° :
+                                                        {{ticket.number}}
+                                                    </div>
+                                                    <div class="ticket-type-icon private mt-1 mb-1 ticket-description">
+                                                        <i class="feather icon-info mr-1 f-14"></i> {{ ticket.title }} :
+                                                        {{ ticket.description}}
+                                                    </div>
+
+                                                    <ul class="list-inline mt-2">
+                                                        <li class="list-inline-item">
+                                                            <ng-container
+                                                                *ngIf="ticket.technicienId && ticket.technicienId.length > 0; else notAssigned">
+                                                                {{'Assigned to' | translate }} :
+                                                                <ng-container
+                                                                    *ngFor="let technicien of ticket.technicienId">
+                                                                    <img src="{{fileurl + technicien.image.fileName}}"
+                                                                        style="width:25px; height:25px;"
+                                                                        class="wid-20 rounded mr-1 img-fluid">
+                                                                    {{technicien.firstName}} {{technicien.lastName}}
+                                                                    <!-- If you want to separate each technician with a comma, you can add it here -->
+                                                                    <span
+                                                                        *ngIf="ticket.technicienId.indexOf(technicien) < ticket.technicienId.length - 1">,
+                                                                    </span>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                            <ng-template #notAssigned>
+                                                                {{'Not assigned yet' | translate }}
+                                                            </ng-template>
+                                                        </li>
+
+                                                        <li class="list-inline-item">
+                                                            <i class="feather icon-calendar mr-1 f-14"></i>
+                                                            {{'Created' | translate }} : {{ticket.creationDate | date:
+                                                            'yyyy-MM-dd'
+                                                            }}
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <span [ngClass]="{
+                                                                    'badge': true,
+                                                                    'badge-danger': ticket.status === 'Deleted',
+                                                                    'badge-primary': ticket.status === 'Assigned',
+                                                                    'badge-success': ticket.status === 'Resolved',
+                                                                    'badge-secondary':(ticket.status === 'Closed' || ticket.status === 'On Hold'),
+                                                                    'badge-warning': (ticket.status === 'In Progress' || ticket.status === 'Not Assigned'),
+                                                                    'badge-large': true
+                                                                }">
+                                                                {{ ticket.status | translate }}
+                                                            </span>&nbsp;
+                                                            <small *ngIf="ticket.isExpired" class="text-danger mr-2">[
+                                                                Expired ]</small>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="mt-2 text-center d-flex justify-content-center align-items-center"
+                                                        *ngIf="ticket.status !== 'Deleted'">
+                                                        <a *ngIf="(ticket.status === 'Assigned' || ticket.status === 'Not Assigned') && ticket.isTeamLeader"
+                                                            (click)="assignTech(ticket)"
+                                                            class="mr-3 text-muted icon-hover">
+                                                            <i class="fas fa-user-edit text-success"></i> {{ 'Assign' |
+                                                            translate }}
+                                                        </a>
+
+                                                        <a *ngIf="ticket?.status !== 'Assigned' "
+                                                            (click)="goToChat(ticket._id)" class="text-muted"
+                                                            style="cursor: pointer;">
+                                                            <i class="fas fa-comments ml-3 text-info"></i> {{ 'Chat' |
+                                                            translate }}
+                                                        </a>
+                                                        <!-- <ng-template *ngIf="techId == ticket.supervisor._id"> -->
+                                                        <a *ngIf="ticket.status !== 'Assigned' && ticket.status !== 'Closed'"
+                                                            (click)="openAddRapport(ticket._id)" class="text-muted"
+                                                            style="cursor: pointer;">
+                                                            <i class="fas fa-file ml-3 text-warning "></i> {{ 'Rapport'
+                                                            |
+                                                            translate }}
+                                                        </a>
+
+                                                        <a (click)="takeTicket(ticket._id)" class="text-muted"
+                                                            style="cursor: pointer;" *ngIf="ticket.status==='Assigned'">
+                                                            <i class="fas fa-hand-pointer ml-3 text-success "></i> {{
+                                                            'Take' | translate }}
+                                                        </a>
+                                                        <!-- </ng-template> -->
+                                                        <!-- <a (click)="closeTicket(ticket._id)" class="text-muted"
+                                                            style="cursor: pointer;"
+                                                            *ngIf="ticket.status==='In Progress'&& ticket.isHelpdesk">
+                                                            <i class="fas fa-check-circle ml-3 text-success"></i> {{
+                                                            'Close' | translate }}
+                                                        </a> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto pl-0 right-icon" (click)="toggleDetails(ticket)">
+                                                <div class="card-body custom-padding">
+                                                    <ul class="list-unstyled mb-0">
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip"
+                                                                data-placement="top" title="Favorite" class="active">
+                                                                <i class="feather icon-star text-warning"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip"
+                                                                data-placement="top" title="Other actions">
+                                                                {{'Details' | translate}}<i
+                                                                    class="feather icon-chevron-right text-muted"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center mt-4" *ngIf="(allFiltredTickets | filter: term)?.length === 0">
+                        <img src="assets/images/noticket.jpg" alt="No Tickets Found" class="img-fluid"
+                            style="max-width: 300px;">
+                        <p>{{ 'No tickets found' | translate }}</p>
+                    </div>
+
+                </div>
+
+                <!-- Ticket Details -->
+                <div class="q-view" *ngIf="selectedTicket" [ngClass]="showView1 ? 'active' : ''">
+                    <div class="overlay" (click)="closeDetails()"></div>
+                    <div class="content " style="width: 700px"
+                        [ngStyle]="{'border-left': '4px solid ' + getStatusColor(selectedTicket.status)}">
+                        <div class="card-body">
+                            <h4 class="text-center">
+                                {{ selectedTicket?.title || 'No Title Available' }}
+                                <span class="badge badge-danger  ml-2 f-12"> N° : {{
+                                    selectedTicket?.number }}</span>
+                            </h4>
+
+                            <div class="border-bottom pb-3 pt-3"></div>
+                            <br>
+
+                            <p *ngIf="selectedTicket?.description">
+                                <i class="fas fa-align-left mr-2 text-primary"></i>
+                                <span class="detail-label mr-2"> {{'Description' | translate }} :</span>
+                                {{ selectedTicket?.description }}
+                            </p>
+                            <p *ngIf="selectedTicket?.contractId">
+                                <i class="fas fa-file-signature mr-2 text-primary"></i>
+                                <span class="detail-label mr-2"> {{'Contract' | translate }} :</span>
+                                {{ selectedTicket?.contractId.type }} : {{
+                                selectedTicket?.contractId.id }}
+                            </p>
+                            <p *ngIf="selectedTicket?.siteId">
+                                <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                                <span class="detail-label mr-2">{{'Site Name' | translate }} :</span>
+                                {{ selectedTicket?.siteId.nomSite || '--' }} :
+                                {{ selectedTicket?.siteId.adress || '--' }}
+                            </p>
+
+                            <p *ngIf="selectedTicket?.technicienId?.length">
+                                <i class="fas fa-user-check mr-2 text-primary"></i>
+                                <span class="detail-label mr-2"> {{'Assigned to' | translate }} :</span>
+                                <ng-container *ngFor="let item3 of selectedTicket?.technicienId">
+                                    <a href="javascript:">
+                                        <img style="border-radius: 50%; border: 2px solid #FFF; width:35px; height:35px;"
+                                            class="img-fluid img-radius mr-1" src="{{fileurl + item3.image?.fileName}}"
+                                            alt="" [placement]="'bottom'"
+                                            ngbTooltip="{{ item3.firstName + ' ' + item3.lastName }}">
+                                    </a>
+                                    {{ item3.firstName + ' ' + item3.lastName }}
+                                </ng-container>
+                            </p>
+                            <p *ngIf="selectedTicket?.supervisor">
+                                <i class="fas fa-user-tie mr-2 text-primary"></i>
+                                <span class="detail-label mr-2">{{'Supervised By' | translate }} :</span>
+                                <a href="javascript:">
+                                    <img style="border-radius: 50%; border: 2px solid #FFF; width:35px; height:35px;"
+                                        class="img-fluid img-radius mr-1"
+                                        src="{{fileurl + selectedTicket?.supervisor.image?.fileName}}" alt=""
+                                        [placement]="'bottom'">
+                                </a>
+                                {{ selectedTicket?.supervisor.firstName +' '
+                                +selectedTicket?.supervisor.lastName || '--' }}
+                            </p>
+                            <p *ngIf="selectedTicket?.creationDate">
+                                <i class="fas fa-calendar-alt mr-2 text-primary"></i>
+                                <span class="detail-label mr-2"> {{'Date of Creation' | translate }} :</span>
+                                {{ selectedTicket?.creationDate | date:'d MMMM, y, h:mm:ss a' }}
+                            </p>
+                            <p *ngIf="selectedTicket?.status">
+                                <i class="fas fa-info-circle mr-2 text-primary"></i>
+                                <span class="detail-label mr-2">{{ 'Status' | translate }} :</span>
+                                <span [ngClass]="{
+                                    'badge': true,
+                                    'badge-danger': selectedTicket?.status === 'Deleted',
+                                    'badge-primary': selectedTicket?.status === 'Assigned',
+                                    'badge-success': selectedTicket?.status === 'Resolved',
+                                    'badge-secondary':(selectedTicket.status === 'Closed' || selectedTicket.status === 'On Hold'),
+                                    'badge-warning': (selectedTicket?.status === 'In Progress' || selectedTicket?.status === 'Not Assigned'),
+                                    'badge-large': true
+                                }">
+                                    {{ selectedTicket?.status | translate }}
+                                </span>&nbsp;
+                                <small *ngIf="selectedTicket?.isExpired" class="text-danger mr-2">[ Expired ]</small>
+                            </p>
+
+                            <p *ngIf="selectedTicket?.clientId && this.userAuthority !== 'client' ">
+                                <i class="fas fa-user mr-2 text-primary"></i>
+                                <span class="detail-label mr-2">{{'Client' | translate }} :</span>
+                                <a href="javascript:">
+                                    <img style="border-radius: 50%; border: 2px solid #FFF; width:35px; height:35px;"
+                                        class="img-fluid img-radius mr-1"
+                                        src="{{fileurl + selectedTicket?.clientId.image?.fileName}}" alt=""
+                                        [placement]="'bottom'">
+                                </a>
+                                {{ selectedTicket?.clientId.firstName}} {{
+                                selectedTicket?.clientId.lastName}}
+                            </p>
+
+
+                            <p>
+                                <i class="fas fa-cogs mr-2 text-primary"></i>
+                                <span class="detail-label mr-2"> {{'Equipments' | translate }} :</span>
+                            </p>
+
+                            <table class="table table-sm table-bordered mt-2 text-center">
+                                <thead>
+                                    <tr>
+                                        <th> {{'Name' | translate }}</th>
+                                        <th> {{'SN/Version' | translate }}</th>
+                                        <th> {{'Type Support' | translate }}</th>
+                                        <th> {{'Support ID' | translate }}</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 1rem; color: #495057;">
+                                    <ng-container *ngIf="selectedTicket?.equipmentHardId; else noEquipment">
+                                        <tr>
+                                            <td>{{ selectedTicket?.equipmentHardId?.nomPice ||
+                                                '--' }}</td>
+                                            <td>{{ selectedTicket?.equipmentHardId?.SN || '--'
+                                                }}</td>
+                                            <td>
+                                                <div
+                                                    *ngFor="let support of selectedTicket?.equipmentHardId?.TypeSupport">
+                                                    {{ support?.type?.supportName || '--' }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    *ngFor="let support of selectedTicket?.equipmentHardId?.TypeSupport">
+                                                    {{ support?.supportId || '--' }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="selectedTicket?.equipmentSoftId">
+                                        <tr>
+                                            <td>{{
+                                                selectedTicket?.equipmentSoftId?.equipmentName
+                                                || '--' }}</td>
+                                            <td>{{ selectedTicket?.equipmentSoftId?.version ||
+                                                '--' }}</td>
+                                            <td>
+                                                <div
+                                                    *ngFor="let support of selectedTicket?.equipmentSoftId?.TypeSupport">
+                                                    {{ support?.type?.supportName || '--' }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    *ngFor="let support of selectedTicket?.equipmentSoftId?.TypeSupport">
+                                                    {{ support?.supportId || '--' }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <!-- Display this row if no equipment exists -->
+                                    <ng-template #noEquipment>
+                                        <tr>
+                                            <td colspan="4"
+                                                style="text-align: center; font-style: italic; color: #6c757d;">
+                                                No Equipment
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </tbody>
+
+                            </table>
+                            <h6 class="mt-4">Intervention Report:</h6>
+                            <ul *ngIf="this.selectedTicket?.rapportId.length ===0 " class="media-list p-0">
+                                <li class="media d-flex m-b-15">
+                                    <div style="text-align: center;" class="media-body">
+                                        <h6>No Attached Report</h6>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <ul *ngIf="this.selectedTicket?.rapportId && this.selectedTicket?.rapportId.length > 0"
+                                class="media-list p-0 border-top pt-2">
+                                <!-- Display each item in rapportId if it exists and has elements -->
+                                <li *ngFor="let rapport of this.selectedTicket?.rapportId"
+                                    class="media d-flex align-items-center m-b-10" style="padding: 5px 0;">
+                                    <div class="file-attach d-flex align-items-center m-r-10">
+                                        <i class="far fa-file-pdf f-24 text-primary"></i>
+                                    </div>
+                                    <div class="media-body"
+                                        style="max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        <span class="m-b-2 d-block"
+                                            style="font-size: 0.8rem; cursor: pointer; color: black;"
+                                            (click)="openFilePreview(rapport.path, 'pdf')">{{
+                                            rapport.title }}</span>
+                                        <div class="text-muted" style="font-size: 0.75rem;">
+                                            <span> Uploaded on <span class="text-secondary"
+                                                    style="cursor: pointer; color: black;">{{
+                                                    rapport.uploadDate | date:'dd-MM-yyyy' }}</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-auto d-flex align-items-center text-muted">
+                                        <i (click)="downloadRapport(rapport.path, rapport.title)"
+                                            class="fas fa-download f-16 text-success mr-2 icon-hover"></i>
+                                        <i (click)="deleteRapport(rapport._id)"
+                                            class="fas fa-trash-alt f-16 text-danger icon-hover"></i>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!-- Display list of other files -->
+                            <h6 class="mt-4">Ticket Files:</h6>
+                            <ul *ngIf="this.selectedTicket?.listOfFiles.length === 0" class="media-list p-0">
+                                <li class="media d-flex m-b-15">
+                                    <div style="text-align: center;" class="media-body">
+                                        <h6>No Attached Files</h6>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <ul *ngIf="this.selectedTicket?.listOfFiles.length > 0 "
+                                class="media-list p-0 border-top pt-2">
+                                <li class="media d-flex align-items-center m-b-10"
+                                    *ngFor="let file of this.selectedTicket?.listOfFiles" style="padding: 5px 0;">
+                                    <div class="file-attach d-flex align-items-center m-r-10">
+                                        <i *ngIf="FindTypefile(file.fileName) === 'DOCX'"
+                                            class="far fa-file-word f-24 text-primary"></i>
+                                        <i *ngIf="FindTypefile(file.fileName) === 'PDF'"
+                                            class="far fa-file-pdf f-24 text-primary"></i>
+                                        <i *ngIf="['JPEG', 'JPG', 'PNG', 'GIF'].includes(FindTypefile(file.fileName))"
+                                            class="far fa-image f-24 text-primary"></i>
+                                        <i *ngIf="!['DOCX', 'PDF', 'JPEG', 'JPG', 'PNG', 'GIF'].includes(FindTypefile(file.fileName))"
+                                            class="far fa-file f-24 text-primary"></i>
+                                    </div>
+                                    <div class="media-body"
+                                        style="max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+                                        (click)="openFilePreview(file.path, FindTypefile(file.fileName))">
+                                        <span class="m-b-2 d-block"
+                                            style="font-size: 0.8rem; cursor: pointer; color: black;">{{file.title}}</span>
+                                        <div class="text-muted" style="font-size: 0.75rem;">
+                                            <span> Uploaded on <span class="text-secondary"
+                                                    style="cursor: pointer; color: black;">{{file.uploadDate |
+                                                    date:'dd-MM-yyyy'}}</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-auto d-flex align-items-center text-muted">
+                                        <i (click)="downloadFile(file.path, file.title, file.fileName)"
+                                            class="fas fa-download f-16 text-success mr-2 icon-hover"></i>
+                                        <!-- <i (click)="deleteFile(file._id)"
+                                            class="fas fa-trash-alt f-16 text-danger icon-hover"></i> -->
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

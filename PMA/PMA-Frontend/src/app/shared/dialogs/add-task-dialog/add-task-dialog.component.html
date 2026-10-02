@@ -1,0 +1,132 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ (data.action == 'Add' ? 'Add Task' : 'Update Task') | translate }}
+</h5>
+
+<mat-dialog-content style="max-width: 700px">
+    <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Title' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="Title" />
+            @if(f['Title'].touched && f['Title'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['Title'].errors && f['Title'].errors['required']){
+                <div class="text-error">
+                    {{ 'Title title is required' | translate }}.
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Project' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="Project">
+                @for(p of projects; track p._id){
+                <mat-option [value]="p._id">{{ p.Projectname }}</mat-option>
+                }
+            </mat-select>
+            @if(f['Project'].touched && f['Project'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['Project'].errors && f['Project'].errors['required']){
+                <div class="text-error">
+                    {{ 'Project is required' | translate }}
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Executor' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="Executor" multiple>
+                @for(e of engineers; track e._id){
+                <mat-option [value]="e._id">{{ e.fullName }}</mat-option>
+                }
+            </mat-select>
+            @if(f['Executor'].touched && f['Executor'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['Executor'].errors && f['Executor'].errors['required']){
+                <div class="text-error">
+                    {{ 'At lease 1 member must be selected' | translate }}
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Companions' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="companions" multiple>
+                @for(e of engineers; track e._id){
+                <mat-option [value]="e._id">{{ e.fullName }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Priority' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="Priority">
+                @for(type of ['High', 'Medium', 'Low']; track type){
+                <mat-option [value]="type">{{ type }}</mat-option>
+                }
+            </mat-select>
+            @if(f['Priority'].touched && f['Priority'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['Priority'].errors && f['Priority'].errors['required']){
+                <div class="text-error">
+                    {{ 'Task priority is required' | translate }}
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+        <!-- date fields -->
+        @if(currentRole == 'Admin' || (currentRole == 'Team Leader' && data.action == 'Add')){
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Start Date' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput [matDatepicker]="birthpicker2" formControlName="StartDate" />
+                        <mat-datepicker-toggle matIconSuffix [for]="birthpicker2"></mat-datepicker-toggle>
+                        <mat-datepicker #birthpicker2></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Deadline' | translate }}</mat-label>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput [matDatepicker]="birthpicker3" formControlName="Deadline" />
+                        <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
+                        <mat-datepicker #birthpicker3></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row m-b-6">
+                <div class="col-12">
+                    <mat-checkbox [checked]="showTime" (change)="showTime = ! showTime">{{ 'Set time ( default : the full day )' | translate }}</mat-checkbox>
+                </div>
+            </div>
+            <div class="row">
+                @if(showTime){
+                    <div class="col-md-6 col-sm-12">
+                        <!-- START TIME -->
+                        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Start Date time' | translate }}</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput type="time" formControlName="startTime" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <!-- END TIME -->
+                        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Deadline date time' | translate }}</mat-label>
+                        <mat-form-field appearance="outline" class="w-100">
+                            <input matInput type="time" formControlName="deadlineTime" />
+                        </mat-form-field>
+                    </div>
+                }
+            </div>
+        }
+
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Details' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <textarea matInput rows="5" formControlName="Details"></textarea>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="w-100" [disabled]="!form.valid || loading">
+            {{ 'Submit' | translate }}
+        </button>
+    </form>
+</mat-dialog-content>

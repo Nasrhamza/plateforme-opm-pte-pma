@@ -1,0 +1,146 @@
+<div class="row">
+    <div class="col-md-9 col-sm-12">
+
+        <!-- top card  -->
+        <div class="row">
+            <div class="col-lg-3 col-sm-12 col-6">
+                <mat-card class="shadow-none b-radius-30 text-center bg-blue  ">
+                  <mat-card-content class="p-32">
+                    <i-tabler name="flag" class="text-white icon-26"></i-tabler>
+                    <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                      All Projects
+                    </h4>
+                    <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                      {{ projects.length }}
+                    </h6>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            <div class="col-lg-3 col-sm-12 col-6">
+                <mat-card class="shadow-none b-radius-30 text-center bg-yellow  ">
+                  <mat-card-content class="p-32">
+                    <i-tabler name="flag" class="text-white icon-26"></i-tabler>
+                    <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                      Pending
+                    </h4>
+                    <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                      {{ series[1] }}
+                    </h6>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            <div class="col-lg-3 col-sm-12 col-6">
+                <mat-card class="shadow-none b-radius-30 text-center bg-green  ">
+                  <mat-card-content class="p-32">
+                    <i-tabler name="flag" class="text-white icon-26"></i-tabler>
+                    <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                      Completed
+                    </h4>
+                    <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                      {{ series[0] }}
+                    </h6>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            <div class="col-lg-3 col-sm-12 col-6">
+                <mat-card class="shadow-none b-radius-30 text-center bg-pink  ">
+                  <mat-card-content class="p-32">
+                    <i-tabler name="flag" class="text-white icon-26"></i-tabler>
+                    <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                      In progress
+                    </h4>
+                    <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                      {{ series[2] }}
+                    </h6>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+        </div>
+
+        @for(p of projects;track p._id){
+        <mat-card class="shadow-none b-radius-30">
+            <mat-card-content>
+                <div class="d-flex flex-column">
+                    <div class="f-w-600">Project :</div>
+                    <mat-card-title class="m-b-12">
+                        {{ p.Projectname | translate }}
+                    </mat-card-title>
+                    <div class="m-b-12 f-w-600">Progress :</div>
+                    <div class="m-b-24" style="cursor: pointer;">
+                        <mat-progress-bar [color]="'warn'" [value]="p.progress" matTooltip="{{p.progress}}%">
+                        </mat-progress-bar>
+                    </div>
+                    <div class="m-b-12 f-w-600">Start : {{ p.dateDebut | date : 'dd/MM/yyyy' }}</div>
+                    <div class="m-b-12 f-w-600">Deadline : {{ p.dateFin | date : 'dd/MM/yyyy' }}</div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        }
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-12">
+        <!-- <app-pie-chart [series]="series" [labels]="labels" [title]="'My projects'"></app-pie-chart> -->
+        <mat-card class="shadow-none b-radius-30 theme-card">
+          <mat-card-header>
+            <mat-card-title class="m-b-0">{{ 'My projects' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            @if(!projectsChartOptions){
+              <app-empty-data></app-empty-data>
+            }@else{
+              <apx-chart
+                [series]="projectsChartOptions?.series"
+                [chart]="projectsChartOptions?.chart"
+                [dataLabels]="projectsChartOptions?.dataLabels"
+                [plotOptions]="projectsChartOptions?.plotOptions"
+                [legend]="projectsChartOptions?.legend"
+                [colors]="projectsChartOptions?.colors"
+                [tooltip]="projectsChartOptions?.tooltip"
+                [labels]="projectsChartOptions?.labels"
+              >
+              </apx-chart>
+              <div class="d-flex flex-column align-items-center">
+                @for(item of projectsChartOptions?.labels;track item;let i = $index){
+                <div class="d-flex gap-8 m-b-6 align-items-center">
+                    <span [ngStyle]="{'background-color' : projectsChartOptions?.colors[i], 'height': '20px', 
+                  'width': '20px', 'border-radius' : '50px' }"></span>
+                    <span>{{item}} - {{ projectsChartOptions?.series[i] }}</span>
+                </div>
+              }
+            </div>
+             }
+          </mat-card-content>
+        </mat-card>
+        <!-- <app-pie-chart [series]="reclamationSeries" [labels]="reclamationLabels" [title]="'My reclamations'"></app-pie-chart> -->
+        <mat-card class="shadow-none b-radius-30 theme-card">
+          <mat-card-header>
+            <mat-card-title class="m-b-0">{{ 'My reclamations' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            @if(!reclamationsChartOptions){
+              <app-empty-data></app-empty-data>
+            }@else{
+              <apx-chart
+                [series]="reclamationsChartOptions?.series"
+                [chart]="reclamationsChartOptions?.chart"
+                [dataLabels]="reclamationsChartOptions?.dataLabels"
+                [plotOptions]="reclamationsChartOptions?.plotOptions"
+                [legend]="reclamationsChartOptions?.legend"
+                [colors]="reclamationsChartOptions?.colors"
+                [tooltip]="reclamationsChartOptions?.tooltip"
+                [labels]="reclamationsChartOptions?.labels"
+              >
+              </apx-chart>
+              <div class="d-flex flex-column align-items-center">
+                @for(item of reclamationsChartOptions?.labels;track item;let i = $index){
+                <div class="d-flex gap-8 m-b-6 align-items-center">
+                    <span [ngStyle]="{'background-color' : reclamationsChartOptions?.colors[i], 'height': '20px', 
+                  'width': '20px', 'border-radius' : '50px' }"></span>
+                    <span>{{item}} - {{ reclamationsChartOptions?.series[i] }}</span>
+                </div>
+                }
+            </div>
+            }
+          </mat-card-content>
+        </mat-card>  
+    </div>
+</div>

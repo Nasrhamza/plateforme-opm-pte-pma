@@ -1,0 +1,62 @@
+.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+  }
+
+  .centered-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Ajustez la hauteur selon vos besoins */
+    text-align: center;
+    border: 1px solid #ccc; /* Optionnel : pour mieux voir les bordures de la cellule */
+    vertical-align: middle;
+  }
+  .centered-cell2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Ajustez la hauteur selon vos besoins */
+    text-align: center;
+    border: 1px solid #ccc; /* Optionnel : pour mieux voir les bordures de la cellule */
+    vertical-align: middle;
+  }
+  .small-btn {
+    padding: 7px 12px;  /* Adjust the padding for a smaller button */
+    font-size: 0.9rem;  /* Reduce the font size */
+  }
+  
+  .small-btn i {
+    font-size: 1.1em;  /* Adjust the icon size */
+  }
+  
+  .icon-hover {
+    cursor: pointer;
+    transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.icon-hover:hover {
+    transform: scale(1.3); /* Makes the icon slightly bigger */
+}
+
+// #tabDeux {
+//   table-layout: auto !important;
+//   width: 100%;
+//   max-width: 100%;
+//   word-wrap: break-word;
+//   white-space: normal;
+// }
+
+// #tabDeux th,
+// #tabDeux td {
+//   width: auto !important;
+//   min-width: fit-content;
+//   max-width: 200px; /* Adjust based on preference */
+//   text-align: center;
+//   overflow-wrap: break-word;
+//   word-break: break-word;
+//   white-space: normal;
+// }

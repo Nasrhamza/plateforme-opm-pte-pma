@@ -1,0 +1,235 @@
+<div class="row">
+  <div class="col-lg-3 col-sm-12 col-6">
+    <mat-card class="shadow-none b-radius-30 text-center bg-blue  ">
+      <mat-card-content class="p-32">
+        <i-tabler name="ticket" class="text-white icon-26"></i-tabler>
+        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+          All Tasks
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+          {{ tasksData?.all }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-3 col-sm-12 col-6">
+    <mat-card class="shadow-none b-radius-30 text-center bg-yellow  ">
+      <mat-card-content class="p-32">
+        <i-tabler name="ticket" class="text-white icon-26"></i-tabler>
+        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+          Pending Tasks
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+          {{ tasksData?.pending }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>  
+  
+  <div class="col-lg-3 col-sm-12 col-6">
+    <mat-card class="shadow-none b-radius-30 text-center bg-green  ">
+      <mat-card-content class="p-32">
+        <i-tabler name="ticket" class="text-white icon-26"></i-tabler>
+        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+          Closed Tasks
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+          {{ tasksData?.closed }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>  
+  <div class="col-lg-3 col-sm-12 col-6">
+    <mat-card class="shadow-none b-radius-30 text-center bg-red  ">
+      <mat-card-content class="p-32">
+        <i-tabler name="ticket" class="text-white icon-26"></i-tabler>
+        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+          Assigned projects
+        </h4>
+        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+          {{ assignedProjects }}
+        </h6>
+      </mat-card-content>
+    </mat-card>
+  </div>  
+  
+</div>
+<div class="row">
+  <div class="col-lg-9">
+    <mat-card class="shadow-none b-radius-30 theme-card">
+      <mat-card-header class="d-flex">
+        <div class="m-r-auto">
+          <mat-card-title>{{'My Projects' | translate }}</mat-card-title>
+        </div>
+        <mat-form-field class="theme-select" appearance="outline">
+          <mat-select (selectionChange)="handleClientSelect($event)" placeholder="Projects">
+            <mat-option value='all'>{{'All' | translate}}</mat-option>
+            @for(p of clients; track p._id) {
+            <mat-option [value]="p._id">
+              {{ p?.fullName }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- @if(filteredProjects.length == 0){
+          <app-empty-data></app-empty-data>
+        }@else{
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="w-100 f-w-500 no-wrap">
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Project name' |translate }}</th>
+                <td mat-cell *matCellDef="let element" (click)="goToDetails(element._id)" style="cursor: pointer;">
+                  {{ element.Projectname | shorten : 40}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="priority">
+                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-700 ">{{ 'Priority' | translate }}</th>
+                <td mat-cell *matCellDef="let element">
+                  <span class="bg-light-{{ element.priority === 'High' ? 'warning' : element.priority === 'Medium' ? 'primary' : 'success'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.priority === 'High' ? 'warning' : element.priority === 'Medium' ? 'primary' : 'success'}}">{{ element.priority.toUpperCase() }}</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="progress">
+                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Progress' | translate }}</th>
+                <td mat-cell *matCellDef="let element" class="f-s-14">
+                  {{ element.progress }}%
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                  {{ 'Status' | translate }}
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span class="bg-light-{{ element.status === 'Pending' ? 'warning' : element.status === 'In Progress' ? 'primary' : 'success'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.status === 'Pending' ? 'warning' : element.status === 'In Progress' ? 'primary' : 'success'}}">{{ element.status.toUpperCase() }}</span>
+                </td>
+              </ng-container>
+      
+              <ng-container matColumnDef="dateDebut">
+                <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Start Date' | translate }}</th>
+                <td mat-cell *matCellDef="let element" class="f-s-14">
+                  {{ element.dateDebut | date : 'dd/MM/yyyy' }}
+                </td>
+              </ng-container>
+            
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+      
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+          </mat-paginator>
+        } -->
+        @if(filteredProjects.length == 0){
+          <app-empty-data></app-empty-data>
+          }@else{
+          <!-- <div class="table-responsive">
+                  <table mat-table [dataSource]="dataSource" class="w-100 f-w-500 no-wrap">
+                      <ng-container matColumnDef="title">
+                          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Project title' |translate
+                              }}</th>
+                          <td mat-cell *matCellDef="let element" (click)="goToDetails(element._id)"
+                              style="cursor: pointer;">
+                              {{ element.Projectname | shorten : 40}}
+                          </td>
+                      </ng-container>
+                      <ng-container matColumnDef="members">
+                          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Members' | translate }}
+                          </th>
+                          <td mat-cell *matCellDef="let element" class="f-s-14">
+                              <div class="d-flex align-items-center social-chips">
+                                  @for(user of element.equipe; track user._id){
+                                  <img src="{{imagesUrl}}/{{user?.image}}" width="40" height="40" alt="social"
+                                      class="rounded-circle" matTooltip="{{user?.fullName}}" />
+                                  }
+                              </div>
+                          </td>
+                      </ng-container>
+                      <ng-container matColumnDef="progress">
+                          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Progress' | translate }}
+                          </th>
+                          <td mat-cell *matCellDef="let element" class="f-s-14">
+                              <mat-progress-bar mode="determinate" [value]="element.progress"
+                                  matTooltip="{{ element.progress }}%">
+                              </mat-progress-bar>
+                          </td>
+                      </ng-container>
+                      <ng-container matColumnDef="status">
+                          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                              {{ 'Status' | translate }}
+                          </th>
+                          <td mat-cell *matCellDef="let element">
+                              <span
+                                  class="bg-light-{{ element.status === 'Pending' ? 'warning' : element.status === 'In Progress' ? 'primary' : 'success'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.status === 'Pending' ? 'warning' : element.status === 'In Progress' ? 'primary' : 'success'}}">{{
+                                  element.status.toUpperCase() }}</span>
+                          </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                  </table>
+              </div> -->
+          <div class="row">
+              @for(p of filteredProjects.slice(0, 6);track p._id){
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                  <mat-card class="b-radius-30 shadow-none clickeable-card"
+                      style="background-color: rgb(245, 245, 245);" (click)="goToProject(p._id)">
+                      <mat-card-header>
+                          <mat-card-title>{{ p.Projectname | shorten : 60 }}</mat-card-title>
+                          <mat-card-subtitle class="m-t-6">{{ p.client.fullName }}</mat-card-subtitle>
+                      </mat-card-header>
+                      <mat-card-content class="p-t-0">
+                          <div class="d-flex align-items-center social-chips m-b-20">
+                              @for(user of p.equipe; track user._id){
+                              <img src="{{imagesUrl}}/{{user?.image}}" width="50" height="50" alt="social"
+                                  class="rounded-circle" matTooltip="{{user?.fullName}}" />
+                              }
+                          </div>
+                          <mat-progress-bar mode="determinate" [value]="p.progress"
+                              matTooltip="{{ p.progress }}%">
+                          </mat-progress-bar>
+                      </mat-card-content>
+                  </mat-card>
+              </div>
+              }
+          </div>
+          }
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-lg-3">
+    <!-- <app-radial-bar-chart [title]="'Projects progress'" [series]="projectSeries" [labels]="projectLabels"></app-radial-bar-chart> -->
+    <mat-card class="shadow-none b-radius-30 theme-card">
+      <mat-card-header>
+        <mat-card-title class="m-b-0">{{ 'My projects overview' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="b-t-1">
+        @if(filteredProjects.length == 0){
+          <app-empty-data></app-empty-data>
+        }@else{
+          <apx-chart
+            [series]="radialbarChartOptions.series"
+            [chart]="radialbarChartOptions.chart"
+            [dataLabels]="radialbarChartOptions.dataLabels"
+            [labels]="radialbarChartOptions.labels"
+            [plotOptions]="radialbarChartOptions.plotOptions"
+            [legend]="radialbarChartOptions.legend"
+            [colors]="radialbarChartOptions.colors"
+            [tooltip]="radialbarChartOptions.tooltip"
+          >
+          </apx-chart>
+          <div class="d-flex flex-column align-items-center">
+            @for(item of radialbarChartOptions.labels;track item;let i = $index){
+              <div class="d-flex gap-8 m-b-6 align-items-center">
+                  <span [ngStyle]="{'background-color' : radialbarChartOptions.colors[i], 'height': '20px', 
+                  'width': '20px', 'border-radius' : '50px' }"></span>
+                  <span>{{item | shorten : 30}}</span>
+              </div>
+            }    
+        </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+:host{
+    display: inline;
+}
+
+img{
+    transition: all .1s ease-out;
+    cursor: pointer;
+}
+img:hover {
+    transform: scale(1.2) rotate(-15deg);
+}

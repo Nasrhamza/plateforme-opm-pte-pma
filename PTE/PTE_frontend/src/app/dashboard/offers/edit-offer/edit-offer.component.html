@@ -1,0 +1,99 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                    Edit internship offer</div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form class="register-form" [formGroup]="offerForm" (ngSubmit)="onSubmit(offerForm)">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Title<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Title" formControlName="title" required>
+                <small class="form-text text-danger"
+                    *ngIf="!offerForm.get('title')?.valid && offerForm.get('title')?.touched"> Title is required
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Description<span class="text-danger">*</span></label>
+                <textarea class="form-control" placeholder="Write the offer description here..."
+                    formControlName="description"></textarea>
+                <small class="form-text text-danger"
+                    *ngIf="!offerForm.get('description')?.valid && offerForm.get('description')?.touched"> Description
+                    is required
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Technologies<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="e.g. Python, Angular, Java" formControlName="technologies">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group position-relative">
+                    <label>Number of interns <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" formControlName="internsNumber" min="1" max="10">
+                    <small class="form-text text-danger"
+                        *ngIf="!offerForm.get('internsNumber')?.valid && offerForm.get('internsNumber')?.touched">
+                        Number of interns is required
+                    </small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group position-relative">
+                    <label>Internship duration <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" formControlName="period" min="1" max="6">
+                    <small class="form-text text-danger"
+                        *ngIf="!offerForm.get('period')?.valid && offerForm.get('period')?.touched">
+                        Internship duration is required
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group position-relative">
+                    <label>Expiration date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="expirationDate" >
+                    <small class="form-text text-danger"
+                        *ngIf="!offerForm.get('expirationDate')?.valid && offerForm.get('expirationDate')?.touched">
+                        Expiration date is invalid
+                    </small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group position-relative">
+                    <label>Departement <span class="text-danger">*</span></label>
+                    <select formControlName="departement" class="form-select">
+                        <option disabled selected>Choose...</option>
+                        <option value="Administration">Administration</option>
+                        <option value="System">System</option>
+                        <option value="Networking">Networking</option>
+                        <option value="Development">Development</option>
+                        <option value="Cyber Security">Cyber Security</option>
+                    </select>
+                    <small class="form-text text-danger"
+                        *ngIf="!offerForm.get('departement')?.valid && offerForm.get('departement')?.touched">
+                        Departement is invalid
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Edit offer</button>
+            <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

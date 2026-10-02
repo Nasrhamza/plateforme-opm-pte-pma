@@ -1,0 +1,485 @@
+<app-card [customHeader]="true" [options]="false" class="shadow-lg">
+    <!-- **************************************** -->
+    <div class="app-card-header">
+        <ng-container>
+            <h5 class="mb-2">
+                <i class="fas fa-file-contract m-r-5 text-primary"></i>
+                {{selectedContract?.type+' - '+selectedContract?.nature}}
+                <br>
+                <h6> {{selectedContract?.id}}</h6>
+            </h5>
+            <button *ngIf="userAuthority !== 'commercial'" (click)="goToTickets()"
+                class="btn btn-primary float-right small-btn">
+                <i class="fas fa-ticket-alt m-r-5"></i>Tickets
+            </button>
+        </ng-container>
+    </div>
+
+    <!-- **************************************** -->
+    <div class="m-b-20">
+        <div class="row">
+            <div class="col text-left">
+                <h5 class="mb-3"><i class="fas text-primary fa-info-circle mr-2"></i> Information about the Contract
+                </h5>
+                <br>
+            </div>
+            <div class="col text-right">
+                <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+                    class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="openUpdateContract()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-edit">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19 3 20 4 16l12.5-12.5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="m-b-20 col-sm-12">
+            <div class="row">
+                <div *ngIf="selectedContract" class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-3" *ngIf="selectedContract?.type == 'INFOGERANCE' || selectedContract?.type != 'INFOGERANCE'">
+                            <div class="text-primary f-14 m-b-10" style="color: rgb(255, 0, 0);">
+                                <i class="far fa-calendar-alt"></i>&nbsp; Start date
+                            </div>
+                            <hr>
+                            <div class="text-primary f-14 m-b-10">
+                                <h6>{{ selectedContract?.startDate | date: 'dd-MM-yyyy' }}</h6>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-12 col-lg-3">
+                            <div class="text-primary f-14 m-b-10">
+                                <i class="far fa-calendar-alt"></i>&nbsp; End date
+                            </div>
+                            <hr>
+                            <div class="text-primary f-14 m-b-10">
+                                <h6>{{ selectedContract?.endDate | date: 'dd-MM-yyyy' }}</h6>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-12 col-lg-3">
+                            <div class="text-primary f-14 m-b-10">
+                                <i class="far fa-calendar-alt"></i>&nbsp; Due date
+                            </div>
+                            <hr>
+                            <div class="text-primary f-14 m-b-10">
+                                <h6>{{ selectedContract?.dueDate }}</h6>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-12 col-lg-3">
+                            <div class="text-primary f-14 m-b-10">
+                                <i class="far fa-clock"></i>&nbsp; SLA
+                            </div>
+                            <hr>
+                            <div class="text-primary f-14 m-b-10">
+                                <h6>{{ selectedContract?.sla + ' H' }}</h6>
+                            </div>
+                        </div>
+        
+                        <div *ngIf="selectedContract?.type == 'INFOGERANCE'" class="col-md-12 col-lg-3">
+                            <div class="text-primary f-14 m-b-10" style="color: rgb(255, 0, 0);">
+                                <i class="far fa-calendar"></i>&nbsp; Day of visit
+                            </div>
+                            <hr>
+                            <div class="text-primary f-14 m-b-10">
+                                <h6>{{ selectedContract?.jourInfogerance }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- **************************************** -->
+
+    <div class="m-b-20">
+        <hr>
+        <h6><i class="fas text-primary fa-users mr-2"></i>Team management</h6>
+        <span (click)="teamManagementCollapsed = !teamManagementCollapsed"
+            [attr.aria-expanded]="!teamManagementCollapsed"><a href="javascript:">Show more</a> </span>
+        <div id="collapseExample5" [ngbCollapse]="teamManagementCollapsed" class="table-responsive form-material"
+            style="overflow-x: hidden;">
+            <div class="text-right">
+                <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+                    class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="addtemsToContract()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-plus">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <br><br>
+            </div>
+            <div class="table-wrapper" style="overflow-x: auto;">
+                <style>
+                    #tabColler.table-hover tbody tr:hover {
+                        background-color: rgb(138, 188, 226);
+                    }
+            
+                    #tabColler tbody {
+                        background-color: rgb(173, 218, 212);
+                        color: rgb(111, 105, 105);
+                    }
+            
+                    /* Align all td cells to the middle */
+                    #tabColler td {
+                        vertical-align: middle;
+                    }
+                </style>
+                <table style="text-align: center;" id="tabColler" class="table table-striped table-bordered nowrap table-hover">
+                    <thead class="task-page" style="background-color: rgb(58, 114, 179);">
+                        <tr>
+                            <th>First Name & Last Name</th>
+                            <th>Role</th>
+                            <th *ngIf="userAuthority !== 'commercial'">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Commercial -->
+                        <tr *ngIf="selectedContract?.commercial">
+                            <td class="text-center">
+                                    <div style="display: flex; align-items: center; justify-content: flex-start; padding-left: 20px;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid #FFF; overflow: hidden;">
+                                        <img width="35px" 
+                                             style="object-fit: contain; width: 100%; height: 100%;" 
+                                             class="img-fluid img-radius mr-1"
+                                             src="{{fileurl + selectedContract?.commercial.image?.fileName}}">
+                                    </div>
+                                    <span style="margin-left: 10px;">{{ selectedContract?.commercial.firstName + ' ' + selectedContract?.commercial.lastName }}</span>
+                                </div>
+                            </td>
+                            <td class="text-center">Commercial</td>
+                            <td *ngIf="userAuthority !== 'commercial'" class="text-center">
+                                <i style="cursor: pointer;" (click)="deleteMemeberEquipe(selectedContract?.commercial._id)" class="fas fa-trash-alt text-danger icon-hover"></i>&nbsp;
+                            </td>
+                        </tr>
+            
+                        <!-- Technicians -->
+                        <ng-container *ngIf="selectedContract?.technicians?.length > 0">
+                            <tr *ngFor="let item of selectedContract.technicians | paginate: { id: 'tech', itemsPerPage: 5, currentPage: pagetech }">
+                                <td>
+                                    <div style="display: flex; align-items: center; justify-content: flex-start; padding-left: 20px;">
+                                        <div style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid #FFF; overflow: hidden;">
+                                            <img class="img-fluid img-radius mr-1" 
+                                                 src="{{fileurl + item.technician.image?.fileName}}" 
+                                                 alt="Technician Image" 
+                                                 style="width: 100%; height: 100%; object-fit: contain;">
+                                        </div>
+                                        <span style="margin-left: 8px;">{{ item.technician.firstName + ' ' + item.technician.lastName }}</span>
+                                    </div>
+                                </td>
+                                
+                                <td class="text-center">
+                                    Technician
+                                    <span *ngIf="item.teamLeader" class="badge badge-warning">Team Leader</span>
+                                </td>
+                                <td *ngIf="userAuthority !== 'commercial'" class="text-center">
+                                    <i style="cursor: pointer;" (click)="deleteMemeberEquipe(item.technician._id)" class="fas fa-trash-alt text-danger icon-hover"></i>&nbsp;
+                                </td>
+                            </tr>
+                        </ng-container>
+            
+                        <!-- No Data Row -->
+                        <tr *ngIf="(selectedContract?.technicians?.length === 0 && !selectedContract?.commercial)">
+                            <td colspan="4" class="text-center">
+                                <h5>No Data Found</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div class="pagination-block text-center">
+                <pagination-controls id="tech" (pageChange)="pagetech = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+    <!-- **************************************** -->
+
+    <div class="m-b-20">
+        <hr>
+        <h6><i class="fas text-primary fa-user-friends mr-2"></i>Customer management</h6>
+        <span (click)="customerManagementCollapsed = !customerManagementCollapsed"
+            [attr.aria-expanded]="!customerManagementCollapsed"><a href="javascript:">Show
+                more</a> </span>
+        <div id="collapseExample5" [ngbCollapse]="customerManagementCollapsed" class="table-responsive form-material"
+            style="overflow-x: hidden;">
+            <div class="text-right">
+                <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+                    class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="openAddNewOledCustomers()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-plus">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <br><br>
+            </div>
+            <div class="table-wrapper" style="overflow-x: auto;">
+                <style>
+                    #tabDeux.table-hover tbody tr:hover {
+                        background-color: rgb(138, 188, 226);
+                    }
+            
+                    #tabDeux tbody {
+                        background-color: rgb(173, 203, 218);
+                        color: rgb(111, 105, 105);
+                    }
+            
+                    /* Align all td cells to the middle */
+                    #tabDeux td {
+                        vertical-align: middle;
+                    }
+                </style>
+            
+                <table style="text-align: center;" id="tabDeux" class="table table-striped table-bordered nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th *ngIf="userAuthority !== 'commercial'">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="task-page">
+            
+                        <ng-container *ngIf="this.selectedContract?.clients.length != 0">
+                            <tr
+                                *ngFor="let item of this.selectedContract?.clients | filter:searchCustomer  | paginate: { id: 'customer',itemsPerPage: 5, currentPage: pageCustomer }">
+                                <td class="text-center" style="display: flex; justify-content: center; align-items: center;">
+                                    <div style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid #FFF; overflow: hidden; display: inline-block; margin-right: 8px;">
+                                        <img style="width: 100%; height: 100%; object-fit: contain;" 
+                                             class="img-fluid img-radius" 
+                                             src="{{fileurl + item.image?.fileName}}">
+                                    </div>
+                                    {{item.firstName}} {{item.lastName}}
+                                </td>
+                                <td class="text-center">{{item.email}}</td>
+                                <td class="text-center">{{item.phoneNumber}}</td>
+                                <td class="text-center">
+                                    <span *ngIf="item.role === 'clientManager'">Manager</span>
+                                    <span *ngIf="item.role === 'clientUser'">Client</span>
+                                </td>
+                                <td class="text-center" *ngIf="item.valid == true">Enable</td>
+                                <td class="text-center" *ngIf="item.valid == false">Disable</td>
+                                <td *ngIf="userAuthority !== 'commercial'" class="text-center">
+                                    <i (click)="deleteUserContract(item._id)" class="fas fa-trash-alt text-danger icon-hover"></i>&nbsp;
+                                    <i (click)="openUpdatUsers(item)" class="fas fa-edit text-warning icon-hover"></i>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        
+                        <!-- No Data Row -->
+                        <tr *ngIf="selectedContract?.clients?.length === 0">
+                            <td colspan="6" class="text-center">
+                                <h5>No Data Found</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination-block text-center">
+                <pagination-controls id="customer" (pageChange)="pageCustomer = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="this.selectedContract?.type =='INFOGERANCE' ">
+        <div class="m-b-20">
+            <hr>
+            <h6>
+                <i class="fas text-primary fa-heartbeat mr-2"></i> Health Check
+            </h6>
+
+            <span (click)="healthCheckCollapsed = !healthCheckCollapsed" [attr.aria-expanded]="!healthCheckCollapsed">
+                <a href="javascript:">Show more</a>
+            </span>
+            <div id="collapseExample5" [ngbCollapse]="healthCheckCollapsed" class="table-responsive form-material"
+                style="overflow-x:hidden">
+                <br>
+                <div class="row">
+                    <div class="col text-left">
+                        <button id="export-csv-btn" type="button"
+                            class="btn btn-sm btn-primary waves-effect waves-light f-right"
+                            (click)="exportToPDFHealthCheck()">
+                            Export PDF
+                        </button>
+                    </div>
+                    <div class="col text-right ">
+                        <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+                            class="btn btn-sm btn-primary waves-effect waves-light f-right"
+                            (click)="openAddHealthCheck()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-plus">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <br><br>
+                    </div>
+                </div>
+                <div class="app-card-header"></div>
+                <div class="table-wrapper" style="overflow-x: auto;">
+                    <style>
+                        #tabHealthCheck.table-hover tbody tr:hover {
+                            background-color: rgb(138, 188, 226);
+                        }
+
+                        #tabHealthCheck tbody {
+                            background-color: rgb(173, 218, 212);
+                            color: rgb(111, 105, 105);
+                        }
+                    </style>
+                    <table style="text-align: center;" id="tabHealthCheck" datatable
+                        class="table table-striped table-bordered nowrap table-hover">
+                        <thead class="task-page" style="background-color: rgb(58, 114, 179);">
+                            <tr>
+                                <th>Designation</th>
+                                <th>Model</th>
+                                <th>SN</th>
+                                <th>Affectation</th>
+                                <th>Emplacement</th>
+                                <th>Adresse IP</th>
+                                <th>Ressources</th>
+                                <th>Observation</th>
+                                <th *ngIf="userAuthority !== 'commercial'">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="this.selectedContract?.healthChecklist?.length != 0">
+                                <tr
+                                    *ngFor="let item of this.selectedContract?.healthChecklist | paginate: { id: 'health', itemsPerPage: 5, currentPage: pHealth }">
+                                    <td class="text-center">{{item.designation}}</td>
+                                    <td class="text-center">{{item.model}}</td>
+                                    <td class="text-center">{{item.SN}}</td>
+                                    <td class="text-center">{{item.affectation}}</td>
+                                    <td class="text-center">{{item.emplacement}}</td>
+                                    <td class="text-center">{{item.adresseIP}}</td>
+                                    <td class="text-center">{{item.resources}}</td>
+                                    <td class="text-center">{{item.observation}}</td>
+                                    <td *ngIf="userAuthority !== 'commercial'" class="text-center">
+                                        <i (click)="updateHealthCheck(item)"
+                                            class="fas fa-edit f-18 ml-2 text-info icon-hover"></i>
+                                        <i (click)="deleteHealthCheck(item._id)"
+                                            class="fas fa-trash-alt f-18 ml-2 text-danger icon-hover"></i>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <tr *ngIf="this.selectedContract?.healthChecklist?.length == 0">
+                                <td colspan="9" class="text-center">
+                                    <h5>No Data Found</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-block text-center">
+                    <pagination-controls id="health" (pageChange)="pHealth = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- **************************************** -->
+
+    <div class="m-b-20">
+        <hr>
+        <h6><i class="fas text-primary fa-location-arrow mr-2"></i> Preventive Maintenance Visit</h6>
+        <span (click)="preventiveMaintVisiteCollapsed = !preventiveMaintVisiteCollapsed"
+            [attr.aria-expanded]="!preventiveMaintVisiteCollapsed">
+            <a href="javascript:">Show more</a>
+        </span>
+        <div id="collapseExample5" [ngbCollapse]="preventiveMaintVisiteCollapsed" class="table-responsive form-material"
+            style="overflow-x: hidden;">
+            <div class="text-right">
+               
+                <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+                    class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="openAddVistepreventive()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-plus">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <br><br>
+
+            </div>
+            <div class="table-wrapper" style="overflow-x: auto;">
+                <style>
+                    #tabDeux3.table-hover tbody tr:hover {
+                        background-color: rgb(138, 188, 226);
+                    }
+
+                    #tabDeux3 tbody {
+                        background-color: rgb(173, 218, 212);
+                        color: rgb(111, 105, 105);
+                    }
+
+                    .search-input {
+                        width: 33.33%;
+                    }
+                </style>
+                <table style="text-align: center;" id="tabDeux3"
+                    class="table table-striped table-bordered nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Site Name</th>
+                            <th>Assigned to</th>
+                            <th *ngIf="userAuthority !== 'commercial'">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="task-page">
+                        <ng-container *ngIf="selectedContract?.Vistepreventive.length != 0">
+                            <tr
+                                *ngFor="let item of selectedContract?.Vistepreventive | filter:searchText | paginate: { id: 'visite',itemsPerPage: 5, currentPage: page }">
+                                <td class="text-center">{{item.title}}</td>
+                                <td class="text-center">{{item.startDate}}</td>
+                                <td class="text-center">{{item.endDate}}</td>
+                                <td class="text-center">{{item.status}}</td>
+                                <td class="text-center">{{item.siteID.nomSite}}</td>
+                                <td *ngIf="item.technicians && item.technicians.length > 0" class="text-center">
+                                    <ng-container *ngFor="let tech of item.technicians; let i = index">
+                                        {{tech.firstName + ' ' + tech.lastName}}{{i < item.technicians.length - 1
+                                            ? ' | ' : '' }} </ng-container>
+                                </td>
+                                <td class="text-center" *ngIf="!item.technicians || item.technicians.length === 0">Not
+                                    assigned yet</td>
+                                <td *ngIf="userAuthority !== 'commercial'" class="text-center">
+                                    <i (click)="deleteVisite(item._id)"
+                                        class="fas fa-trash-alt text-danger icon-hover"></i>&nbsp;
+                                    <i (click)="openUpdateVisite(item)" class="fas fa-edit text-warning icon-hover"></i>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <tr *ngIf="selectedContract?.Vistepreventive.length == 0">
+                            <td colspan="7" class="text-center">
+                                <h5>No Data Found</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination-block text-center">
+                <pagination-controls id="visite" (pageChange)="page = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+    <br>
+</app-card>

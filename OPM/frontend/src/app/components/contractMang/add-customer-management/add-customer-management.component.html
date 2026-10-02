@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" placeholder="First Name" id="firstName" name="firstName"
+                        ngModel [(ngModel)]="model.firstName" #firstName="ngModel" required>
+                    <div *ngIf="firstName.touched && firstName.errors?.required" class="error">First name required</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" placeholder="Last Name" id="lastName" name="lastName"
+                        ngModel [(ngModel)]="model.lastName" #lastName="ngModel" required>
+                    <div *ngIf="lastName.touched && lastName.errors?.required" class="error">Last name required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" placeholder="Email" id="email" name="email" ngModel
+                [(ngModel)]="model.email" #email="ngModel" required
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+            <div *ngIf="email.touched && email.errors?.required" class="error">Email required</div>
+            <div *ngIf="email.touched && email.errors?.pattern" class="error">Invalid email format</div>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" class="form-control" placeholder="Phone number" id="phoneNumber" name="phoneNumber"
+                ngModel [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel" required pattern="[0-9]{8}">
+            <div *ngIf="phoneNumber.touched && phoneNumber.errors?.required" class="error">Phone number required</div>
+            <div *ngIf="phoneNumber.touched && phoneNumber.errors?.pattern" class="error">Invalid phone number format
+                (should be 8 digits between 0 and 9)</div>
+        </div>
+
+        <div class="form-group" *ngIf="this.add">
+            <label for="typeAccount">Select account type</label>
+            <select name="select" class="form-control form-control-default" id="typeAccount" name="typeAccount" ngModel
+                [(ngModel)]="model.typeAccount" #typeAccount="ngModel" required>
+                <option *ngIf="!this.mangerAddet" value="clientManager">Contract Manager</option>
+                <option value="clientUser" selected>Customer User</option>
+            </select>
+            <div *ngIf="typeAccount.touched && typeAccount.errors?.required" class="error">Account type required</div>
+        </div>
+
+        <div class="form-group" *ngIf="!this.add">
+
+            <label for="Status">Select Status</label>
+            <select name="select" class="form-control form-control-default" id="valid" name="valid" ngModel
+                [(ngModel)]="model.valid" #valid="ngModel" required>
+                <option value="false">Disable</option>
+                <option value="true" selected>Enable</option>
+            </select>
+            <div *ngIf="valid.touched && valid.errors?.required" class="error">Account type required</div>
+        </div>
+
+        <p class="text-primary">
+            <i class="fas fa-info-circle"></i> The default password for the Client is: <strong>Connect@2025</strong>
+        </p>
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid"
+                class="btn btn-outline-warning">Update</button>
+
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

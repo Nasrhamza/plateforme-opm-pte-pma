@@ -1,0 +1,17 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                    My Signature 
+                </div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <img src="{{sigUrl+payload}}" alt="">
+</div>

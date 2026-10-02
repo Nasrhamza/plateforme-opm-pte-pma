@@ -1,0 +1,111 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+
+        <div class="form-group">
+            <label for="sla">Equipment Name:</label>
+            <input type="text" class="form-control" placeholder="Equipment Name" id="equipmentName" name="equipmentName"
+                ngModel [(ngModel)]="this.model.equipmentName" #equipmentName="ngModel" required>
+            <!-- <span>The SAL must be in Hour</span> -->
+            <div *ngIf="equipmentName.touched && equipmentName.errors?.required" class="error">Equipment Name required
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="sla">Version:</label>
+            <input type="text" class="form-control" placeholder="Version" id="version" name="version" ngModel
+                [(ngModel)]="this.model.version" #version="ngModel" required>
+            <!-- <span>The SAL must be in Hour</span> -->
+            <div *ngIf="version.touched && version.errors?.required" class="error">Version required</div>
+        </div>
+
+        <div class="form-group">
+            <label for="sla">Constructure:</label>
+            <input type="text" class="form-control" placeholder="Constructure" id="constructure" name="constructure"
+                ngModel [(ngModel)]="this.model.constructure" #constructure="ngModel" required>
+            <!-- <span>The SAL must be in Hour</span> -->
+            <div *ngIf="constructure.touched && constructure.errors?.required" class="error">Constructure required</div>
+        </div>
+        <!-- End Date Contract -->
+        <div class="form-group">
+            <label for="endDateContract">End Date Contract</label>
+            <input type="date" class="form-control" placeholder="End Date Contract" id="endDateContract"
+                name="endDateContract" ngModel [(ngModel)]="model.endDateContract" #endDateContract="ngModel"
+                required />
+            <div *ngIf="endDateContract.touched && endDateContract.errors?.required" class="error">End Date Contract is
+                required</div>
+        </div>
+
+        <!-- Support Type 1 -->
+        <div class="form-group">
+            <label for="TypeSupport1">Support Type 1:</label>
+            <select class="form-control" [(ngModel)]="model.TypeSupport1" name="TypeSupport1" required>
+                <ng-container *ngFor="let item of listTypeSupport">
+                    <option [value]="item._id">{{ item.supportName }}</option>
+                </ng-container>
+            </select>
+        </div>
+
+        <!-- Start Date Support 1 -->
+        <div class="form-group">
+            <label for="startDateSupport1">Start Date Support 1:</label>
+            <input type="date" class="form-control" [(ngModel)]="model.startDateSupport1" name="startDateSupport1"
+                required />
+        </div>
+
+        <!-- End Date Support 1 -->
+        <div class="form-group">
+            <label for="endDateSupport1">End Date Support 1:</label>
+            <input type="date" class="form-control" [(ngModel)]="model.endDateSupport1" name="endDateSupport1"
+                required />
+        </div>
+
+        <!-- Toggle for Second Support -->
+        <a class="btn collapseLink" (click)="toggleSecondSupport()">
+            Add Second Support Type
+            <i class="fas fa-angle-down icon" *ngIf="!showSecondSupport"></i>
+            <i class="fas fa-angle-up icon" *ngIf="showSecondSupport"></i>
+        </a>
+
+        <!-- Support Type 2 (Visible when toggled) -->
+        <div *ngIf="showSecondSupport">
+            <div class="form-group">
+                <label for="TypeSupport2">Support Type 2:</label>
+                <select class="form-control" [(ngModel)]="model.TypeSupport2" name="TypeSupport2" required>
+                    <ng-container *ngFor="let item of listTypeSupport">
+                        <option [value]="item._id">{{ item.supportName }}</option>
+                    </ng-container>
+                </select>
+            </div>
+
+            <!-- Start Date Support 2 -->
+            <div class="form-group">
+                <label for="startDateSupport2">Start Date Support 2:</label>
+                <input type="date" class="form-control" [(ngModel)]="model.startDateSupport2" name="startDateSupport2"
+                    required />
+            </div>
+
+            <!-- End Date Support 2 -->
+            <div class="form-group">
+                <label for="endDateSupport2">End Date Support 2:</label>
+                <input type="date" class="form-control" [(ngModel)]="model.endDateSupport2" name="endDateSupport2"
+                    required />
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid || dateError"
+                class="btn btn-outline-warning">Update</button>
+
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid || dateError"
+                class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card cardSize" cardTitle="Hello Card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col text-left d-flex align-items-center ">
+            <h5>Folder List <span class="badge badge-pill badge-secondary ml-2">{{folderCount}}</span></h5>
+          </div>
+          <div class="col text-right">
+            <div class="input-group"
+              style="display: flex; justify-content: flex-end; align-items: center;background-color: transparent;">
+              <!-- Search Input with smaller width -->
+              <input type="text" class="form-control form-control-sm" placeholder="search..." [(ngModel)]="term"
+                style="max-width:250px; background-color: #EFF3F6;">
+              <!-- Add Button -->
+              <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+                class="btn btn-sm btn-primary waves-effect waves-light f-right ml-2" (click)="openAddFolder()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-plus">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="col-xl-12">
+          <div class="row">
+            <div class="col-sm-4"
+              *ngFor="let item of listContract | filter: term | paginate: { itemsPerPage: 6, currentPage: page }">
+              <hr>
+              <div class="card1" [style.background-color]="item.colorfoldr">
+                <div class="card-body" (click)="navigateToDetails(item);_store.setActiveContract(null)"
+                  style="cursor: pointer"
+                  [ngClass]="{'text-light': isLightColor(item.colorfoldr), 'text-dark': !isLightColor(item.colorfoldr)}">
+                  <i>
+                    <div style="display: flex; align-items: center; ">
+                      <div style="flex: 1;">
+                        <h5 *ngIf="item.colorfoldr != '#ffffff'" class="card-title text-light">{{ item.name }}</h5>
+                        <h5 *ngIf="item.colorfoldr == '#ffffff'" class="card-title text-dark">{{ item.name }}</h5>
+                      </div>
+                      <img *ngIf="item.colorfoldr != '#ffffff'" [src]="fileurl + item.logo.fileName" width="50px"
+                        height="50px" style="border-radius: 50%; border: 2px solid rgb(255, 255, 255);">
+                      <img *ngIf="item.colorfoldr == '#ffffff'" [src]="fileurl + item.logo.fileName" alt="" width="50px"
+                        height="50px" style="border-radius: 50%; border: 2px solid black;">
+                    </div>
+                  </i>
+                  <h6 *ngIf="item.colorfoldr != '#ffffff'" [ngClass]="'text-light'" class="card-text">
+                    {{ item.contractId.length }} Contract </h6>
+                  <h6 *ngIf="item.colorfoldr == '#ffffff'" [ngClass]="'text-dark'" class="card-text">
+                    {{ item.contractId.length }} Contract </h6>
+                  <p *ngIf="item.colorfoldr != '#ffffff'" [ngClass]="'text-light'" style="text-align:right;"
+                    class="card-text">{{ item.creationDate | date:'yyyy-MM-dd' }}</p>
+                  <p *ngIf="item.colorfoldr == '#ffffff'" [ngClass]="'text-dark'" style="text-align:right;"
+                    class="card-text">{{ item.creationDate | date:'yyyy-MM-dd' }}</p>
+                  <hr>
+                  <div class="text-right" style="position: relative;">
+
+                    <i *ngIf="item.colorfoldr != '#ffffff' && userAuthority  !== 'commercial'"
+                      [ngClass]="'text-light icon-hover'" (click)="deleteFolder(item._id); $event.stopPropagation()"
+                      class="fas fa-trash-alt"></i>&nbsp;
+
+                    <i *ngIf="item.colorfoldr == '#ffffff' && userAuthority  !== 'commercial'"
+                      [ngClass]="'text-dark icon-hover'" (click)="deleteFolder(item._id); $event.stopPropagation()"
+                      class="fas fa-trash-alt"></i>&nbsp;
+
+                    <i *ngIf="item.colorfoldr != '#ffffff' && userAuthority  !== 'commercial'"
+                      [ngClass]="'text-light icon-hover'" (click)="openUpdateFolder(item); $event.stopPropagation()"
+                      class="fas fa-edit"></i>&nbsp;
+
+                    <i *ngIf="item.colorfoldr == '#ffffff' && userAuthority  !== 'commercial'"
+                      [ngClass]="'text-dark icon-hover'" (click)="openUpdateFolder(item); $event.stopPropagation()"
+                      class="fas fa-edit"></i>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-block text-center mt-5">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

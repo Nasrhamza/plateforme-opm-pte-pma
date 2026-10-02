@@ -1,0 +1,8 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Confirm delete' | translate }}</h5>
+<div class="p-x-24">
+    <p>{{ 'Are you sure you want to delete this record' | translate }} ?</p>
+</div>
+<div mat-dialog-actions class="p-x-24 p-b-24 d-flex justify-content-end">
+    <button mat-button (click)="closeDialog()">{{ 'Cancel' | translate }}</button>
+    <button mat-button (click)="doAction()" mat-flat-button color="warn" class="m-l-8">{{ 'Yes' | translate }}</button>
+</div>

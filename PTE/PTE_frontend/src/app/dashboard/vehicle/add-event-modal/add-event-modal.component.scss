@@ -1,0 +1,35 @@
+.navigations{
+    background-color: bisque;
+    padding: 10px;
+    text-align: center;
+    color: black;
+    border: none;
+    border-radius: 15px;
+}
+.navigations:hover{
+    background-color: rgb(215, 141, 50);
+    color: black;
+    transition: background-color 1s ease-out;
+}
+
+
+.is-invalid {
+    border: 2px solid red !important;
+    background-color: #ffe6e6; /* Light red background */
+  }
+  
+  .is-valid {
+    border: 2px solid green !important;
+    background-color: #e6ffe6; /* Light green background */
+  }
+  
+  .warning{
+    color: rgb(255, 254, 253);
+    font-weight: bold;
+    font-size: small;
+  }
+  .warn-box{
+    background-color: #ef4949b6;
+    padding: 10px;
+    border-radius: 10px;
+  }

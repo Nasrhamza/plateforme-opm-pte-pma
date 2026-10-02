@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-lg-3 col-md-2 col-sm-12 m-b-12">
+        <div class="card b-radius-30 p-16 text-center m-b-12" id="add-files-btn" (click)="openBar()" style="cursor: pointer;">
+            {{ 'Upload file' | translate }}
+        </div>
+        <div class="card bg-grey b-radius-30" style="overflow: hidden;">
+            <ul style="list-style: none;padding: 0;max-height: 200px;overflow-y: scroll;">
+                @if(filteredProjectFiles.length != 0){
+                    <li class="folderTab p-16 text-center {{ selectedTab == 'all' ? 'selectedTab' : '' }}" (click)="handleFilesFilter('all')">All files</li>
+                }
+                @for(item of projectFiles;track item){
+                    <li class="folderTab p-16 text-center b-t-1 {{ selectedTab == item.type ? 'selectedTab' : '' }}" (click)="handleFilesFilter(item.type)">{{  item.type }}</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-12">
+        @if(loading){
+            <app-loader></app-loader>
+        }@else{
+            <div class="row">
+                @if(filteredProjectFiles.length == 0){
+                    <div class="col-12">
+                        <div class="card p-24 bg-grey text-center b-radius-30">
+                            There is no files here
+                        </div>
+                    </div>
+                }
+                @for(item of filteredProjectFiles;track item){
+                    @for(file of item.files;track file){
+                        <div class="col-md-4 col-sm-12">
+                            <app-project-file-card 
+                            [file]="file" 
+                            (event)=handleCardEvent($event)>
+                        </app-project-file-card>
+                        </div>
+                    }
+                }
+            </div>
+            }
+    <div class="row">
+    </div>
+</div> 

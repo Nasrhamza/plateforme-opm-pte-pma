@@ -1,0 +1,9 @@
+# dependencies
+
+node_modules/
+# src/static
+# src/uploads
+# src/cert
+# .env
+
+# dotenv environment variable files

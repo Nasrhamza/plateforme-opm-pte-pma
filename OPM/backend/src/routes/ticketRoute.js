@@ -1,0 +1,38 @@
+const express = require("express");
+const router = express.Router();
+const ticketController = require('../controllers/ticketController');
+const upload = require('../middlewares/fileMiddlewareAny');
+
+router.post('/createTicket', upload.array('files'), ticketController.createTicket);
+router.post('/createTicketHelpDesk', upload.array('files'), ticketController.createTicketHelpDesk);
+router.get('/getAllTickets', ticketController.getAllTickets);
+router.get('/getAllTicketsChart', ticketController.getAllTicketsChart);
+router.get('/getTechnicianTicketsChart', ticketController.getTechnicianTicketsChart);
+router.get('/getAllTicketsHelpdesk', ticketController.getAllTicketsHelpdesk);
+router.post('/getAllTicketsKnowloadgeBase', ticketController.getAllTicketsKnowloadgeBase);
+router.post('/ticketReservation', ticketController.ticketReservation);
+router.post('/getAllTicketsDashboard', ticketController.getAllTicketsDashboard);
+router.get('/getAverageTicketTime', ticketController.getAverageTicketTime);
+router.get('/getAllTicketByClient/:clientId', ticketController.getAllTicketByClient);
+router.get('/getAllTicketByTech/:techId', ticketController.getAllTicketByTech);
+router.get('/getAllTicketByClientManager/:clientId', ticketController.getAllTicketByClientManager);
+router.get('/getAllTicketByContract/:contractId', ticketController.getAllTicketByContract);
+router.put('/updateTicket', upload.array('files'), ticketController.updateTicket);
+router.put('/updateTicketHelpdesk', upload.array('files'), ticketController.updateTicketHelpdesk);
+router.put('/manageTicket', upload.array('files'), ticketController.manageTicket);
+router.put('/holdTicket', upload.array('files'), ticketController.holdTicket);
+router.put('/resumeTicket', upload.array('files'), ticketController.resumeTicket);
+router.put('/assignTicket', upload.array('files'), ticketController.assignTicket);
+router.put('/deleteTicket', ticketController.deleteTicket);
+// -------------------------------------------------------------------
+router.post('/exchanges', upload.single('file'), ticketController.saveExchanges);
+router.post('/saveSolution', upload.array('files'), ticketController.saveSolution);
+router.post('/createRapport', ticketController.createRapportPdf);
+router.post('/deleteRapport', ticketController.deleteRapport);
+router.post('/validateSolution', ticketController.validateSolution);
+router.post('/declineSolution', ticketController.declineSolution);
+router.get('/getSolutionForTicket/:ticketId', ticketController.getSolutionForTicket);
+router.post('/getTicketSummary', ticketController.getTicketSummary);
+router.post('/addRapportTicket', ticketController.addRapportTicket);
+router.get('/getTicketById/:id', ticketController.getTicketById);
+module.exports = router;    

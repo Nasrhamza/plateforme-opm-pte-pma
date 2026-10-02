@@ -1,0 +1,51 @@
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Edit Room Event</div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="register-form" [formGroup]="roomEventForm" (ngSubmit)="onSubmit(roomEventForm)">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Title<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Title" formControlName="title" required>
+          <small class="form-text text-danger"
+            *ngIf="!roomEventForm.get('title')?.valid && roomEventForm.get('title')?.touched"> Title is required
+        </small>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>Start Date<span class="text-danger">*</span></label>
+          <input type="datetime-local" class="form-control"  formControlName="start" required>
+          <small class="form-text text-danger"
+            *ngIf="!roomEventForm.get('start')?.valid && roomEventForm.get('start')?.touched"> Start Date is required
+        </small>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>End Date<span class="text-danger">*</span></label>
+          <input type="datetime-local" class="form-control" placeholder="Start Date" formControlName="end" required>
+          <small class="form-text text-danger"
+            *ngIf="!roomEventForm.get('end')?.valid && roomEventForm.get('end')?.touched"> End Date is required
+        </small>
+        </div>
+      </div>
+
+      
+      <div class="modal-footer">
+        <button  type="submit" class="btn btn-primary">Save changes</button>
+        
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>

@@ -1,0 +1,12 @@
+<ng-container *ngIf="!item.hidden && (this.eliteConfig['pre-layout'] !== 'layout-1' || !layout1)">
+  <li class="nav-item pcoded-menu-caption"><label>{{item.title | translate}}</label></li>
+  <ng-container *ngFor="let item of item.children">
+    <app-nav-group *ngIf="item.type=='group'" [item]="item"></app-nav-group>
+    <app-nav-collapse *ngIf="item.type=='collapse'" [item]="item"></app-nav-collapse>
+    <app-nav-item *ngIf="item.type=='item'" [item]="item"></app-nav-item>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!item.hidden && this.eliteConfig['pre-layout'] === 'layout-1' && layout1">
+  <li class="l1-menu {{'l1-'+item.id}}" [ngClass]="{'active': activeId === 0}" (click)="this.setPreLayoutMenu($event, item)"><a class="nav-link text-left"><i class="{{item.icon}}"></i></a></li>
+</ng-container>

@@ -1,0 +1,73 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                    Create internship offer</div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form class="register-form" [formGroup]="quizForm" (ngSubmit)="onSubmitQuiz(quizForm)">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Title<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Write the quiz title here..."
+                    formControlName="title" required>
+                <small class="form-text text-danger"
+                    *ngIf="!quizForm.get('title')?.valid && quizForm.get('title')?.touched"> Title is required
+                </small>
+            </div>
+            <div class="col-md-12">
+                <label>Description<span class="text-danger">*</span></label>
+                <textarea class="form-control" placeholder="Write a brief description of the quiz here..."
+                    formControlName="description" required></textarea>
+                <small class="form-text text-danger"
+                    *ngIf="!quizForm.get('description')?.valid && quizForm.get('description')?.touched"> Description is
+                    required
+                </small>
+            </div>
+        </div><br>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save Quiz</button>
+
+            <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+
+    <!-- <form class="register-form" [formGroup]="questionForm" (ngSubmit)="onSubmitQuestion(questionForm)">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Question<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Write the quiz question here..."
+                    formControlName="question" required>
+                <small class="form-text text-danger"
+                    *ngIf="!questionForm.get('question')?.valid && questionForm.get('question')?.touched"> Question is
+                    required
+                </small>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Response<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response" required>
+                        <div class="form-check" style="margin-top: 3px;">
+                            <input type="checkbox" class="form-check-input" formControlName="isCorrect" >
+                            <label class="form-check-label">Correct response</label>
+                        </div>
+                        <small class="form-text text-danger"
+                            *ngIf="!questionForm.get('response')?.valid && questionForm.get('options')?.touched">
+                            Response is required
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-primary" (click)="addQuiz()">Save Quiz</button>
+        </div>
+    </form> -->
+</div>

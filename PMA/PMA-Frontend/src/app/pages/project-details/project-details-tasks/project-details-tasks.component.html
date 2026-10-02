@@ -1,0 +1,190 @@
+@if(loading){
+<app-loader></app-loader>
+}@else{
+<mat-card class="cardWithShadow">
+  <mat-card-header class="d-flex justify-content-between gap-8 m-b-24">
+    <div class="w-100">
+      <h3>{{ 'Tasks' | translate }} {{ '(' + filteredTasks.length + ')' }}</h3>
+    </div>
+    <div class="d-flex align-items-center justify-content-end w-100">
+      <mat-form-field appearance="outline" class="w-100 hide-hint theme-select m-r-6" style="min-width: 200px;">
+        <input matInput placeholder="{{'Search' | translate}}..." [formControl]="searchInput" />
+        <mat-icon matSuffix>
+          <i-tabler name="search" class="icon-20"></i-tabler>
+        </mat-icon>
+      </mat-form-field>
+      @if(role == 'Team Leader'){
+      <button mat-button (click)="addTask('Add', {})" mat-flat-button color="primary">{{'Add Task' |
+        translate}}</button>
+      }
+      <button mat-button (click)="fetchTasks()" mat-flat-button color="primary" class="m-l-6">{{'Refresh' |
+        translate}}</button>
+      <div matTooltip="{{ 'Export xlsx' | translate }}" class="clickeable-card">
+        <img (click)="export()" width="35px" src="assets/images/icons/xlsx.png" alt="xls file icon" />
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    @if(filteredTasks.length == 0){
+    <app-empty-data></app-empty-data>
+    }@else {
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="w-100 f-w-500 no-wrap">
+        <ng-container matColumnDef="ref">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            {{ 'Ref' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            @if(element.ref){
+              <span class="mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill}">{{element?.ref }}</span>
+            }@else{
+              <span class="mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill}">-------</span>
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Title' |translate }}</th>
+          <td mat-cell *matCellDef="let element" (click)="showDetails(element._id)" style="cursor: pointer;">
+            <div class="d-flex flex-column gap-8">
+              <span matTooltip="{{ element.Title }}" style="text-wrap: wrap;">
+                {{ element.Title }}
+              </span>
+              <div class="d-flex align-items-center social-chips">
+                @for(user of element.Executor; track user._id){
+                <img src="{{imagesUrl}}/{{user?.image}}" width="30" height="30" alt="social" class="rounded-circle"
+                  matTooltip="{{user?.fullName}}" />
+                }
+              </div>
+              @if(role !== 'Client'){
+              <div class="d-flex gap-4">
+                @if(element.ratingWeight){
+                <div class="bg-light-primary mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill">
+                  <span class="text-primary" matTooltip="{{'Task weight' | translate }}">
+                    <i-tabler name="toggle-left" class="icon-16 m-r-4"></i-tabler>{{ element.ratingWeight }}</span>
+                </div>
+                }
+                @if(element.note){
+                <div class="bg-light-primary mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill">
+                  <span class="text-primary d-flex align-items-center"
+                    matTooltip="{{'Note given by the team leader to this task' | translate }}">
+                    <i-tabler name="star" class="icon-16 m-r-4"></i-tabler>{{ element.note }}</span>
+                </div>
+                }
+              </div>
+              }
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            {{ 'Status' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              class="bg-light-{{ element.Status == 'Pending' ? 'warning' : element.Status == 'Closed' ? 'success' : 'primary'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.Status == 'Pending' ? 'warning' : element.Status == 'Closed' ? 'success' : 'primary'}}">{{
+              element?.Status.toUpperCase() }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="priority">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            {{ 'Priority' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              class="bg-light-{{ element.Priority == 'High' ? 'error' : element.Priority == 'Low' ? 'warning' : 'primary'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.Priority == 'High' ? 'error' : element.Priority == 'Low' ? 'warning' : 'primary'}}">{{
+              element?.Priority.toUpperCase() }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="progress">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Progress' | translate }}</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            <!-- {{ element.progress }}% -->
+            <mat-progress-bar mode="determinate" [value]="element.progress" matTooltip="{{ element.progress }}%">
+            </mat-progress-bar>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="timeline">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Timeline' | translate }}</th>
+          <td mat-cell *matCellDef="let element" class="f-s-14">
+            <app-project-timeline [start]="element.StartDate" [deadline]="element.Deadline"
+              [closing]="element.closedAt"></app-project-timeline>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+            {{ 'Actions' | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element" class="action-link">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>
+                <i-tabler name="dots" class="icon-20"></i-tabler>
+              </mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" class="cardWithShadow" xPosition="before">
+              <button mat-menu-item (click)="showDetails(element._id)">
+                <div class="d-flex align-items-center gap-4">
+                  <i-tabler name="eye"></i-tabler>
+                  <span class="f-s-14">{{ 'Details' | translate }}</span>
+                </div>
+              </button>
+              @if(role == 'Admin' || (role == 'Team Leader' && element.progress !== 100 && element.status !== 'Closed')
+              ){
+              <button mat-menu-item (click)="addTask('update',element)">
+                <div class="d-flex align-items-center gap-4">
+                  <i-tabler name="pencil"></i-tabler>
+                  <span class="f-s-14">{{ 'update' | translate }}</span>
+                </div>
+              </button>
+              }
+              @if((role == 'Admin' || role == 'Team Leader') && element.progress !== 100 && element.status !==
+              'Closed'){
+              <button mat-menu-item (click)="delete(element._id)">
+                <div class="d-flex align-items-center gap-4">
+                  <i-tabler name="trash"></i-tabler>
+                  <span class="f-s-14">{{ 'Delete' | translate }}</span>
+                </div>
+              </button>
+              }
+              @if((role == 'Engineer' || role == 'Team Leader') && element.progress !== 100 && element.ratingWeight !==
+              0 && onlyExecutorCanSee(element)){
+              <button mat-menu-item (click)="updateProgress(element._id)">
+                <div class="d-flex align-items-center gap-4">
+                  <i-tabler name="progress-check"></i-tabler>
+                  <span class="f-s-14">{{ 'Change progress' | translate }}</span>
+                </div>
+              </button>
+              }
+              @if(!element.ratingWeight && role == 'Team Leader'){
+              <button mat-menu-item (click)="setRatingWight(element)">
+                <div class="d-flex align-items-center gap-4">
+                  <i-tabler name="toggle-right"></i-tabler>
+                  <span class="f-s-14">{{ 'Set rating weight' | translate }}</span>
+                </div>
+              </button>
+              }
+              @if(!element.note && element.progress === 100 && role == 'Team Leader' && element.ratingWeight){
+              <button mat-menu-item (click)="evaluateTask(element)">
+                <div class="d-flex align-items-center gap-4">
+                  <i-tabler name="star"></i-tabler>
+                  <span class="f-s-14">{{ 'Evaluate task' | translate }}</span>
+                </div>
+              </button>
+              }
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    }
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>
+}

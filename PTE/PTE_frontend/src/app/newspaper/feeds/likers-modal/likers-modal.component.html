@@ -1,0 +1,34 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                    {{likers.length}} People likes this </div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close('modal closed')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<ng-scrollbar style="height: 500px;" visibility="hover">
+    <div class="modal-body">
+        <div class="row" *ngIf="likers.length>0">
+            <div class="card cardBorder" *ngFor="let liker of likers">
+                <div class="row">
+                    <div class="col-2">
+                        <img class="userPic" src="{{picsUrl+liker.image}}" alt="profile image">
+                    </div>
+                    <div class="col-8">
+                        <strong class="applicant">{{liker.firstName+" "+liker.lastName}}</strong><br>
+                        <span>{{ liker.departement+" | "+liker.title }}</span><br>
+                    </div>
+                    <div class="col-2" align="right">
+                        <div class="row" *ngIf="liker.linkedin!=''"><a href="{{liker.linkedin}}" target="_blank"><i class="fab fa-linkedin-in size" ></i></a></div>
+                        <div class="row" *ngIf="liker.github!=''"><a href="{{liker.github}}" target="_blank"><i class="fab fa-github size"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-scrollbar>

@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">
+    <div class="table-modal-header">
+      <div class="modal-about">
+        <div class="fw-bold p-t-10 font-17">
+          Edit Vehicle</div>
+      </div>
+    </div>
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="register-form" [formGroup]="vehicleEdittForm" (ngSubmit)="onSubmit()">
+
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+        <label>Model<span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Model" formControlName="model" required>
+        <small class="form-text text-danger"
+          *ngIf="!vehicleEdittForm.get('model')?.valid && vehicleEdittForm.get('model')?.touched"> Model is
+          required</small>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+        <label>Registration number<span class="text-danger">*</span></label>
+        <input type="text" class="form-control" placeholder="Registration number" formControlName="registration_number"
+          required>
+        <small class="form-text text-danger"
+          *ngIf="!vehicleEdittForm.get('registrationNumber')?.valid && vehicleEdittForm.get('registrationNumber')?.touched">
+          Registration number is
+          required</small>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+        <label>Type<span class="text-danger">*</span></label>
+        <select class="form-select form-control" formControlName="type" required>
+          <option selected disabled>Please select type</option>
+          <option value="commercial">Commecial</option>
+          <option value="civil">Civil</option>
+        </select>
+        <small class="form-text text-danger"
+          *ngIf="!vehicleEdittForm.get('type')?.valid && vehicleEdittForm.get('type')?.touched"> Type is
+          required</small>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+        <label><strong>Edit gas card? </strong>
+          <a class="attachCard" (click)="needCardYes()">yes</a> or
+          <a class="attachCard" (click)="needCardNo()">no</a>
+        </label>
+      </div>
+    </div>
+    <div *ngIf="needCard">
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-4">
+          <label>Card number<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Card number" formControlName="card_number">
+          <small class="form-text text-danger"
+            *ngIf="!vehicleEdittForm.get('card_number')?.valid && vehicleEdittForm.get('card_number')?.touched"> Card number
+            is
+            required</small>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-4">
+          <label>Balance<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Balance" formControlName="balance">
+          <small class="form-text text-danger"
+            *ngIf="!vehicleEdittForm.get('balance')?.valid && vehicleEdittForm.get('balance')?.touched"> Balance is
+            required</small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Edit Vehicle</button>
+
+      <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+  </form>
+</div>

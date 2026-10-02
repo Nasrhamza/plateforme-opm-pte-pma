@@ -1,0 +1,248 @@
+<!-- first row -->
+<div class="row">
+  <div class="col-md-6 col-sm-12">
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <mat-card class="shadow-none theme-card b-1 b-radius-30" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Total projects' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.totalProjects }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Closed projects' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.closedProjects }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <!-- card second row -->
+      <div class="col-md-6 col-sm-12">
+        <mat-card class="shadow-none theme-card b-1 b-radius-30" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Closed rate' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.closedRate }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Overdue projects' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.overdueProjects }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <!-- card thrid row -->
+      <div class="col-md-6 col-sm-12">
+        <mat-card class="shadow-none theme-card b-1 b-radius-30" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Overdue rate' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.overdueRate }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Average progress' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.avgProgress }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <!-- tasks overview under projects overview card -->
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Tasks avg progress' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ tasksOverview?.avgProgress }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Closed tasks rate' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ tasksOverview?.closedRate }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Total tasks' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ tasksOverview?.totalTasks }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Closed tasks' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ tasksOverview?.closedTasks }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Tasks by status' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <apx-chart [series]="tasksStatusChartOptions?.series" [chart]="tasksStatusChartOptions?.chart"
+              [dataLabels]="tasksStatusChartOptions?.dataLabels" [plotOptions]="tasksStatusChartOptions?.plotOptions"
+              [yaxis]="tasksStatusChartOptions?.yaxis" [xaxis]="tasksStatusChartOptions?.xaxis"
+              [legend]="tasksStatusChartOptions?.legend" [colors]="tasksStatusChartOptions?.colors"
+              [grid]="tasksStatusChartOptions?.grid"></apx-chart>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Tasks by priorities' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <apx-chart [series]="tasksPrioritiesChartOptions?.series" [chart]="tasksPrioritiesChartOptions?.chart"
+              [labels]="tasksPrioritiesChartOptions?.labels" [colors]="tasksPrioritiesChartOptions?.colors"
+              [responsive]="tasksPrioritiesChartOptions?.responsive"></apx-chart>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <!-- secod col -->
+  <div class="col-md-6 col-sm-12">
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Projects by status' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <apx-chart [series]="barChartOptions?.series" [chart]="barChartOptions?.chart"
+              [dataLabels]="barChartOptions?.dataLabels" [plotOptions]="barChartOptions?.plotOptions"
+              [yaxis]="barChartOptions?.yaxis" [xaxis]="barChartOptions?.xaxis" [legend]="barChartOptions?.legend"
+              [colors]="barChartOptions?.colors" [grid]="barChartOptions?.grid"></apx-chart>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-12">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Projects by priorities' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <apx-chart [series]="PrjectsPrioritiesChartOption?.series" [chart]="PrjectsPrioritiesChartOption?.chart"
+              [labels]="PrjectsPrioritiesChartOption?.labels" [fill]="PrjectsPrioritiesChartOption?.fill"
+              [stroke]="PrjectsPrioritiesChartOption?.stroke" [colors]="PrjectsPrioritiesChartOption?.colors"
+              [responsive]="PrjectsPrioritiesChartOption?.responsive"></apx-chart>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Notes in projects' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            @for (entry of projectNotes; track entry.key) {
+            <div class="d-flex align-items-center justify-content-between m-b-12 dep-hover">
+              <span class="f-s-14 f-w-600"> {{ entry.key | translate }} </span>
+              <span class="f-s-14 f-w-600"> {{ entry.value }} </span>
+            </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Files' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            @for (entry of projectFiles; track entry.key) {
+            <div class="d-flex align-items-center justify-content-between m-b-12 dep-hover">
+              <span class="f-s-14 f-w-600"> {{ entry.key | translate}} </span>
+              <span class="f-s-14 f-w-600"> {{ entry.value }} </span>
+            </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Projects avg duration' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.avgDurationDays }} {{ 'days' | translate }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Projects closing rate' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.closedRate }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <mat-card class="shadow-none theme-card b-radius-30 b-1" style="cursor: pointer;">
+          <mat-card-header>
+            <mat-card-title class="d-flex align-items-center gap-10">{{
+              'Projects overdue rate' | translate }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="b-t-1">
+            <h1 class="text-center m-0 p-0">{{ projectsOverview?.overdueRate }}</h1>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

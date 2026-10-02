@@ -1,0 +1,29 @@
+<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+  <div class="container">
+    <div class="row">
+      <div class="auth-card">
+        <div class="col-12">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h4>Forgot Password</h4>
+            </div>
+            <div class="card-body">
+              <p class="text-muted">We will send a code to reset your password</p>
+              <form (ngSubmit)="onSubmit()" [formGroup]="emailSendForm">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input id="email" type="email" class="form-control"  formControlName="email" tabindex="1" required autofocus>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                    Send Code
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

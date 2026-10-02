@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Edit Room</div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="register-form" [formGroup]="roomEdittForm" (ngSubmit)="onSubmit()">
+      
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Label<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Label" formControlName="label" required>
+          <small class="form-text text-danger"
+            *ngIf="!roomEdittForm.get('label')?.valid && roomEdittForm.get('label')?.touched"> Label is
+            required</small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Location<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Location" formControlName="location" required>
+          <small class="form-text text-danger"
+            *ngIf="!roomEdittForm.get('location')?.valid && roomEdittForm.get('location')?.touched"> Location is
+            required</small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Title<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Capacity" formControlName="capacity" required>
+          <small class="form-text text-danger"
+            *ngIf="!roomEdittForm.get('capacity')?.valid && roomEdittForm.get('capacity')?.touched"> Capacity is
+            required</small>
+        </div>
+      </div>
+
+     
+      <div class="modal-footer">
+        <button  type="submit" class="btn btn-primary">Edit Vehicle</button>
+        
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>

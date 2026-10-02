@@ -1,0 +1,40 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-sm-12">
+            <form class="register-form" [formGroup]="accessoryForm" (ngSubmit)="onSubmit(accessoryForm)">
+                <h6>Edit accessory</h6>
+                <div class="row input">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4 ">
+                        <label>Name<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="accessory name..." formControlName="name"
+                            required>
+                        <small class="form-text text-danger"
+                            *ngIf="!accessoryForm.get('name')?.valid && accessoryForm.get('name')?.touched">
+                            Accessory type is required
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                        <label>Brand</label>
+                        <input type="text" class="form-control" placeholder="Brand name..." formControlName="brand">
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                        <label>Model</label>
+                        <input type="text" class="form-control" placeholder="Model name..." formControlName="model">
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                        <label>Serial number</label>
+                        <input type="text" class="form-control" placeholder="Serial number..."
+                            formControlName="serial_number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input">
+                        <button type="submit" class="btn btn-primary" [disabled]="!accessoryForm.valid">Edit accessory</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

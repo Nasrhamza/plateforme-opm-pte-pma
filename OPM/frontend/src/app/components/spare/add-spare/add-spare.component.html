@@ -1,0 +1,99 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ title | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form class="form" #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <div class="form-group">
+            <label for="equipmentName">{{ 'Equipment Name' | translate }}</label>
+            <input type="text" class="form-control" id="equipmentName" name="equipmentName"
+                [(ngModel)]="model.equipmentName" #equipmentName="ngModel" required
+                placeholder="{{ 'Enter Equipment Name' | translate }}" />
+            <div *ngIf="equipmentName.touched && equipmentName.errors?.required" class="error">
+                {{ 'Equipment name required' | translate }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="serialNumber">{{ 'Serial Number' | translate }}</label>
+            <input type="text" class="form-control" id="serialNumber" name="serialNumber"
+                [(ngModel)]="model.serialNumber" #serialNumber="ngModel" required
+                placeholder="{{ 'Enter Serial Number' | translate }}" />
+            <div *ngIf="serialNumber.touched && serialNumber.errors?.required" class="error">
+                {{ 'Serial number required' | translate }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="typeSupport">{{ 'Support Type' | translate }}</label>
+            <select class="form-control" id="typeSupport" name="typeSupport" [(ngModel)]="model.typeSupport"
+                #typeSupport="ngModel" required>
+                <option value="" disabled selected>{{ 'Select Support Type' | translate }}</option>
+                <option value="HPE">HPE</option>
+                <option value="Evernex">Evernex</option>
+                <option value="Prologic">Prologic</option>
+            </select>
+            <div *ngIf="typeSupport.touched && typeSupport.errors?.required" class="error">
+                {{ 'Support type required' | translate }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="technicien">Owner:</label>
+            <ng-select [items]="listTech" bindLabel="firstName" bindValue="_id" placeholder="Select team members"
+                [(ngModel)]="model.owner" name="owner" #owner="ngModel" [searchable]="true" required
+                [hideSelected]="false">
+
+                <!-- Template for selected options with remove button -->
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <div class="d-flex align-items-center">
+                        <img src="{{fileurl + item?.image?.fileName}}" alt=""
+                            style="border-radius: 50%; width: 25px; height: 25px; border: 1px solid #FFF; object-fit: contain;"
+                            class="rounded mr-1 img-fluid">
+                        <span>{{ item.firstName }} {{ item.lastName }}</span>
+                        <span (click)="clear(item)" class="ml-2 text-danger" style="cursor: pointer;">&times;</span>
+                    </div>
+                </ng-template>
+
+                <!-- Template for dropdown options -->
+                <ng-template ng-option-tmp let-item="item">
+                    <img src="{{fileurl + item?.image?.fileName}}" alt=""
+                        style="border-radius: 50%; width: 35px; height: 35px; border: 1px solid #FFF; object-fit: contain;"
+                        class="rounded mr-1 img-fluid">
+                    {{ item.firstName }} {{ item.lastName }}
+                </ng-template>
+            </ng-select>
+
+            <div class="invalid-feedback" *ngIf="owner.touched && owner.errors?.required">
+                Owner is required.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="status">{{ 'Status' | translate }}</label>
+            <select class="form-control" id="status" name="status" [(ngModel)]="model.status" #status="ngModel"
+                required>
+                <option value="Ordred">Ordred</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Installed">Installed</option>
+                <option value="Stocked">Stocked</option>
+            </select>
+            <div *ngIf="status.touched && status.errors?.required" class="error">
+                {{ 'status required' | translate }}
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">
+                {{ 'Save' | translate }}
+            </button>
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">
+                {{ 'Update' | translate }}
+            </button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
+                {{ 'Close' | translate }}
+            </button>
+        </div>
+    </form>
+</div>

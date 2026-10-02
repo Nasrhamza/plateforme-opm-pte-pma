@@ -1,0 +1,27 @@
+.table-wrapper {
+    max-width: 100%; /* Set this to a specific width if needed */
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #81bbf9; /* Bootstrap primary color (blue) */
+  color: #fff; /* White text color */
+}
+
+.icon-hover {
+  cursor: pointer;
+  transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.icon-hover:hover {
+  transform: scale(1.3); /* Makes the icon slightly bigger */
+}
+
+.showMore{
+  cursor: pointer;
+  color: #81bbf9; /* White text color */
+}
+
+.showMore:hover {
+  color: #007bff; /* Bootstrap primary color (blue) */
+}

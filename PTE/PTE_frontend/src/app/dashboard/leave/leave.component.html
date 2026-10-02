@@ -1,0 +1,148 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Leave request</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Leave</li>
+        <li class="breadcrumb-item">Make a leave request</li>
+    </ul>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Leave request</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form class="register-form m-4" [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+                           
+                            <!-- <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Full Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Full Name"  formControlName="fullName" required>
+                                    <small class="form-text text-danger"
+                                        *ngIf="! leaveForm.get('fullName')?.valid  &&  leaveForm.get('fullName')?.touched">Please
+                                        enter your full name!</small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Email<span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" placeholder="Email" formControlName="email" required>
+                                    <small class="form-text text-danger"
+                                        *ngIf="! leaveForm.get('email')?.valid && ( leaveForm.get('email')?.dirty ||  leaveForm.get('email')?.touched)">
+                                        Enter velid email address!</small>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Type<span class="text-danger">*</span></label>
+                                    <select class="form-select form-control" formControlName="type" required>
+                                        <option value="Select type" selected>Select type</option>
+                                        <option value="Personal Leave">Personal Leave </option>
+                                        <option value="1/2 day">1/2 day </option>
+                                        <option value="Authorization">Authorization</option>
+                                        <option value="Annual Leave">Annual Leave</option>
+                                        <option value="Maternity Leave">Maternity Leave</option>
+                                        <option value="Unpaid Leave">Unpaid Leave</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div *ngIf="leaveForm.value.type">
+                                <div class="row" *ngIf="leaveForm.value.type!=='Authorization' && leaveForm.value.type!=='1/2 day'">
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                                        <label>Start Date<span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" formControlName="startDate" required>
+                                        <small class="form-text text-danger"
+                                            *ngIf="!leaveForm.get('startDate')?.valid && leaveForm.get('startDate')?.touched">
+                                            Start Date is required
+                                        </small>
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                                        <label>End Date<span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" placeholder="Start Date"
+                                            formControlName="endDate" required>
+                                        <small class="form-text text-danger"
+                                            *ngIf="!leaveForm.get('endDate')?.valid && leaveForm.get('endDate')?.touched">
+                                            End Date is required
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="leaveForm.value.type=='Authorization' || leaveForm.value.type=='1/2 day'">
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                                        <label>Start Date<span class="text-danger">*</span></label>
+                                        <input type="datetime-local" class="form-control" formControlName="startDate"
+                                            required>
+                                        <small class="form-text text-danger"
+                                            *ngIf="!leaveForm.get('startDate')?.valid && leaveForm.get('startDate')?.touched">
+                                            Start Date is required
+                                        </small>
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                                        <label>End Date<span class="text-danger">*</span></label>
+                                        <input type="datetime-local" class="form-control" placeholder="Start Date"
+                                            formControlName="endDate" required>
+                                        <small class="form-text text-danger"
+                                            *ngIf="!leaveForm.get('endDate')?.valid && leaveForm.get('endDate')?.touched">
+                                            End Date is required
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <label>Pick your supervisor<span class="text-danger">*</span></label>
+                                        <select class="form-select form-control" formControlName="supervisor" required>
+                                            <option disabled>Select your supervisor</option>
+                                            <option *ngFor="let supervisor of supervisors" [value]="supervisor._id">
+                                                {{supervisor.firstName+" "+supervisor.lastName}}</option>
+                                        </select>
+                                        <small class="form-text text-danger"
+                                            *ngIf="!leaveForm.get('supervisor')?.valid && leaveForm.get('supervisor')?.touched">
+                                            Temp worker is required
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-12" >
+                                        <label>Note<span class="text-danger">*</span></label>
+                                        <textarea class="form-control" placeholder="Write your note here..."
+                                            formControlName="note"></textarea>
+                                        <!-- <small class="form-text text-danger"
+                                            *ngIf="!leaveForm.get('note')?.valid && leaveForm.get('note')?.touched">
+                                            Note is required
+                                        </small> -->
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="leaveForm.value.type=='Maternity Leave'">
+                                        <label>Medical certificate<span class="text-danger">*</span></label>
+                                        <ngx-dropzone style="background-color: transparent;" [multiple]="false" (change)="onSelect($event)">
+                                            <ngx-dropzone-label>You can click or drag & drop!</ngx-dropzone-label>
+                                            <ngx-dropzone-preview  style="width: 250px;" *ngFor="let f of files"  [removable]="true"  (removed)="onRemove(f)">
+                                                <ngx-dropzone-label><div style="color: rgb(151, 82, 82);width: 150px;height: 150px;">{{ f.name }}</div></ngx-dropzone-label>
+                                                <small class="form-text text-danger" *ngIf="!f"> Medical certificate is required</small>
+                                            </ngx-dropzone-preview>
+                                        </ngx-dropzone>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                        <button class="btn btn-primary msr-3"
+                                            [disabled]="!leaveForm.valid">Submit</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

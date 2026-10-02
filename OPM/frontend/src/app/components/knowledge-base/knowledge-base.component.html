@@ -1,0 +1,227 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card cardSize">
+      <div class="card-header">
+        <h6>{{"Knowledge Base" | translate}}
+          <span class="badge badge-pill badge-secondary ml-2 mb-2">{{ solutionCount }}</span>
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="form-group d-flex align-items-center">
+          <!-- Search Input Field -->
+          <input type="text" class="form-control" id="inputAddress" [(ngModel)]="term" placeholder="Search Solution ..."
+            style="width: 400px; margin-right: 15px;margin-left: 200px;" />
+
+          <!-- Radio Buttons Group -->
+          <nav class="d-flex align-items-center m-0 p-0">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup name="ticketSize" [(ngModel)]="size">
+              <label ngbButtonLabel class="btn btn-primary">
+                <input ngbButton type="radio" value="sm-view" id="option1" checked />
+                <i class="feather icon-align-justify m-0"></i>
+              </label>
+              <label ngbButtonLabel class="btn btn-primary">
+                <input ngbButton type="radio" value="md-view" id="option2" />
+                <i class="feather icon-menu m-0"></i>
+              </label>
+              <label ngbButtonLabel class="btn btn-primary">
+                <input ngbButton type="radio" value="large-view" id="option3" />
+                <i class="feather icon-grid m-0"></i>
+              </label>
+            </div>
+          </nav>
+        </div>
+
+        <div class="row help-desk mt-2" [ngClass]="size">
+          <div class="col-xl-8 col-lg-12 filter-bar" *ngFor="let ticket of allTickets | filter: term; let i = index">
+
+            <div class="ticket-block">
+              <div class="row">
+                <div class="col-auto">
+                  <img class="media-object wid-55 img-radius"
+                    src="{{fileurl + ticket.solution.proposedPar.image.fileName}}" style="width:50px; height:50px;">
+                </div>
+                <div class="col">
+                  <div class="card hd-body">
+                    <div class="row align-items-center">
+                      <div class="col border-right pr-0">
+                        <div class="card-body inner-center">
+                          <div class="ticket-customer font-weight-bold"> <i class="fas fa-ticket-alt mr-2"></i>{{
+                            ticket.title }} : {{ ticket.description }}
+                          </div>
+                          <ul class="list-inline mt-2 mb-0">
+                            <li class="list-inline-item ">Proposed by : <img
+                                src="{{fileurl + ticket.solution.proposedPar.image.fileName}}"
+                                style="border-radius: 50%; border: 2px solid #FFF; width:25px; height:25px;"
+                                class="wid-20 rounded mr-1 ml-1 img-fluid">{{ ticket.solution.proposedPar.firstName }}
+                              {{ticket.solution.proposedPar.lastName}}
+                            </li>
+                            <li class="list-inline-item">
+                              <i class="feather icon-calendar mr-1 f-14"></i>Solved : {{ ticket.solution?.creationDate |
+                              date: 'yyyy-MM-dd' }}
+                            </li>
+                          </ul>
+                          <div class="excerpt mt-4">
+                            <h6 style="color: green;">Solution:</h6>
+                            <p class="formatted-text">{{ ticket.solution.solution }}</p>
+                            <div class="chat-cont text-primary" *ngFor="let file of ticket?.solution?.attachments"
+                              style="align-items: center; cursor: pointer; text-decoration: underline;"
+                              (click)="downloadFile(file.path, file.title, file.fileName)">
+                              <i class="feather icon-file" style="font-size: 18px; margin: 0px;"></i>
+                              {{ file.fileName }}
+                            </div>
+
+                          </div>
+                          <div class="mt-2 text-center">
+
+                            <!-- <a href="javascript:void(0)" (click)="deleteSolution(ticket.solution._id)"
+                              class="text-danger"><i class="feather icon-trash-2 mr-1"></i>Delete</a> -->
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-auto pl-0 right-icon" (click)="toggleDetails(i)">
+                        <div class="card-body">
+                          <ul class="list-unstyled mb-0">
+
+                            <li>
+                              <a class="text-primary" data-toggle="tooltip" data-placement="top" title="Other actions">
+                                Details <i class="feather icon-chevrons-right  text-primary"></i>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pagination-block d-flex justify-content-center mt-3" *ngIf="solutionCount > itemsPerPage">
+          <button class="btn btn-primary mr-2" [disabled]="page === 1" (click)="pageChanged(page - 1)">Prev</button>
+          <span class="align-self-center">Page {{page}} of {{ totalPages }}</span>
+          <button class="btn btn-primary ml-2" [disabled]="page === totalPages"
+            (click)="pageChanged(page + 1)">Next</button>
+        </div>>
+
+
+        <!-- Ticket Details -->
+        <div class="q-view" *ngIf="selectedTicketIndex !== null" [ngClass]="showView1 ? 'active' : ''">
+          <div class="overlay" (click)="closeDetails()"></div>
+          <div class="content" style="width: 700px">
+            <div class="card-body">
+              <h4 class="text-center">{{ allTickets[selectedTicketIndex]?.title }}
+                <span class="badge badge-danger text-uppercase ml-2 f-12">{{ allTickets[selectedTicketIndex]?.number
+                  }}</span>
+              </h4>
+              <div class="border-bottom pb-3 pt-3">
+
+              </div>
+              <br>
+              <p>
+                <i class="fas fa-align-left mr-2 text-primary"></i>
+                <span class="detail-label mr-2">Description :</span> {{allTickets[selectedTicketIndex]?.description}}
+              </p>
+              <p *ngIf="allTickets[selectedTicketIndex]?.contractId">
+                <i class="fas fa-file-signature mr-2 text-primary"></i>
+                <span class="detail-label mr-2"> {{'Contract' | translate }} :</span>
+                {{ allTickets[selectedTicketIndex]?.contractId.type }} : {{
+                allTickets[selectedTicketIndex]?.contractId.id }}
+              </p>
+              <p>
+                <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                <span class="detail-label mr-2">Site Name :</span>
+                <ng-container *ngIf=" allTickets[selectedTicketIndex]?.isHelpdesk; else normalSiteInfo">
+                  {{ allTickets[selectedTicketIndex]?.clientId.location }}
+                </ng-container>
+                <ng-template #normalSiteInfo>
+                  ({{ allTickets[selectedTicketIndex]?.siteId.nomSite }} :
+                  {{ allTickets[selectedTicketIndex]?.siteId.adress }}|)
+                </ng-template>
+              </p>
+              <p *ngIf="allTickets[selectedTicketIndex]?.creationDate">
+                <i class="fas fa-calendar-alt mr-2 text-primary"></i>
+                <span class="detail-label mr-2"> {{'Date of Creation' | translate }} :</span>
+                {{ allTickets[selectedTicketIndex]?.creationDate | date:'d MMMM, y, h:mm:ss a' }}
+              </p>
+
+              <p>
+                <i class="fas fa-user mr-2 text-primary"></i>
+                <span class="detail-label mr-2">Client :</span> {{allTickets[selectedTicketIndex]?.clientId.firstName +'
+                '+allTickets[selectedTicketIndex]?.clientId.lastName}} &nbsp; &nbsp; &nbsp; &nbsp; <i
+                  class="fas fa-envelope mr-2 text-primary"></i><span class="detail-label">Email:</span>
+                {{allTickets[selectedTicketIndex]?.clientId.email}}
+              </p>
+              <p>
+                <i class="fas fa-cogs mr-2 text-primary"></i>
+                <span class="detail-label mr-2"> {{'Equipments' | translate }} :</span>
+              </p>
+
+              <table class="table table-sm table-bordered mt-2 text-center">
+                <thead>
+                  <tr>
+                    <th> {{'Name' | translate }}</th>
+                    <th> {{'SN/Version' | translate }}</th>
+                    <th> {{'Type Support' | translate }}</th>
+                    <th> {{'Support ID' | translate }}</th>
+
+                  </tr>
+                </thead>
+                <tbody style="font-size: 1rem; color: #495057;">
+                  <ng-container *ngIf="allTickets[selectedTicketIndex]?.equipmentHardId; else noEquipment">
+                    <tr>
+                      <td>{{ allTickets[selectedTicketIndex]?.equipmentHardId?.nomPice ||
+                        '--' }}</td>
+                      <td>{{ allTickets[selectedTicketIndex]?.equipmentHardId?.SN || '--'
+                        }}</td>
+                      <td>
+                        <div *ngFor="let support of allTickets[selectedTicketIndex]?.equipmentHardId?.TypeSupport">
+                          {{ support?.type?.supportName || '--' }}
+                        </div>
+                      </td>
+                      <td>
+                        <div *ngFor="let support of allTickets[selectedTicketIndex]?.equipmentHardId?.TypeSupport">
+                          {{ support?.supportId || '--' }}
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+
+                  <ng-container *ngIf="allTickets[selectedTicketIndex]?.equipmentSoftId">
+                    <tr>
+                      <td>{{
+                        allTickets[selectedTicketIndex]?.equipmentSoftId?.equipmentName
+                        || '--' }}</td>
+                      <td>{{ allTickets[selectedTicketIndex]?.equipmentSoftId?.version ||
+                        '--' }}</td>
+                      <td>
+                        <div *ngFor="let support of allTickets[selectedTicketIndex]?.equipmentSoftId?.TypeSupport">
+                          {{ support?.type?.supportName || '--' }}
+                        </div>
+                      </td>
+                      <td>
+                        <div *ngFor="let support of allTickets[selectedTicketIndex]?.equipmentSoftId?.TypeSupport">
+                          {{ support?.supportId || '--' }}
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+
+                  <!-- Display this row if no equipment exists -->
+                  <ng-template #noEquipment>
+                    <tr>
+                      <td colspan="4" style="text-align: center; font-style: italic; color: #6c757d;">
+                        No Equipment
+                      </td>
+                    </tr>
+                  </ng-template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

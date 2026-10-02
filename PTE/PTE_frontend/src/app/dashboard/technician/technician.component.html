@@ -1,0 +1,112 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+      <li class="breadcrumb-item">
+        <h5 class="page-title m-b-0">Resource managment</h5>
+      </li>
+      <li class="breadcrumb-item bcrumb-1">
+        <a routerLink="/dashboard/main">
+          <i class="fas fa-home font-17"></i></a>
+      </li>
+      <li class="breadcrumb-item">Technician</li>
+      <li class="breadcrumb-item">Calendar</li>
+    </ul>
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="row col-12">
+                <div class="col-10"><h4>Technicians calendar</h4></div>
+                <div class="col-2" *ngIf="userRole==='ASSISTANT'">
+                  <button class="btn btn-outline-primary" (click)="openLogModal()">Show logs 
+                    <i class="fas fa-file-signature"></i>
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-10 p-l-30">
+                    <!-- <div class="m-b-25">
+                        <button class="btn btn-icon icon-left btn-primary" (click)="addTechWindowCall()">
+                            Add Technician</button>
+                    </div> -->
+                    <h5 class="roomContainer">Technical Team <i class="fas fa-level-down-alt"></i></h5>
+
+                    <!-- <div class="filter-container">
+                        <ul class="list-group">
+                            <li *ngFor="let room of rooms" class="list-group-item">
+                                <strong>Model :</strong><span>{{" "+room.model}}</span><br>
+                                <strong>Plate :</strong><span>{{" "+room.registration_number}}</span>
+                            </li>
+                        </ul>
+                    </div> -->
+                    <div class="col-md-12 col-md-10">
+                      <ng-scrollbar style="height: 600px" visibility="hover">
+                        <div class="filter-container">
+                            <div ngbAccordion class="roomContainer" *ngFor="let technician of technicians">
+                                <div ngbAccordionItem style="background-color: rgb(142, 197, 197);">
+                                    <h4 ngbAccordionHeader>
+                                        <button ngbAccordionButton>
+                                          <img alt="image" src="https://pte-backend.prologic.com.tn:3001/images/{{technician.image}}" >
+                                            <strong class="rooms">{{technician.firstName+" "+technician.lastName}}</strong>
+                                        </button>
+                                    </h4>
+                                    <div ngbAccordionCollapse>
+                                        <div ngbAccordionBody>
+                                            <ng-template>
+                                              <div>
+                                                <strong style="font-size: 13px;color: rgb(8, 69, 122);">
+                                                  is  <span *ngIf="technician.title!== 'Architect'">a</span>
+                                                      <span *ngIf="technician.title==='Architect'">an</span>
+                                                   {{technician.title}}
+                                                </strong>
+                                                <strong style="font-size: 13px;color: rgb(8, 69, 122);">with {{technician.experience}} 
+                                                  <span *ngIf="technician.experience!>1">Years</span>
+                                                  <span *ngIf="technician.experience!<=1">Year</span>
+                                                  of experience</strong>
+                                              </div>  
+                                                <div>
+                                                    <button class="btn btn-outline-danger actionButtons"
+                                                        ngbPopover="Technical member info"
+                                                        triggers="mouseenter:mouseleave"
+                                                        (click)="seeTechPersonalDetails(technician)"><i
+                                                            class="fas fa-eye"></i></button>
+                                                    <button class="btn btn-outline-dark actionButtons" 
+                                                        ngbPopover="Go to profile"
+                                                        triggers="mouseenter:mouseleave"
+                                                        routerLink="/dashboard/user-profile/{{technician._id}}"><i
+                                                            class="fas fa-arrow-right"></i></button> 
+                                                    <button class="btn btn-outline-primary actionButtons"
+                                                        ngbPopover="Book a technician"
+                                                        triggers="mouseenter:mouseleave"
+                                                        (click)="ToggleCalendar(technician)"><i
+                                                            class="far fa-calendar-alt"></i></button>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </ng-scrollbar>
+                    </div>
+                </div>
+                <div class="col-md-8 col-md-9">
+                    <div class="panel-body">
+                      <full-calendar [options]='calendarOptions' *ngIf="showCalendar">
+                      </full-calendar>
+                    </div>
+                    <div class="panel-body" *ngIf="!showCalendar">
+                        <h1 class="empty">Please select a technician</h1>
+                    </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

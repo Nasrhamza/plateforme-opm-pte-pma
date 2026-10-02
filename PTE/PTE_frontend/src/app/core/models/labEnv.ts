@@ -1,0 +1,20 @@
+export class LabEnv{
+    _id?:string
+    firstName!:String
+    lastName!:String
+    email!:String
+    departement!:String
+    code!:String
+    type!:String
+    backup!:boolean
+    ram!:String
+    disk!:String
+    processor!:String
+    start!:Date
+    end!:Date
+    goals!:String
+    status!:String
+    isAccepted!:String
+    applicant!:any
+   constructor(){}
+   }

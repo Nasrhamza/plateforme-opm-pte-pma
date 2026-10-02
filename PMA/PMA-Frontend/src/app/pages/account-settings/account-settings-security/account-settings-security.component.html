@@ -1,0 +1,90 @@
+<mat-card class="cardWithShadow m-x-auto" style="max-width: 600px;">
+  <mat-card-content class="p-y-24">
+    <mat-card-title>{{ 'Change Password' | translate }}</mat-card-title>
+    <mat-card-subtitle class="mat-body-1"
+      >{{ 'You can modify your password here' | translate }}</mat-card-subtitle
+    >
+    <form class="m-t-24" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- input -->
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">{{ 'Current Password' | translate }}</mat-label>
+      <mat-form-field
+        appearance="outline"
+        class="w-100"
+        color="primary">
+        <input matInput type="password" formControlName="oldPassword" />
+        @if(f['oldPassword'].touched && f['oldPassword'].invalid){
+          <mat-hint class="m-b-16 error-msg">
+            @if(f['oldPassword'].errors && f['oldPassword'].errors['required']){
+              <div class="text-error">
+                {{ 'Old password is required' | translate }}
+              </div>
+            }
+          </mat-hint>
+        }
+      </mat-form-field>
+      <!-- input -->
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">{{ 'New Password' | translate }}</mat-label
+      >
+      <mat-form-field
+        appearance="outline"
+        class="w-100"
+        color="primary"
+      >
+        <input matInput formControlName="newPassword" [type]="alignhide ? 'password' : 'text'"/>
+        <button
+            mat-icon-button
+            matSuffix
+            (click)="handlePasswordHide($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="alignhide"
+            >
+            <mat-icon class="op-5">{{
+                alignhide ? "visibility" : "visibility_off"
+            }}</mat-icon>
+        </button>
+        @if(f['newPassword'].touched && f['newPassword'].invalid){
+          <mat-hint class="m-b-16 error-msg">
+            @if(f['newPassword'].errors && f['newPassword'].errors['required']){
+            <div class="text-error">
+              {{ 'New password is required' | translate }}
+            </div>
+            }
+            @if(f['newPassword'].errors && f['newPassword'].errors['minlength']){
+              <div class="text-error">
+                {{ 'New password must be 6 caracter of length' | translate }}
+              </div>
+            }
+          </mat-hint>
+        }
+      </mat-form-field>
+      <!-- input -->
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
+        >{{ 'Confirm Password' | translate }} </mat-label
+      >
+      <mat-form-field
+        appearance="outline"
+        class="w-100 hide-hint"
+        color="primary">
+        <input matInput type="password" formControlName="confirmPassword" />
+        
+        @if(f['confirmPassword'].touched){
+          <mat-hint class="m-b-16 error-msg">
+              @if(f['confirmPassword'].invalid && f['confirmPassword'].errors && f['confirmPassword'].errors['required']){
+                <div class="text-error">
+                    {{ 'Confirm Password is required' | translate }}
+                </div>
+              }
+              @if(f['confirmPassword'].touched &&(f['confirmPassword'].value !== f['newPassword'].value)){
+                <div class="text-error">
+                    {{ 'Password mismatch, please verify the new password' | translate }}
+                </div>
+              }
+          </mat-hint>
+      }
+      </mat-form-field>
+      <div class="text-right p-r-0 p-t-0 m-t-24">
+        <button mat-flat-button color="primary" [disabled]="!form.valid">{{ 'Save' | translate }}</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

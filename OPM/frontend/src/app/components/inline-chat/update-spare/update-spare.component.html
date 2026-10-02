@@ -1,0 +1,125 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title | translate }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form name="form" #f="ngForm" (ngSubmit)="Onsubmit(f)">
+    <!-- Equipment Name -->
+    <div class="mb-3">
+      <label for="equipmentName" class="form-label">{{ 'Equipment Name' | translate }}</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="feather icon-monitor text-primary"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          id="equipmentName"
+          [(ngModel)]="equipmentName"
+          name="equipmentName"
+          required
+          placeholder="{{ 'Enter Equipment Name' | translate }}"
+          #equipmentNameCtrl="ngModel"
+        />
+      </div>
+      <div *ngIf="f.submitted && equipmentNameCtrl.invalid" class="text-danger small">
+        {{ 'Equipment Name is required' | translate }}
+      </div>
+    </div>
+
+    <!-- Serial Number -->
+    <div class="mb-3">
+      <label for="serialNumber" class="form-label">{{ 'Serial Number' | translate }}</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="feather icon-hash text-primary"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          id="serialNumber"
+          [(ngModel)]="serialNumber"
+          name="serialNumber"
+          required
+          placeholder="{{ 'Enter Serial Number' | translate }}"
+          #serialNumberCtrl="ngModel"
+        />
+      </div>
+      <div *ngIf="f.submitted && serialNumberCtrl.invalid" class="text-danger small">
+        {{ 'Serial Number is required' | translate }}
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+      <label for="selectedStatus" class="form-label">{{ 'Select Status' | translate }}</label>
+      <div class="d-flex align-items-center">
+        <span class="input-group-text bg-light">
+          <i class="feather icon-layers text-primary"></i>
+        </span>
+        <ng-select
+          id="selectedStatus"
+          class="flex-grow-1 ml-2"
+          [items]="statusOptions"
+          bindLabel="label"
+          bindValue="value"
+          name="selectedStatus"
+          [(ngModel)]="selectedStatus"
+          [clearable]="false"
+          required
+          #statusCtrl="ngModel"
+          placeholder="{{ 'Select Status' | translate }}"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <i [ngClass]="[item.icon, item.color]" class="mr-2"></i>
+            <span [ngClass]="item.color">{{ item.label | translate }}</span>
+          </ng-template>
+
+          <ng-template ng-label-tmp let-item="item">
+            <i [ngClass]="[item.icon, item.color]" class="mr-2"></i>
+            <span [ngClass]="item.color">{{ item.label | translate }}</span>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div *ngIf="f.submitted && statusCtrl.invalid" class="text-danger small">
+        {{ 'Status is required' | translate }}
+      </div>
+    </div>
+
+    <!-- Location (only if Stocked) -->
+    <div class="mb-3" *ngIf="selectedStatus === 'Stocked'">
+      <label for="location" class="form-label">{{ 'Location' | translate }}</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="feather icon-map-pin text-primary"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          id="location"
+          [(ngModel)]="location"
+          name="location"
+          required
+          placeholder="{{ 'Enter Location' | translate }}"
+          #locationCtrl="ngModel"
+        />
+      </div>
+      <div *ngIf="f.submitted && locationCtrl.invalid" class="text-danger small">
+        {{ 'Location is required' | translate }}
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="submit" [disabled]="f.invalid" class="btn btn-outline-warning">
+        {{ 'Update' | translate }}
+      </button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
+        {{ 'Close' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

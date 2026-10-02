@@ -1,0 +1,91 @@
+.task{
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    border-radius: 15px;
+    background-color: #edea3134;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+.task:hover{
+    background-color: #edea3c99;
+    cursor: pointer;
+}
+.task-list-container{
+    padding: 10px;
+    margin-left: 10px;
+}
+.task-details-container{
+    padding: 20px;
+    margin: 10px;
+    margin-top: 10px;
+    background-color: #7ba5d51d;
+    border-radius: 15px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+
+}
+.no-task-selected{
+    margin-top: 150px;
+    height: 60px;
+    padding: 20px;
+    background-color: #7ba5d51d;
+    border-radius: 15px;
+    text-align: center;
+}
+.icon{
+    margin-right: 10px;
+    font-size: 18px;
+    color: #13b2f1;
+}
+.icon:hover{
+    margin-right: 10px;
+    font-size: 18px;
+    color: #1356f1;
+}
+.title{
+    border-radius: 15px;
+    padding: 15px;
+    margin-left:10px; 
+    color: rgb(67, 123, 219);
+}
+.pic{
+    width: 700px;
+    height: 500px;
+}
+.empty-tasks{
+    display: flex;
+    justify-content: center;
+}
+.avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.user-assigned{
+    margin-left: 20%;
+}
+.date-bar{
+    padding: 20px;
+    background-color: #41a2cc85;
+    border-radius: 15px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    color: rgb(248, 248, 247);
+}
+.executer-bar{
+    padding: 20px;
+    background-color: #41a2cc85;
+    border-radius: 15px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    color: rgb(248, 248, 247);
+}
+.progress-bar{
+    padding: 20px;
+    background-color: #41a2cc85;
+    border-radius: 15px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    color: rgb(248, 248, 247);
+}

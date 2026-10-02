@@ -1,0 +1,21 @@
+.actions{
+    color: cornflowerblue;
+}
+.icon{
+    padding: 10px;
+    float: right;
+}
+.icon:hover{
+    color: #095a9d;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    font-size: 15px;
+}
+.filter{
+    margin-left: 15vw;
+}
+.offers-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

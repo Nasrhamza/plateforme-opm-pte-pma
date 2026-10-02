@@ -1,0 +1,188 @@
+version: "3.9"
+
+services:
+  # ─── Infrastructure ───────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: REPLACE_WITH_LOCAL_SECRET
+      POSTGRES_DB: reporting
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+
+  # ─── Backends ─────────────────────────────────────────────────────────────────
+  opm-backend:
+    build:
+      context: ./OPM/backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      CONNECTION_STRING: mongodb://mongo:27017/opm
+      MAILING_HOST: mailhog
+      MAILING_PORT: 1025
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - opm-uploads:/app/uploads
+
+  pte-backend:
+    build:
+      context: ./PTE/PTE_Backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      CONNECTION_STRING: mongodb://mongo:27017/pte
+      MAILING_HOST: mailhog
+      MAILING_PORT: 1025
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  pma-backend:
+    build:
+      context: ./PMA/PMA-Backend
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      CONNECTION_STRING: mongodb://mongo:27017/pma
+      MAILING_HOST: mailhog
+      MAILING_PORT: 1025
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - pma-uploads:/app/uploads
+
+  reporting-backend:
+    build:
+      context: ./reporting-fastapi
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: development
+      PORT: 8000
+      OPM_API_BASE_URL: http://opm-backend:3000
+      PTE_API_BASE_URL: http://pte-backend:3001/api
+      PMA_API_BASE_URL: http://pma-backend:3002/api/v1
+      REPORTING_WAREHOUSE_URI: mongodb://mongo:27017/reporting_etl
+      PG_URL: postgresql+psycopg://postgres:postgres@postgres:5432/reporting
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      SCHEDULER_ENABLED: "true"
+      OPM_API_EMAIL: ${OPM_API_EMAIL}
+      OPM_API_PASSWORD: ${OPM_API_PASSWORD}
+      PTE_API_EMAIL: ${PTE_API_EMAIL}
+      PTE_API_PASSWORD: ${PTE_API_PASSWORD}
+      PMA_API_EMAIL: ${PMA_API_EMAIL}
+      PMA_API_PASSWORD: ${PMA_API_PASSWORD}
+    depends_on:
+      mongo:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      opm-backend:
+        condition: service_started
+      pte-backend:
+        condition: service_started
+      pma-backend:
+        condition: service_started
+
+  # ─── Seeder (runs once: seeds Mongo then triggers ETL) ───────────────────────
+  seeder:
+    build:
+      context: ./seeder
+    volumes:
+      - ./archive:/archive
+    environment:
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-saharbouhjar14@gmail.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin2025!}
+      ADMIN_NAME: ${ADMIN_NAME:-Sahar Bouhjar}
+    depends_on:
+      mongo:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      opm-backend:
+        condition: service_started
+      pte-backend:
+        condition: service_started
+      pma-backend:
+        condition: service_started
+      reporting-backend:
+        condition: service_started
+    restart: "no"
+
+  # ─── Frontend ─────────────────────────────────────────────────────────────────
+  pte-frontend:
+    build:
+      context: ./PTE/PTE_frontend
+    restart: unless-stopped
+    ports:
+      - "4201:4200"
+    depends_on:
+      - pte-backend
+
+  pma-frontend:
+    build:
+      context: ./PMA/PMA-Frontend
+    restart: unless-stopped
+    ports:
+      - "4202:4201"
+    depends_on:
+      - pma-backend
+
+  reporting-frontend:
+    build:
+      context: ./Reporting/reporting-frontend
+    restart: unless-stopped
+    ports:
+      - "4203:4200"
+    environment:
+      NODE_OPTIONS: --max_old_space_size=4096
+    depends_on:
+      - reporting-backend
+
+volumes:
+  mongo-data:
+  pg-data:
+  opm-uploads:
+  pma-uploads:

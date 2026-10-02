@@ -1,0 +1,227 @@
+<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+  <div class="container register-container">
+    <div class="card register-card">
+      <div class="row no-gutters">
+        <div class="col-sm-6">
+          <img src="assets/images/register.jpg" style="max-width:600px;height: 100%;" alt="register">
+        </div>
+        <div class="col-md-6">
+          <div class="register-body">
+            <div class="text-center">
+              <div class="brand-wrapper">
+                <span class="logo-name">Sign Up</span>
+              </div>
+            </div>
+            <form class="login-form mt-4" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>First name <span class="text-danger">*</span></label>
+                    <i-feather name="user" class="login-icons"></i-feather>
+                    <input type="text" class="form-control psl-5" formControlName="fname" placeholder="First Name">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('fname')?.valid && registerForm.get('fname')?.touched"> First name is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Last name <span class="text-danger">*</span></label>
+                    <i-feather name="user-check" class="login-icons"></i-feather>
+                    <input type="text" class="form-control psl-5" formControlName="lname" placeholder="Last Name">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('lname')?.valid && registerForm.get('lname')?.touched"> Last name is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group position-relative">
+                    <label>Your Email <span class="text-danger">*</span></label>
+                    <i-feather name="mail" class="login-icons"></i-feather>
+                    <input type="email" class="form-control psl-5" formControlName="email" placeholder="Email">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('email')?.valid && registerForm.get('email')?.touched"> Email is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Password <span class="text-danger">*</span></label>
+                    <i-feather name="key" class="login-icons"></i-feather>
+                    <input type="password" class="form-control psl-5" formControlName="password" placeholder="Password">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('password')?.valid && registerForm.get('password')?.touched"> Password is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Confirm password <span class="text-danger">*</span></label>
+                    <i-feather name="key" class="login-icons"></i-feather>
+                    <input type="password" class="form-control psl-5" formControlName="Cpassword"
+                      placeholder="Confirm password">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('Cpassword')?.valid && registerForm.get('Cpassword')?.touched"> Password
+                      Confirmation is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group position-relative">
+                    <label>Nationality <span class="text-danger">*</span></label>
+                    <select formControlName="nationality" class="form-select">
+                      <option selected disabled>Choose...</option>
+                      <option *ngFor="let n of nationalities" [ngValue]="n">{{n}}</option>
+                    </select>
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('nationality')?.valid && registerForm.get('nationality')?.touched">
+                      Nationality is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Hiring date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="hiringdate">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('hiringdate')?.valid && registerForm.get('hiringdate')?.touched"> Hiring
+                      date is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Birthdate <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="birthdate">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('birthdate')?.valid && registerForm.get('birthdate')?.touched"> Birthdate
+                      is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group position-relative">
+                    <label>Address <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" formControlName="address" placeholder="Address">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('address')?.valid && registerForm.get('address')?.touched"> Address is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Gender <span class="text-danger">*</span></label>
+                    <select formControlName="gender" class="form-select">
+                      <option selected disabled>Choose...</option>
+                      <option *ngFor="let g of genders" [ngValue]="g">{{g}}</option>
+                    </select>
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('gender')?.valid && registerForm.get('gender')?.touched"> Gender is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Family situation <span class="text-danger">*</span></label>
+                    <select formControlName="fs" class="form-select">
+                      <option selected disabled>Choose...</option>
+                      <option *ngFor="let s of fs" [ngValue]="s">{{s}}</option>
+                    </select>
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('fs')?.valid && registerForm.get('fs')?.touched"> Family situation is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div class="form-group position-relative">
+                    <label>Experience <span class="text-danger">*</span></label>
+                    <input type="number" name="experience" formControlName="experience"
+                      placeholder="Years of experience" min="0" class="form-control ">
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('experience')?.valid && registerForm.get('experience')?.touched">
+                      Experience is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Departement <span class="text-danger">*</span></label>
+                    <select formControlName="departement" class="form-select">
+                      <option selected disabled>Choose...</option>
+                      <option *ngFor="let d of departement" [ngValue]="d">{{d}}</option>
+                    </select>
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('departement')?.valid && registerForm.get('departement')?.touched">
+                      Departement is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group position-relative">
+                    <label>Driving license <span class="text-danger">*</span></label>
+                    <select formControlName="drivingLisence" class="form-select">
+                      <option selected disabled>Choose...</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('drivingLisence')?.valid && registerForm.get('drivingLisence')?.touched">
+                      Driving license is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="form-group position-relative">
+                    <label>Phone <span class="text-danger">*</span></label>
+                    <div class="input-group flex-nowrap">
+                      <span class="input-group-text">+216</span>
+                      <input type="text" class="form-control" formControlName="phone" placeholder="Phone">
+                    </div>
+                    <small class="form-text text-danger"
+                      *ngIf="!registerForm.get('phone')?.valid && registerForm.get('phone')?.touched"> Phone is
+                      invalid
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <div style="padding-bottom: 15px;">
+                    <label class="custom-switch mt-2">
+                      <input type="checkbox" formControlName="teamLeader" class="custom-switch-input">
+                      <span class="custom-switch-indicator"></span>
+                      <span class="custom-switch-description">Are you a team leader?</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="error" class="alert alert-danger mb-3 msl-3">{{error}}</div>
+              <div class="col-md-12">
+                <button class="btn btn-primary auth-form-btn">Register</button>
+              </div>
+              <div class="mx-auto">
+                <p class="mb-0 mt-3"><small class="text msr-2">Already have an account ?</small> <a
+                    routerLink="/authentication/signin" class="text fw-bold">Sign in</a></p>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

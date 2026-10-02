@@ -1,0 +1,71 @@
+<br>
+<div class="modal-body">
+    <div class="user-details">
+        <div class="row">
+            <div class="col-2">
+                <img class="user-image" src="{{picsUrl+payload.userId.image}}" alt="user image">
+            </div>
+            <div class="col-8">
+                <h1 class="titles">{{payload.userId.firstName + " " + payload.userId.lastName}}</h1>
+                <span class="status titles"><strong>{{payload.userId.role}} | {{payload.userId.departement}}</strong></span>
+            </div>
+            <!-- <div class="col-2 score" >
+                <h3>Score</h3>
+                <h3>{{payload.score}}/{{questionsLength}}</h3>
+                <button class="hidden-button">View Details</button>
+            </div> -->
+            <div class="col-2 score-card">
+                <div class="score-card-inner">
+                    <!-- Front Side -->
+                    <div class="score-card-front">
+                        <h3>Score</h3>
+                        <h3>{{payload.score}}/{{questionsLength}}</h3>
+                    </div>
+                    <!-- Back Side -->
+                    <div class="score-card-back">
+                        <button class="action-button" (click)="selectIntern()">Select intern</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="quiz-details">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="titles">{{payload.quizId.title}}</h2>
+            </div>
+            <div class="col-12">
+                <p class="titles">{{payload.quizId.description}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="question-details">
+        <!-- <ng-scrollbar style="height: 600px;" visibility="hover"> -->
+            <div class="row" *ngFor="let response of payload.responses">
+                <h6 class="quest">{{response.questionId.question}}</h6>
+                <div class="row response" *ngFor="let answer of response.questionId.responses">
+                    <span [ngClass]="{
+                          'correct': answer.isCorrect && response.chosenResponseIds === answer._id,
+                          'wrong': !answer.isCorrect && response.chosenResponseIds === answer._id,
+                          'correct-answer': answer.isCorrect && response.chosenResponseIds !== answer._id
+                        }">
+                        {{ answer.text }} 
+                        <i 
+                            *ngIf="(answer.isCorrect && response.chosenResponseIds !== answer._id) || 
+                            (answer.isCorrect && response.chosenResponseIds === answer._id)" 
+                            class="fas fa-check-circle check">
+                        </i>
+                        <i 
+                            *ngIf="!answer.isCorrect && response.chosenResponseIds === answer._id" 
+                            class="fas fa-times-circle cross">
+                        </i>
+                    </span>
+    
+                </div>
+            </div>
+        <!-- </ng-scrollbar> -->
+    </div>
+    
+    
+</div>

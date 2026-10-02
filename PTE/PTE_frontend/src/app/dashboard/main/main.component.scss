@@ -1,0 +1,33 @@
+.v{
+    color: #f0ad4e ;
+}
+.r{
+    color: #5cb85c ;
+}
+.t{
+    color: #0275d8 ;
+}
+.collapseButton{
+    width: 100%;
+    font-size: 2em;
+    padding: 20px;
+    color: rgb(138, 137, 137);
+    background-color: transparent;
+    border: none;
+    font-weight: bolder;
+    text-align: left;
+}
+.collapseButton:hover{
+    color:#3656b0 ;
+    background-color: transparent;
+    text-align: left;
+}
+
+.icon{
+    font-size: 0.9em;
+    // margin-left: 100px;
+    float: right;
+}
+.noLink{
+    color:#8592F2 ;
+}

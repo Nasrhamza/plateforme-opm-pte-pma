@@ -1,0 +1,79 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{mytitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+
+        <div class="form-group">
+            <label class="form-label">Project Framework :</label>
+            <textarea class="form-control" [(ngModel)]="this.model.motif" #motif="ngModel" name="motif"
+                required></textarea>
+            <div class="invalid-feedback" *ngIf="motif.touched && motif.errors?.required" class="error">
+                Motif required </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Type d'intervention:</label>
+            <select class="form-control" [(ngModel)]="this.model.typeIntervention" name="typeIntervention" required>
+                <option value="" disabled>Select type</option>
+                <option value="Integration">Integration</option>
+                <option value="Assistance">Assistance</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="!this.model.typeIntervention">Type d'intervention required</div>
+        </div>
+        <!-- Start Date and Time -->
+        <div class="form-group">
+            <label class="form-label">Start Date:</label>
+            <div class="input-group">
+                <input type="date" class="form-control" [(ngModel)]="this.model.startDate" #startDate="ngModel"
+                    name="startDate" required>
+                <input type="time" class="form-control" [(ngModel)]="this.model.startTime" #startTime="ngModel"
+                    name="startTime" required>
+            </div>
+            <div class="invalid-feedback" *ngIf="startDate.touched && startDate.errors?.required">Start Date required
+            </div>
+            <div class="invalid-feedback" *ngIf="startTime.touched && startTime.errors?.required">Start Time required
+            </div>
+        </div>
+
+        <!-- End Date and Time -->
+        <div class="form-group">
+            <label class="form-label">End Date:</label>
+            <div class="input-group">
+                <input type="date" class="form-control" [(ngModel)]="this.model.endDate" #endDate="ngModel"
+                    name="endDate" required>
+                <input type="time" class="form-control" [(ngModel)]="this.model.endTime" #endTime="ngModel"
+                    name="endTime" required>
+            </div>
+            <div class="invalid-feedback" *ngIf="endDate.touched && endDate.errors?.required">End Date required</div>
+            <div class="invalid-feedback" *ngIf="endTime.touched && endTime.errors?.required">End Time required</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">List of Tasks:</label>
+            <textarea class="form-control list-textarea" rows="5" [(ngModel)]="model.tasks" #tasks="ngModel"
+                name="tasks" placeholder="Enter each task on a new line" required></textarea>
+            <div class="invalid-feedback" *ngIf="tasks.touched && tasks.errors?.required">
+                List of Tasks required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Follow-Up:</label>
+            <textarea class="form-control" [(ngModel)]="this.model.followUp" #followUp="ngModel" name="followUp"
+                required></textarea>
+            <div class="invalid-feedback" *ngIf="followUp.touched && followUp.errors?.required" class="error">
+                Follow-Up required </div>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid"
+                class="btn btn-outline-warning">Update</button>
+
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

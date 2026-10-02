@@ -1,0 +1,76 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="Onsubmit(f)">
+      
+      <!-- Designation -->
+      <div class="form-group">
+        <label for="designation">Designation</label>
+        <input type="text" class="form-control" placeholder="Designation" id="designation" name="designation" ngModel [(ngModel)]="model.designation" #designation="ngModel" required>
+        <div *ngIf="designation.touched && designation.errors?.required" class="error">Designation required</div>
+      </div>
+  
+      <!-- Model -->
+      <div class="form-group">
+        <label for="model">Model</label>
+        <input type="text" class="form-control" placeholder="Model" id="model" name="model" ngModel [(ngModel)]="model.model" #modelInput="ngModel" required>
+        <div *ngIf="modelInput.touched && modelInput.errors?.required" class="error">Model required</div>
+      </div>
+  
+      <!-- N/S (Serial Number) -->
+      <div class="form-group">
+        <label for="serialNumber">SN (Serial Number)</label>
+        <input type="text" class="form-control" placeholder="serialNumber" id="SN" name="SN" ngModel [(ngModel)]="model.SN" #SN="ngModel" required>
+        <div *ngIf="SN.touched && SN.errors?.required" class="error">Serial Number required</div>
+      </div>
+  
+      <!-- Affectation -->
+      <div class="form-group">
+        <label for="affectation">Affectation</label>
+        <input type="text" class="form-control" placeholder="Affectation" id="affectation" name="affectation" ngModel [(ngModel)]="model.affectation" #affectation="ngModel" required>
+        <div *ngIf="affectation.touched && affectation.errors?.required" class="error">Affectation required</div>
+      </div>
+  
+      <!-- Emplacement -->
+      <div class="form-group">
+        <label for="emplacement">Emplacement</label>
+        <input type="text" class="form-control" placeholder="Emplacement" id="emplacement" name="emplacement" ngModel [(ngModel)]="model.emplacement" #emplacement="ngModel" required>
+        <div *ngIf="emplacement.touched && emplacement.errors?.required" class="error">Emplacement required</div>
+      </div>
+  
+      <!-- Adresse IP -->
+      <div class="form-group">
+        <label for="ipAddress">Adresse IP</label>
+        <input type="text" class="form-control" placeholder="Adresse IP" id="adresseIP" name="adresseIP" ngModel [(ngModel)]="model.adresseIP" #adresseIP="ngModel" required>
+        <div *ngIf="adresseIP.touched && adresseIP.errors?.required" class="error">Adresse IP required</div>
+      </div>
+  
+      <!-- Ressources -->
+      <div class="form-group">
+        <label for="resources">Ressources</label>
+        <input type="text" class="form-control" placeholder="Ressources" id="resources" name="resources" ngModel [(ngModel)]="model.resources" #resources="ngModel" required>
+        <div *ngIf="resources.touched && resources.errors?.required" class="error">Ressources required</div>
+      </div>
+  
+      <!-- Observation -->
+      <div class="form-group">
+        <label for="observation">Observation</label>
+        <textarea class="form-control" placeholder="Observation" id="observation" name="observation" ngModel [(ngModel)]="model.observation" #observation="ngModel" required></textarea>
+        <div *ngIf="observation.touched && observation.errors?.required" class="error">Observation required</div>
+      </div>
+  
+      <!-- Modal footer buttons -->
+      <div class="modal-footer">
+        <button *ngIf="!add" type="submit" [disabled]="f.invalid" class="btn btn-outline-warning">Update</button>
+        <button *ngIf="add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+  
+    </form>
+  </div>
+  
+  

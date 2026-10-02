@@ -1,0 +1,103 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Users Request</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Users</li>
+        <li class="breadcrumb-item">Request</li>
+    </ul>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Users Request</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <div class="d-flex">
+                                            <label class="col-form-label msr-3">Search:</label>
+                                            <input type="text" placeholder="Filter table" class="form-control" (keyup)='updateFilter($event)'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ngx-datatable #table class="material" [rows]="rows" [sortType]="SortType.multi"
+                                    [loadingIndicator]="loadingIndicator" columnMode="force" [headerHeight]="50"
+                                    [footerHeight]="50" rowHeight="auto" [limit]="6" [scrollbarH]="scrollBarHorizontal"
+                                    [reorderable]="reorderable">
+                                    <ngx-datatable-column [width]="300" name="Name">
+                                        <ng-template let-row="row" let-value="value" let-i="index"
+                                            ngx-datatable-cell-template>
+                                            <img src="{{ picsUrl+row.image }}" class="data-table-img" />
+                                            <div class="name-col-style">
+                                                <div>{{row.firstName+" "+row.lastName}}</div>
+                                                <div class="font-12 text-muted">{{row.designation}}</div>
+                                            </div>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [width]="300" name="Email">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.email}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [width]="170" name="Hiring date">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.hiringDate | date:'mediumDate'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Phone">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.phone}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="150" name="Status">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <div *ngIf="row.isEnabled==='Active'" class="badge-outline col-green">Active
+                                            </div>
+                                            <div *ngIf="row.isEnabled==='Inactive'" class="badge-outline col-red">
+                                                Inactive
+                                            </div>
+
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Departement">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.departement}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Actions"  [sortable]="false">
+                                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                          
+                                            <button type="button" class="btn btn-outline-success" style="border: none;"
+                                                    ngbPopover="Approve user request"
+                                                    triggers="mouseenter:mouseleave"
+                                                    placement="left">  
+                                                <i class="fas fa-check" (click)="confirmRequest(row._id)"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger" style="border: none;"
+                                                    ngbPopover="Decline user request"
+                                                    triggers="mouseenter:mouseleave"
+                                                    placement="left">
+                                                <i class="far fa-trash-alt" (click)="declineRequest(row._id)"></i>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                </ngx-datatable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

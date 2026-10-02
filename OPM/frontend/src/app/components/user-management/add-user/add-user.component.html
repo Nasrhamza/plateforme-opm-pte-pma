@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="firstName">{{ 'First Name' | translate }}</label>
+                    <input type="text" class="form-control" placeholder="First Name" id="firstName" name="firstName"
+                        ngModel [(ngModel)]="model.firstName" #firstName="ngModel" required>
+                    <div *ngIf="firstName.touched && firstName.errors?.required" class="error">
+                        {{ 'First name required' | translate }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName">{{ 'Last Name' | translate }}</label>
+                    <input type="text" class="form-control" placeholder="Last Name" id="lastName" name="lastName"
+                        ngModel [(ngModel)]="model.lastName" #lastName="ngModel" required>
+                    <div *ngIf="lastName.touched && lastName.errors?.required" class="error">
+                        {{ 'Last name required' | translate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" placeholder="Email" id="email" name="email" ngModel
+                [(ngModel)]="model.email" #email="ngModel" required
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}">
+            <div *ngIf="email.touched && email.errors?.required" class="error">
+                {{ 'Email required' | translate }}
+            </div>
+            <div *ngIf="email.touched && email.errors?.pattern" class="error">
+                {{ 'Invalid email format' | translate }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="role">{{ 'Role' | translate }}</label>
+            <select class="form-control" id="role" name="role" ngModel [(ngModel)]="model.role" #role="ngModel"
+                required>
+                <option value="" disabled selected>{{ 'Select a role' | translate }}</option>
+                <option value="commercial">{{ 'Commercial' | translate }}</option>
+                <option value="assistant">{{ 'Assistant' | translate }}</option>
+                <option value="pmo">{{ 'PMO' | translate }}</option>
+            </select>
+            <div *ngIf="role.touched && role.errors?.required" class="error">
+                {{ 'Role required' | translate }}
+            </div>
+        </div>
+
+
+        <p class="text-primary" *ngIf="add">
+            <i class="fas fa-info-circle"></i> {{ 'The default password for the User is' | translate }} :
+            <strong>{{password}}</strong>
+        </p>
+
+        <div class="modal-footer">
+            <button *ngIf="!add" type="submit" [disabled]="f.invalid" class="btn btn-outline-warning">
+                {{ 'Update' | translate }}
+            </button>
+
+            <button *ngIf="add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">
+                {{ 'Save' | translate }}
+            </button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
+                {{ 'Close' | translate }}
+            </button>
+        </div>
+    </form>
+</div>

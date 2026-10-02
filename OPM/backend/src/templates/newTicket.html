@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f3f5f6;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f3f5f6">
+        <tr>
+            <td align="center" style="padding: 50px 0;">
+                <table role="presentation" width="800" cellspacing="0" cellpadding="0" border="0"
+                    style="max-width: 800px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" bgcolor="#F1F1F1"
+                            style="padding: 20px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                            <img src="https://opm.prologic.com.tn:5600/assets/logo/logoBlue.png" alt="OPM logo"
+                                width="130" style="display: block;">
+                            <h2 style="color: #007bff; font-family: Arial, sans-serif; margin-top: 10px;">New Ticket
+                                Created</h2>
+                        </td>
+                    </tr>
+                    <!-- Content -->
+                    <tr>
+                        <td
+                            style="padding: 40px; font-family: Arial, sans-serif; font-size: 16px; color: #555; text-align: left;">
+                            <h2 style="color: #333; font-size: 24px;">Hello, {{name}}!</h2>
+                            <p>A new ticket has been successfully created. Here are the details:</p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="10" border="0"
+                                bgcolor="#f7f7f7" style="margin-top: 20px; border-left: 5px solid #007bff;">
+                                <tr>
+                                    <td><strong style="color: #007bff;">Number:</strong> {{ticketNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="color: #007bff;">Title:</strong> {{ticketTitle}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="color: #007bff;">Description:</strong> {{ticketDescription}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="color: #007bff;">Created by:</strong> {{ticketCreator}}</td>
+                                </tr>
+                            </table>
+                            <p>You can view the ticket details and track its progress by accessing the system: <a
+                                    href="https://opm.prologic.com.tn:5600"
+                                    style="color: #007bff; text-decoration: none; font-weight: bold;">OPM</a></p>
+                            <p>For any questions, feel free to reach out to support.</p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" bgcolor="#F1F1F1"
+                            style="padding: 20px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; font-size: 12px; color: #888;">
+                            &copy; {{year}} OPM - Prologic
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

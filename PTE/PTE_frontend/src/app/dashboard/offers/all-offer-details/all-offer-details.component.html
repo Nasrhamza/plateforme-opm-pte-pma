@@ -1,0 +1,178 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Internship offers</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Internship</li>
+        <li class="breadcrumb-item">List</li>
+    </ul>
+    <div class="section">
+        <div class="row">
+            <div class="col-7">
+                <div class="card" *ngIf="offer">
+                    <div class="card-body">
+                        <h3>{{offer.title}}</h3>
+                        <span class="badge badge-dark"
+                            *ngIf="offer.departement==='Cyber Security'">{{offer.departement}}</span>
+                        <span class="badge badge-primary"
+                            *ngIf="offer.departement==='Development'">{{offer.departement}}</span>
+                        <span class="badge badge-secondary"
+                            *ngIf="offer.departement==='System'">{{offer.departement}}</span>
+                        <span class="badge badge-info"
+                            *ngIf="offer.departement==='Networking'">{{offer.departement}}</span>
+                        <br><br>
+                        <div class="body-section-detail">
+                            <h6>Description :</h6>
+                            <p>{{offer.description}}</p>
+                        </div><br>
+                        <div class="row techs-bottom" style="margin-bottom: 10px;">
+                            <h6>Technologies required :</h6><span>{{offer.technologies}}</span>
+                        </div>
+                        <div class="row details-bottom">
+                            <div class="col-4">
+                                <h6>Duration</h6>
+                                <span *ngIf="offer.period!>=2">{{offer.period}} months</span>
+                                <span *ngIf="offer.period!<=1">{{offer.period}} month</span>
+                            </div>
+                            <div class="col-4">
+                                <h6>Interns needed</h6>
+                                <span *ngIf="offer.internsNumber!>=2"> {{offer.internsNumber}} interns</span>
+                                <span *ngIf="offer.internsNumber!<=1"> {{offer.internsNumber}} intern</span>
+                            </div>
+                            <div class="col-4">
+                                <h6>Expiration date :</h6><span> {{offer.expirationDate| date:'mediumDate'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="card" *ngIf="encadrant">
+                    <div class="card-body">
+                        <h5>Professional Mentor</h5>
+                        <div class="row">
+                            <div class="col-lg-2 col-xl-2 col-md-2 col-sm-3 col-2">
+                                <img src="{{ picsUrl+encadrant.image }}" class="enc-img" />
+                            </div>
+                            <div class="col-lg-10 col-xl-10 col-md-10 col-sm-9 col-10 name-col-style">
+                                <div class="font-16"><strong>{{encadrant.firstName+" "+encadrant.lastName}}</strong></div>
+                                <div class="font-14 text-muted">{{encadrant.roles}} | {{encadrant.departement}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body" *ngIf="offer">
+                        <div class="row">
+                            <div class="col-11">
+                                <h5>Quizzes available for this internship</h5>
+                            </div>
+                            <div class="col-1" *ngIf="offer.encadrant===userId">
+                                <i class="fas fa-plus-square iconQuiz" ngbPopover="Create quiz" triggers="mouseenter:mouseleave" placement="top"
+                                    (click)="assignQuizModal(offer._id!)">
+                                </i>
+                            </div>
+                        </div>
+                        <div class="row quiz-title" *ngFor="let quiz of quizzes" (mouseenter)="hoverQuiz = quiz._id" (mouseleave)="hoverQuiz = null">
+                            <div class="col-9 m-t-5" (click)="getResults(quiz._id)">
+                                <span>{{ quiz.title }}</span>
+                            </div>
+                            <div class="col-3 " *ngIf="offer.encadrant === userId && hoverQuiz === quiz._id">
+                                <i class="fas fa-book icon" ngbPopover="Fill quiz" (click)="fillQuiz(quiz._id)" triggers="mouseenter:mouseleave"
+                                    placement="top"></i>
+                                <i class="fas fa-pen icon" ngbPopover="Edit quiz" (click)="editQuiz(quiz)" triggers="mouseenter:mouseleave"
+                                    placement="top"></i>
+                                <i class="fas fa-trash icon" ngbPopover="Delete quiz" (click)="deleteQuiz(quiz._id)" triggers="mouseenter:mouseleave"
+                                    placement="top"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12" *ngIf="!showQuizResult && results.length<1">
+                                <h5 style="text-align: center;"><strong>Pick a quiz to see the results</strong></h5>
+                            </div>
+                            <div class="col-12" *ngIf="showQuizResult && results.length<1">
+                                <h5 style="text-align: center;"><strong>No results available yet</strong></h5>
+                            </div>
+                            <div class="col-12" *ngIf="showQuizResult && results.length>0">
+                                <h5><strong>Quiz results</strong></h5>
+                                <div class="row user-result-container" *ngFor="let result of results">
+                                    <div class="col-2">
+                                        <img src="{{ picsUrl+result.userId.image }}" class="enc-img" />
+                                    </div>
+                                    <div class="col-9 name-col-style">
+                                        <div class="font-16"><strong>{{result.userId.firstName+" "+result.userId.lastName}}</strong></div>
+                                        <div class="font-14 text-muted">{{result.userId.role}} | {{result.userId.departement}}</div>
+                                        <div class="font-14 text-muted">Score: {{result.score}}/{{questionsLength}}</div>
+                                    </div>
+                                    <div class="col-1 select-icon" 
+                                            ngbPopover="Select intern to interview" 
+                                            triggers="mouseenter:mouseleave" 
+                                            placement="top" (click)="selectIntern(result)">
+                                         <i class="fas fa-arrow-right" ></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="formVisibility">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="fw-bold p-10 font-17">
+                            Assign Questions for quiz
+                        </div>
+                        <form [formGroup]="questionForm" (ngSubmit)="onSubmitQuestion(questionForm)">
+                            <div class="mb-3">
+                                <label>Question <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Write the quiz question here..." formControlName="question" required>
+                                <small class="form-text text-danger"
+                                    *ngIf="!questionForm.get('question')?.valid && questionForm.get('question')?.touched">
+                                    Question is required
+                                </small>
+                            </div>
+            
+                            <div  class="ml-4">
+                                <div class="mb-2">
+                                    <label>Response 1<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response1" required>
+                                </div>
+                                <div class="form-check ml-3">
+                                    <input type="checkbox" formControlName="isCorrect1">
+                                    <label class="form-check-label">Correct response</label>
+                                </div>
+                                <div class="mb-2">
+                                    <label>Response 2<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response2" required>
+                                </div>
+                                <div class="form-check ml-3">
+                                    <input type="checkbox" formControlName="isCorrect2">
+                                    <label class="form-check-label">Correct response</label>
+                                </div>
+                                <div class="mb-2">
+                                    <label>Response 3<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response3" required>
+                                </div>
+                                <div class="form-check ml-3">
+                                    <input type="checkbox" formControlName="isCorrect3">
+                                    <label class="form-check-label">Correct response</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Question</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

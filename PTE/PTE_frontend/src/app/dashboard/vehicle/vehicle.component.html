@@ -1,0 +1,137 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Resource managment</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Vehicle</li>
+        <li class="breadcrumb-item">Calendar</li>
+    </ul>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-10 p-l-30">
+                                <div class="m-b-25">
+                                    <button class="btn btn-icon icon-left btn-primary" *ngIf="role=='ASSISTANT'"
+                                        (click)="addVehicleWindowCall()">
+                                        Add Vehicle</button>
+                                </div>
+                                <h5 class="vehicleContainer">Vehicles <i class="fas fa-level-down-alt"></i></h5>
+                                <ng-scrollbar style="height: 800px" visibility="hover">
+                                    <div class="vehicleContainer">
+                                        <ul class="list-group">
+                                            <li *ngFor="let vehicle of vehicles" class="list-group-item">
+                                                <Strong class="vehicles"><span>{{" "+vehicle.model}}</span></Strong><br>
+                                                <span class="vehiclesModel">{{" "+vehicle.registration_number}}</span>
+                                                <div>
+                                                    <button *ngIf="role=='ASSISTANT'"
+                                                        class="btn btn-outline-danger actionButtons"
+                                                        ngbPopover="Delete vehicle" triggers="mouseenter:mouseleave"
+                                                        (click)="deleteVehicle(vehicle._id)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    <button *ngIf="role=='ASSISTANT'"
+                                                        class="btn btn-outline-warning actionButtons"
+                                                        ngbPopover="Edit vehicle" triggers="mouseenter:mouseleave"
+                                                        (click)="editVehicleWindowCall(vehicle)">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-primary actionButtons"
+                                                        ngbPopover="Book vehicle" triggers="mouseenter:mouseleave"
+                                                        (click)="ToggleCalendar(vehicle)">
+                                                        <i class="far fa-calendar-alt"></i>
+                                                    </button>
+                                                    <button *ngIf="role=='ADMIN'"
+                                                        class="btn btn-outline-primary actionButtons"
+                                                        ngbPopover="Vehicle analytics" triggers="mouseenter:mouseleave"
+                                                        (click)="showVehicleStat(vehicle._id)">
+                                                        <i class="fas fa-chart-line"></i>
+                                                    </button>
+                                                    <button *ngIf="role=='ASSISTANT'"
+                                                        class="btn btn-outline-info actionButtons"
+                                                        ngbPopover="Show gas card" triggers="mouseenter:mouseleave"
+                                                        (click)="showCard(vehicle)">
+                                                        <i class="fas fa-credit-card"></i>
+                                                    </button>
+                                                    <button *ngIf="role=='ASSISTANT'" class="btn actionButtons"
+                                                        [ngClass]="vehicle.available ? 'btn-outline-success' : 'btn-outline-secondary'"
+                                                        [ngbPopover]="vehicle.available ? 'Set as unavailable' : 'Set as available'" triggers="mouseenter:mouseleave"
+                                                        (click)="toggleAvailability(vehicle)">
+                                                        <i class="fas" [ngClass]="vehicle.available ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                            <div class="col-md-8 col-md-9">
+                                <div class="panel-body">
+                                    <full-calendar [options]='calendarOptions' *ngIf="showCalendar">
+                                    </full-calendar>
+                                </div>
+                                <div class="panel-body" *ngIf="!showCalendar && !showStat">
+                                    <h1 class="empty">Please select a vehicle</h1>
+                                </div>
+                                <div class="panel-body" *ngIf="showStat && vehicle">
+                                    <div class="row vehicle-info">
+                                        <div class="col-xl-10 col-lg-10 col-xl-10 col-md-10 col-sm-12 col-12 ">
+                                            <h4>Vehicle information</h4>
+                                            <span><strong>Model </strong> {{vehicle.model}} </span> <br>
+                                            <span><strong>Registration number </strong> {{vehicle.registration_number}} </span> <br>
+                                            <span><strong>Vehicle type </strong> {{vehicle.type}} </span>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2 col-xl-2 col-md-2 col-sm-12 col-12 mx-auto text-center km-tot">
+                                            <strong>KM total</strong>
+                                            <h1>{{vehicle.kmTotal.toFixed(1)}} km</h1>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <ngx-datatable #table class="material" [rows]="vehicle.log"
+                                                        [sortType]="SortType.multi"
+                                                        [loadingIndicator]="loadingIndicator" columnMode="force"
+                                                        [headerHeight]="50" [footerHeight]="50" rowHeight="auto"
+                                                        [limit]="6" [scrollbarH]="scrollBarHorizontal"
+                                                        [reorderable]="reorderable">
+
+                                                        <ngx-datatable-column [width]="300" name="Event Title">
+                                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                {{row.event.title}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column [width]="300" name="Kilometrage">
+                                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                {{row.kilometrage+" km"}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="Reservation Date">
+                                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                {{row.reservationDate| date : 'short'}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="170" name="Associated event">
+                                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                <a class="link"
+                                                                    (click)="showAssociatedEvent(row.event)">View Event</a>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                    </ngx-datatable>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

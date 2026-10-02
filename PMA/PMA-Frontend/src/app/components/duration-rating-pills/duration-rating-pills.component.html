@@ -1,0 +1,12 @@
+<div class="p-y-12 p-b-16 gap-8" style="display: flex;justify-content: space-around;">
+    @for(item of selectedType?.labels;track item;let idx = $index){
+        <div style="position: relative;" (click)="handleSelect(idx+1)">
+            @if(selected && selected !== (idx + 1)){
+                <div class="backdrop"></div>
+            }
+            <div class="rating-pill pill-bg-{{ idx+1 }} text-white" [class.f-w-600]="selected === (idx+1)" [class.selected]="selected===(idx+1)">
+                {{ item.value | translate }}
+            </div>
+        </div>
+    }
+</div>

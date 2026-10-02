@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-between align-items-center p-r-12">
+    <h5 mat-dialog-title class="mat-subtitle-1">{{ 'Export tasks' | translate }}</h5>
+    <button mat-button (click)="exportTable()" mat-flat-button color="primary">{{'Export' | translate}}</button>
+</div>
+
+<mat-dialog-content>
+    <table mat-table [dataSource]="dataSource" id="tasks_table_export">    
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Title' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Title }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="project">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Project' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Project?.Projectname }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="priority">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Priority' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Priority }} </td>
+        </ng-container>
+        
+        
+        <ng-container matColumnDef="start">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Start date' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.StartDate |date : 'short' }} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="deadline">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Deadline' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Deadline |date : 'short' }} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="closed">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Closed at' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.closedAt |date : 'short' }} </td>
+        </ng-container>
+
+            
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Status' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Status }} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Progress">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'progress' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.progress }} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Details' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> {{ element.Details }} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="executor">
+            <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600"> {{ 'Executor' | translate }} </th>
+            <td mat-cell *matCellDef="let element"> 
+                <ul>
+                    @for(user of element.Executor; track user._id){
+                        <li>{{ user.fullName }}</li>
+                    }
+                </ul>
+            </td>
+        </ng-container>
+        
+            <!-- Header & Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</mat-dialog-content>

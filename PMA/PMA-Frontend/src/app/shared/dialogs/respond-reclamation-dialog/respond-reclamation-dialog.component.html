@@ -1,0 +1,19 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ (data.action == 'Add' ? 'Add Response' : 'Update Response') |
+    translate }}
+</h5>
+
+<mat-dialog-content style="max-width: 700px">
+    <div class="row">
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Response' | translate }}</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <textarea matInput rows="5" [formControl]="comment"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="col-12">
+            <button mat-flat-button color="primary" class="w-100" [disabled]="!comment.valid" (click)="submit()">
+                {{ 'Submit' | translate }}
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>

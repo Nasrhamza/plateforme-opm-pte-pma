@@ -1,0 +1,185 @@
+.user-details{
+    background-color: #c5d8f1;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+.user-image{
+    width: 120px;
+    height: 120px;
+    border-radius: 15px;
+    margin-left: 30px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+// .score{
+//     border : 2px solid rgba(39, 46, 243, 0.682);
+//     text-align: center;
+//     color: rgba(37, 124, 230, 0.793);
+//     background-color: rgba(227, 242, 242, 0.759);
+//     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+//     padding: 20px;
+//     border-radius: 15px;
+//     float: right;
+// }
+.status{
+    font-size: 20px;
+}
+.titles{
+    color: rgba(0, 0, 0, 0.441);
+}
+.quiz-details{
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    background-color:#d37ef553 ;
+}
+
+.question-details{
+    padding: 10px;
+    background-color: #e6e3e35c;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0px 10px 15px -3px rgba(143, 142, 142, 0.548);
+
+
+}
+.response{
+    width: 95%;
+    padding:5px;
+    margin-left: 10px;
+}
+
+
+.correct {
+    width: 95%;
+    background-color: rgba(144, 238, 144, 0.576); 
+    border-radius: 5px;
+    padding : 5px;
+    margin-left: 10px;
+
+}
+.wrong {
+    width: 95%;
+    background-color: rgba(238, 144, 146, 0.576); 
+    border-radius: 5px;
+    padding : 5px;
+    margin-left: 10px;
+
+}
+.check{
+    font-size: 15px;
+    color: rgba(12, 195, 152, 0.866);
+}
+.check1{
+    font-size: 15px;
+    color: rgba(12, 195, 152, 0.866);
+}
+.cross{
+    font-size: 15px;
+    color: rgba(231, 51, 51, 0.866);
+}
+.correct-answer {
+    width: 95%;
+    background-color: rgba(144, 238, 144, 0.576); 
+    border-radius: 5px;
+    padding : 5px;
+    margin-left: 10px;
+
+}
+.quest{
+    width: 95%;
+    margin-left: 15px;
+    background-color: aliceblue;
+    border: 0.5px solid black;
+    padding:5px;
+    border-radius: 15px;
+
+}
+
+
+
+
+/* Main container styling */
+.score-card {
+    perspective: 1000px; /* Create a 3D effect */
+    // float: right;
+    // width: 150px; /* Fixed size for consistency */
+    // height: 150px;
+    // position: relative;
+    border : 2px dashed rgba(39, 46, 243, 0.682); 
+    text-align: center;
+    color: rgba(37, 124, 230, 0.793);
+    background-color: rgba(227, 242, 242, 0.759);
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    padding: 10px;
+    border-radius: 15px;
+    float: right;
+}
+
+/* Inner container to hold front and back */
+.score-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d; /* Enable 3D transformations */
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    border-radius: 15px;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Flip effect on hover */
+.score-card:hover .score-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Front and back sides */
+.score-card-front,
+.score-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Hide the back side when not visible */
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+/* Front side styling */
+.score-card-front {
+    background: linear-gradient(135deg, #2a33e5a7, #f15fcaa3);
+    color: white;
+    // font-family: 'Poppins', sans-serif;
+    // font-weight: bold;
+}
+
+/* Back side styling */
+.score-card-back {
+    background: linear-gradient(135deg, #2a33e5a7, #f15fcaa3);
+    transform: rotateY(180deg); /* Start flipped */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Button styling */
+.action-button {
+    font-size: 1.2rem;
+    color: white;
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* Button hover effect */
+.action-button:hover {
+    border: none;
+    transform: scale(1.1);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+}

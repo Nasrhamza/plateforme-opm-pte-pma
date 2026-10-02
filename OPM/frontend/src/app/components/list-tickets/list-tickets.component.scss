@@ -1,0 +1,68 @@
+.custom-padding {
+  cursor: pointer;
+  padding: 50px 25px;
+}
+
+.ticket-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-12{
+  padding: 0;
+}
+
+.ticket-category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 5px; /* Reduced padding for a smaller size */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* Hover effects */
+  &:hover {
+    transform: translateY(-3px); /* Slightly less pronounced hover effect */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+  }
+
+  h6 {
+    font-size: 0.9rem; /* Smaller font size */
+    color: #555;
+    margin: 0; /* Remove default margin */
+    transition: color 0.3s ease;
+  }
+
+  h5 {
+    margin: 5px 0 0; /* Adjust margin for compact spacing */
+  }
+
+  h5 span {
+    font-weight: bold;
+    font-size: 1rem; /* Ensure the number remains prominent */
+    transition: color 0.3s ease;
+  }
+
+  /* Darken text color on hover */
+  &:hover h6 {
+    color: #000;
+  }
+
+  &:hover h5 span {
+    color: #007bff; /* Optional: Add a subtle highlight effect */
+  }
+}
+
+.icon-hover {
+  cursor: pointer;
+  transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.icon-hover:hover {
+  transform: scale(1.15);
+}

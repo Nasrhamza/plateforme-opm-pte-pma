@@ -1,0 +1,15 @@
+.profile-img-overlay{
+    position: absolute;
+    top: 75%;
+    right: 0px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(93 135 255);
+}
+.profile-img-overlay:hover{
+    background-color: rgb(113, 151, 255);
+    cursor: pointer;
+}

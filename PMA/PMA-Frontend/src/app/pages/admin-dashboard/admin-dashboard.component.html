@@ -1,0 +1,313 @@
+<!-- first row -->
+<div class="row">
+    <div class="col-md-4 col-sm-12">
+        <mat-card class="p-12 shadow-none b-radius-30" style="width: 100%;">
+            <div class="row">
+                <div class="col-6">
+                    <mat-card class="shadow-none text-center bg-light-warning  b-radius-30"
+                        (click)="router.navigate(['admin','teamleaders'])" style="cursor: pointer;">
+                        <mat-card-content class="">
+                            <!-- <i-tabler name="users" class="text-white icon-26"></i-tabler> -->
+                            <img src="/assets/images/svgs/group-svgrepo-com (2).svg" alt="users-icon"
+                                width="50px">
+                            <h4 class="mat-subtitle-2 f-w-600 text-warning m-t-8">
+                                {{ 'Team Leader' | translate }}
+                            </h4>
+                            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-warning m-t-8">
+                                {{usersOverview?.leaders}}
+                            </h6>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="shadow-none text-center bg-light-accent b-radius-30"
+                        (click)="router.navigate(['admin','engineers'])" style="cursor: pointer;">
+                        <mat-card-content class="">
+                            <!-- <i-tabler name="users" class="text-white icon-26"></i-tabler> -->
+                            <img src="/assets/images/svgs/group-svgrepo-com.svg" alt="users-icon" width="50px">
+                            <h4 class="mat-subtitle-2 f-w-600 text-accent m-t-8">
+                                {{ 'Engineers' | translate }}
+                            </h4>
+                            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-accent m-t-8">
+                                {{usersOverview?.engineers}}
+                            </h6>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-6">
+                    <mat-card class="shadow-none text-center bg-light-success b-radius-30"
+                        (click)="router.navigate(['admin','clients'])" style="cursor: pointer;">
+                        <mat-card-content class="">
+                            <!-- <i-tabler name="users" class="text-white icon-26"></i-tabler> -->
+                            <img src="/assets/images/svgs/group-svgrepo-com (1).svg" alt="users-icon"
+                                width="50px">
+                            <h4 class="mat-subtitle-2 f-w-600 text-success m-t-8">
+                                {{ 'Clients' | translate }}
+                            </h4>
+                            <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-success m-t-8">
+                                {{usersOverview?.clients}}
+                            </h6>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="shadow-none text-center b-radius-30" style="background-color: #ffebf4;">
+                        <mat-card-content class="">
+                            <!-- <i-tabler name="file" class="text-white icon-26"></i-tabler> -->
+                            <img src="/assets/images/svgs/file-document-new-contract-svgrepo-com.svg"
+                                alt="users-icon" width="50px">
+                            <h4 class="mat-subtitle-2 f-w-600 m-t-8" style="color: #f76aa4;">
+                                {{ 'Files' | translate }}
+                            </h4>
+                            <h6 class="m-t-4 mat-subtitle-1 f-w-600 m-t-8" style="color: #f76aa4;">
+                                {{ totalFiles }}
+                            </h6>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <!-- <mat-card class="shadow-none theme-card b-radius-30">
+            <mat-card-header>
+                <mat-card-title class="m-b-0">{{ 'Team Leaders participations' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                @if(!teamLeadersParticiaptionsChartOptions){
+                <app-empty-data></app-empty-data>
+                }@else{
+                <apx-chart [series]="teamLeadersParticiaptionsChartOptions?.series"
+                    [chart]="teamLeadersParticiaptionsChartOptions?.chart"
+                    [dataLabels]="teamLeadersParticiaptionsChartOptions?.dataLabels"
+                    [plotOptions]="teamLeadersParticiaptionsChartOptions?.plotOptions"
+                    [yaxis]="teamLeadersParticiaptionsChartOptions?.yaxis"
+                    [xaxis]="teamLeadersParticiaptionsChartOptions?.xaxis"
+                    [stroke]="teamLeadersParticiaptionsChartOptions?.stroke"
+                    [grid]="teamLeadersParticiaptionsChartOptions?.grid"
+                    [fill]="teamLeadersParticiaptionsChartOptions?.fill"
+                    [annotations]="teamLeadersParticiaptionsChartOptions?.annotations">
+                </apx-chart>
+                }
+            </mat-card-content>
+        </mat-card> -->
+        <mat-card class="shadow-none theme-card b-radius-30">
+            <mat-card-header>
+                <mat-card-title class="m-b-0">{{ 'Projects comparation for Last/Current year' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                @if(!teamLeadersParticiaptionsChartOptions){
+                <app-empty-data></app-empty-data>
+                }@else{
+                    <apx-chart
+                        [series]="projectYearsComparaisonChartOptions.series"
+                        [chart]="projectYearsComparaisonChartOptions.chart"
+                        [dataLabels]="projectYearsComparaisonChartOptions.dataLabels"
+                        [plotOptions]="projectYearsComparaisonChartOptions.plotOptions"
+                        [yaxis]="projectYearsComparaisonChartOptions.yaxis"
+                        [legend]="projectYearsComparaisonChartOptions.legend"
+                        [fill]="projectYearsComparaisonChartOptions.fill"
+                        [stroke]="projectYearsComparaisonChartOptions.stroke"
+                        [tooltip]="projectYearsComparaisonChartOptions.tooltip"
+                        [xaxis]="projectYearsComparaisonChartOptions.xaxis"
+                    ></apx-chart>
+                }
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<!-- second row -->
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-8">
+        <mat-card class="shadow-none theme-card b-radius-30">
+            <mat-card-header class="d-flex gap-8 align-items-center justify-content-between">
+                <mat-card-title class="d-flex align-items-center gap-10"><img
+                        src="/assets/images/svgs/folder-svgrepo-com.svg" alt="appreciation letters" width="30px">{{
+                    'Projects (' + projects.length + ')' | translate }}</mat-card-title>
+                <div class="d-flex gap-10">
+                    <mat-form-field appearance="outline" class="theme-select">
+                        <input matInput [formControl]="projectInput" placeholder="{{'Project name' | translate}}" />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="theme-select">
+                        <mat-select placeholder="{{'Status' |translate}}"
+                            (selectionChange)="handleProjectStatusFilter($event)">
+                            <mat-option value=''>{{'All' | translate}}</mat-option>
+                            <mat-option value='Pending'>{{'Pending' | translate}}</mat-option>
+                            <mat-option value='Completed'>{{'Completed' | translate}}</mat-option>
+                            <mat-option value='In Progress'>{{'In Progress' | translate}}</mat-option>
+                            <mat-option value='Overdue'>{{'Overdue' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="theme-select">
+                        <mat-select placeholder="{{'Year' |translate}}" (selectionChange)="handleYearSelect($event)">
+                            <mat-option value=''>{{ 'All' | translate }}</mat-option>
+                            @for(year of lastTenYears;track year){
+                            <mat-option [value]='year'>{{year}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                @if(filteredProjects.length == 0){
+                <app-empty-data></app-empty-data>
+                }@else{
+                <div class="row">
+                    @for(p of filteredProjects.slice(0, 6);track p._id){
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <mat-card class="b-radius-30 shadow-none clickeable-card"
+                            style="background-color: rgb(245, 245, 245);" (click)="goToProject(p._id)">
+                            <mat-card-header>
+                                <mat-card-title>{{ p.Projectname | shorten : 60 }}</mat-card-title>
+                                <mat-card-subtitle class="m-t-6">{{ p.client.fullName }}</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content class="p-t-0">
+                                <div class="d-flex align-items-center social-chips m-b-20">
+                                    @for(user of p.equipe; track user._id){
+                                    <img src="{{imagesUrl}}/{{user?.image}}" width="50" height="50" alt="social"
+                                        class="rounded-circle" matTooltip="{{user?.fullName}}" />
+                                    }
+                                </div>
+                                <mat-progress-bar mode="determinate" [value]="p.progress"
+                                    matTooltip="{{ p.progress }}%">
+                                </mat-progress-bar>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    }
+                </div>
+                }
+            </mat-card-content>
+        </mat-card>
+        <!-- team leaders participation chart -->
+        <mat-card class="shadow-none theme-card b-radius-30">
+            <mat-card-header>
+                <mat-card-title class="m-b-0">{{ 'Team Leaders participations' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                @if(!teamLeadersParticiaptionsChartOptions){
+                <app-empty-data></app-empty-data>
+                }@else{
+                <apx-chart [series]="teamLeadersParticiaptionsChartOptions?.series"
+                    [chart]="teamLeadersParticiaptionsChartOptions?.chart"
+                    [plotOptions]="teamLeadersParticiaptionsChartOptions?.plotOptions"
+                    [xaxis]="teamLeadersParticiaptionsChartOptions?.xaxis">
+                </apx-chart>
+                }
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- participations -->
+    <div class="col-lg-4 col-sm-12 col-md-12">
+        <mat-card class="shadow-none theme-card">
+            <mat-card-header>
+                <mat-card-title>{{'Projects by department' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                <!-- <h1 class="text-center m-0 p-0">{{ letters }}</h1> -->
+                @for(entry of projectsByDepartments | keyvalue;track entry){
+                    <div class="d-flex align-items-center justify-content-between m-b-12 dep-hover" (click)="handleDepartmentClick(entry.key)">
+                        <span class="f-s-14 f-w-600"> {{ entry.key }} </span>
+                        <span class="f-s-14 f-w-600"> {{ entry.value }} </span>
+                    </div>
+                }
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="shadow-none theme-card b-radius-30" style="cursor: pointer;"
+            (click)="openAppreciationLetterModal()">
+            <mat-card-header>
+                <mat-card-title class="d-flex align-items-center gap-10"><img
+                        src="/assets/images/svgs/cup-svgrepo-com.svg" alt="appreciation letters" width="30px">{{
+                    'Appreciation Letters' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                <h1 class="text-center m-0 p-0">{{ letters }}</h1>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="shadow-none theme-card b-radius-30">
+            <mat-card-header>
+                <mat-card-title class="m-b-0">{{ 'Projects' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                <div class="col-12">
+                    @if(!projectsChartOptions){
+                    <app-empty-data></app-empty-data>
+                    }@else{
+                    <apx-chart [series]="projectsChartOptions?.series" [chart]="projectsChartOptions?.chart"
+                        [dataLabels]="projectsChartOptions?.dataLabels"
+                        [plotOptions]="projectsChartOptions?.plotOptions" [legend]="projectsChartOptions?.legend"
+                        [colors]="projectsChartOptions?.colors" [tooltip]="projectsChartOptions?.tooltip"
+                        [labels]="projectsChartOptions?.labels">
+                    </apx-chart>
+                    <div class="d-flex flex-column align-items-center">
+                        @for(item of projectsChartOptions?.labels;track item;let i = $index){
+                        <div class="d-flex gap-8 m-b-6 align-items-center">
+                            <span [ngStyle]="{'background-color' : projectsChartOptions?.colors[i], 'height': '15px', 
+                                    'width': '15px', 'border-radius' : '50px' }"></span>
+                            <span>{{item | translate }} - {{ projectsChartOptions?.series[i] }}</span>
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div class="row">
+            <div class="col-lg-12">
+                <mat-card class="shadow-none theme-card b-radius-30">
+                    <mat-card-header>
+                        <mat-card-title class="m-b-0">{{ 'Reclamations' | translate }}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="b-t-1">
+                        <div class="row align-items-center">
+                            @if(!reclamationsOverviewChartOptions){
+                            <app-empty-data></app-empty-data>
+                            }@else{
+                            <div class="mat-card">
+
+                            </div>
+                            <div class="col-lg-6">
+                                <apx-chart [series]="reclamationsOverviewChartOptions?.series"
+                                    [chart]="reclamationsOverviewChartOptions?.chart"
+                                    [dataLabels]="reclamationsOverviewChartOptions?.dataLabels"
+                                    [plotOptions]="reclamationsOverviewChartOptions?.plotOptions"
+                                    [legend]="reclamationsOverviewChartOptions?.legend"
+                                    [colors]="reclamationsOverviewChartOptions?.colors"
+                                    [tooltip]="reclamationsOverviewChartOptions?.tooltip"
+                                    [labels]="reclamationsOverviewChartOptions?.labels">
+                                </apx-chart>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="d-flex flex-column align-items-start">
+                                    @for(item of reclamationsOverviewChartOptions?.labels;track item;let i = $index){
+                                    <div class="d-flex gap-8 m-b-6 align-items-center">
+                                        <span [ngStyle]="{'background-color' : reclamationsOverviewChartOptions?.colors[i], 'height': '15px', 
+                                                'width': '15px', 'border-radius' : '50px' }"></span>
+                                        <span>{{item | translate }} - {{ reclamationsOverviewChartOptions?.series[i]
+                                            }}</span>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                            }
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <!-- engineer participation chart -->
+        <mat-card class="shadow-none theme-card b-radius-30">
+            <mat-card-header>
+                <mat-card-title class="m-b-0">{{ 'Engineers participations' | translate }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="b-t-1">
+                @if(!engineersParticiaptionsChartOptions){
+                <app-empty-data></app-empty-data>
+                }@else{
+                <apx-chart [series]="engineersParticiaptionsChartOptions?.series"
+                    [chart]="engineersParticiaptionsChartOptions?.chart"
+                    [plotOptions]="engineersParticiaptionsChartOptions?.plotOptions"
+                    [xaxis]="engineersParticiaptionsChartOptions?.xaxis">
+                </apx-chart>
+                }
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

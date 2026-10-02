@@ -1,0 +1,122 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{mytitle | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+        <div class="form-group">
+            <label for="sla"> {{ 'Title' | translate}}</label>
+            <input type="text" class="form-control" placeholder="Title" id="title" name="title" ngModel
+                [(ngModel)]="this.model.title" #title="ngModel" required>
+            <!-- <span>The SAL must be in Hour</span> -->
+            <div *ngIf="title.touched && title.errors?.required" class="error"> {{ 'Title required' | translate}}</div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ 'Select User' | translate }}</label>
+            <ng-select [(ngModel)]="model.user" name="user" #user="ngModel" required
+                [placeholder]="'Select user' | translate" (ngModelChange)="onUserSelected($event)" >
+                <ng-option *ngFor="let item of listUsers" [value]="item._id">
+                    <div class="d-flex align-items-center">
+                        <img [src]="fileurl + item.image.fileName" alt="{{ item.image }}" class="mr-2" width="30"
+                            height="30">
+                        <span>{{ item.fullName }}</span>
+                    </div>
+                </ng-option>
+            </ng-select>
+
+            <div class="invalid-feedback" *ngIf="user.touched && user.errors?.required">
+                {{ 'User is required' | translate }}
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="custom-control custom-switch mt-2">
+                <input type="checkbox" class="custom-control-input" id="internalTaskSwitch" name="internalTask"
+                    [(ngModel)]="model.internalTask">
+                <label class="custom-control-label" for="internalTaskSwitch">
+                    {{ 'Internal Task' | translate }}
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Address:</label>
+            <app-map (addressSelected)="onAddressSelected($event)"></app-map>
+            <input type="text" class="form-control" placeholder="Address" id="location" name="location" ngModel
+                [(ngModel)]="model.location" #location="ngModel" required>
+            <div *ngIf="location.touched && location.errors?.required" class="error">Adress required</div>
+        </div>
+        <div class="form-group">
+            <label for="description">{{ 'Describe Your Problem' | translate }}</label>
+            <textarea class="form-control" id="description" name="description" [(ngModel)]="model.description"
+                #description="ngModel" required rows="4"></textarea>
+            <div class="invalid-feedback" *ngIf="description.touched && description.errors?.required" class="error">
+                {{ 'Description is required' | translate }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="technicien">{{'Teams' | translate}} :</label>
+            <ng-select [items]="listTechs" bindLabel="firstName" bindValue="_id" [multiple]="true"
+                placeholder="Select team members" [(ngModel)]="model.technicienId" name="technicienId"
+                #techniciens="ngModel" [searchable]="true" required>
+                <ng-template ng-label-tmp let-item="item">
+                    <img src="{{fileurl + item?.image?.fileName}}"
+                        style="border-radius: 50%; width: 25px; height: 25px; border: 1px solid #FFF; object-fit: contain;"
+                        class="wid-20 rounded mr-1 img-fluid">
+                    {{ item?.firstName }} {{ item?.lastName }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    <img src="{{fileurl + item?.image?.fileName}}"
+                        style="border-radius: 50%; width: 35px; height: 35px; border: 1px solid #FFF; object-fit: contain;"
+                        class="wid-20 rounded mr-1 img-fluid">
+                    {{ item?.firstName }} {{ item?.lastName }}
+                </ng-template>
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="supervisor">{{ 'Supervisor' | translate }} :</label>
+            <ng-select [items]="listTechs" bindLabel="firstName" bindValue="_id" [multiple]="false"
+                placeholder="Select a supervisor" [(ngModel)]="model.supervisor" name="supervisor" #supervisor="ngModel"
+                [searchable]="true" required>
+                <ng-template ng-label-tmp let-item="item">
+                    <img src="{{fileurl + item?.image?.fileName}}"
+                        style="border-radius: 50%; width: 25px; height: 25px; border: 1px solid #FFF; object-fit: contain;"
+                        class="wid-20 rounded mr-1 img-fluid">
+                    {{ item?.firstName }} {{ item?.lastName }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    <img src="{{fileurl + item?.image?.fileName}}"
+                        style="border-radius: 50%; width: 35px; height: 35px; border: 1px solid #FFF; object-fit: contain;"
+                        class="wid-20 rounded mr-1 img-fluid">
+                    {{ item?.firstName }} {{ item?.lastName }}
+                </ng-template>
+            </ng-select>
+
+            <div class="invalid-feedback" *ngIf="supervisor.touched && supervisor.errors?.required">
+                {{ 'Supervisor is required' | translate }}
+            </div>
+        </div>
+
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="validatedCustomFile" multiple
+                (change)="onFileSelected($event)" #fileInput />
+            <label class="custom-file-label" for="validatedCustomFile"> {{'Choose file...' | translate}}</label>
+            <br /><br />
+            <span>{{ fileNames }}</span>
+            <div class="invalid-feedback">Example invalid custom file feedback</div>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-warning"> {{'Update' |
+                translate}}</button>
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary"> {{'Save' |
+                translate}}</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')"> {{'Close' |
+                translate}}</button>
+        </div>
+    </form>
+</div>

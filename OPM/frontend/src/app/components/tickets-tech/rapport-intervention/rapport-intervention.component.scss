@@ -1,0 +1,14 @@
+.error {
+    color: red;
+    font-size: 15px;
+    margin-top: 0; /* Ensure there is no additional top margin on the error message */
+}
+/* CSS for list styling */
+.list-textarea {
+    font-family: monospace; /* Optionally use a monospace font for easier reading */
+    padding-left: 1.5rem; /* Indent for list effect */
+    line-height: 1.5; /* Adjust line spacing */
+    background-image: linear-gradient(to bottom, gray 1px, transparent 1px);
+    background-size: 100% 1.5rem; /* Matches line height */
+  }
+  

@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ title | translate }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form name="form" #f="ngForm" (ngSubmit)="Onsubmit(f)">
+
+        <!-- Solution Textarea -->
+        <div class="mb-3">
+            <label for="solution" class="form-label">{{ 'Enter your solution' | translate }}</label>
+            <textarea [(ngModel)]="solution" name="solution" id="solution" class="form-control" rows="4"
+                placeholder="{{ 'Enter your solution here...' | translate }}"></textarea>
+        </div>
+
+        <!-- Drag & Drop File Upload -->
+        <div class="mb-3">
+            <label class="form-label">{{ 'Attach Files' | translate }}</label>
+            <div class="border border-primary rounded p-3 text-center" [class.bg-light]="selectedFiles.length === 0"
+                (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                style="cursor: pointer;" (click)="fileInput.click()">
+                <i class="feather icon-upload-cloud mr-2"></i>
+                <span *ngIf="selectedFiles.length === 0">{{ 'Drag & drop files here, or' | translate }} <strong>{{
+                        'browse' | translate }}</strong></span>
+                <span *ngIf="selectedFiles?.length > 0">
+                    <strong>{{ selectedFiles.length }} {{ 'file(s) selected' | translate }}</strong>
+                </span>
+                <input #fileInput type="file" multiple (change)="onFileSelect($event)" class="d-none">
+            </div>
+
+            <div *ngIf="selectedFiles?.length > 0" class="mt-2">
+                <ul class="list-unstyled mb-0">
+                    <li *ngFor="let file of selectedFiles; let i = index">
+                        {{ i + 1 }}. {{ file.name }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success" [disabled]="f.invalid">
+                <i class="feather icon-check-circle mr-1"></i>{{ 'Submit' | translate }}
+            </button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
+                {{ 'Close' | translate }}
+            </button>
+        </div>
+    </form>
+</div>

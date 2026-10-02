@@ -1,0 +1,17 @@
+<app-navigation class="pcoded-navbar" [ngClass]="{'navbar-collapsed' : navCollapsed, 'theme-horizontal': this.eliteConfig['layout'] === 'horizontal', 'mob-open' : navCollapsedMob, 'hide-sidemenu': (!this.eliteConfig['pre-layout-collapse-menu'] && this.eliteConfig['pre-layout'] === 'layout-1')}" (onNavCollapse)="this.navCollapsed = !this.navCollapsed;" (onNavCollapsedMob)="navMobClick()"></app-navigation>
+<app-nav-bar class="navbar pcoded-header navbar-expand-lg navbar-light" (onNavCollapsedMob)="navMobClick()"></app-nav-bar>
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <app-breadcrumb *ngIf="this.eliteConfig['layout'] === 'horizontal' || this.windowWidth <= 992"></app-breadcrumb>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-configuration></app-configuration>

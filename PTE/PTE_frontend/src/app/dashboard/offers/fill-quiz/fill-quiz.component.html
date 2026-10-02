@@ -1,0 +1,57 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                    Assign Questions for quiz</div>
+            </div>
+        </div>
+    </h4>
+
+</div>
+<div class="modal-body">
+    <form [formGroup]="questionForm" (ngSubmit)="onSubmitQuestion(questionForm)">
+        <div>
+            <div>
+                <div class="mb-3">
+                    <label>Question <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" placeholder="Write the quiz question here..." formControlName="question" required>
+                    <small class="form-text text-danger"
+                        *ngIf="!questionForm.get('question')?.valid && questionForm.get('question')?.touched">
+                        Question is required
+                    </small>
+                </div>
+
+                <div  class="ml-4">
+                    <div class="mb-2">
+                        <label>Response 1<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response1" required>
+                    </div>
+                    <div class="form-check ml-3">
+                        <input type="checkbox" formControlName="isCorrect1">
+                        <label class="form-check-label">Correct response</label>
+                    </div>
+                    <div class="mb-2">
+                        <label>Response 2<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response2" required>
+                    </div>
+                    <div class="form-check ml-3">
+                        <input type="checkbox" formControlName="isCorrect2">
+                        <label class="form-check-label">Correct response</label>
+                    </div>
+                    <div class="mb-2">
+                        <label>Response 3<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Write the response here..." formControlName="response3" required>
+                    </div>
+                    <div class="form-check ml-3">
+                        <input type="checkbox" formControlName="isCorrect3">
+                        <label class="form-check-label">Correct response</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save Question</button>
+        </div>
+    </form>
+</div>

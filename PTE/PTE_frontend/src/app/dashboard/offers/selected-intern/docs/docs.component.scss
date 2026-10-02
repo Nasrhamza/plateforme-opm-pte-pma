@@ -1,0 +1,46 @@
+.goback{
+    padding: 10px;
+    color: rgb(58, 189, 232);
+    font-size: 15px;
+}
+.goback:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgb(26, 84, 177);
+}
+
+.file-container{
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    background-color: #7ba4ce62;
+   
+}
+.download {
+    padding: 10px;
+}
+.download:hover {
+    border: 1px solid lightgray;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: rgb(171, 199, 221);
+}
+.file-name{
+    padding: 10px;
+    color: rgb(73, 71, 71);
+}
+.upload-container{
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.upload-button{
+    width: 90%;
+    height: 100px;
+}
+.no-file{
+    padding: 10px;
+    color: rgba(197, 49, 49, 0.908);
+    text-align: center;
+    font-size: 15px;
+}

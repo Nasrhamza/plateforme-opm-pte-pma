@@ -1,0 +1,27 @@
+.roomContainer{
+    width: 180px;
+    // margin-left: -35px;
+    position: inherit;
+    max-width: 200px;
+    padding-bottom: 10px;
+    
+
+}
+.rooms{
+    color:rgb(26, 156, 156);
+    font-size: medium;
+}
+.roomsModel{
+    color:rgb(42, 117, 167);
+    font-size: small;
+}
+.actionButtons{
+    border: none;
+    margin-left: -10px;
+}
+.empty{
+    color: rgb(171, 169, 169);
+    text-align: center;
+    margin-top: 20%;
+    position: sticky;
+}

@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+
+        <div class="form-group">
+            <label for="sla">Folder Name</label>
+            <input type="text" class="form-control" placeholder=" Name" id="name" name="name" ngModel
+                [(ngModel)]="this.model.name" #name="ngModel" required>
+            <!-- <span>The SAL must be in Hour</span> -->
+            <div *ngIf="name.touched && name.errors?.required" class="error">Folder Name required</div>
+        </div>
+
+        <div class="form-group">
+            <label for="sla">Folder Color</label>
+            <input class="form-control" [(colorPicker)]="showColorCode" (colorPickerChange)="onColorChange($event)"
+                [style.background]="showColorCode" [value]="showColorCode" [cpPosition]="'bottom'" required />
+            <!-- <div *ngIf="color.touched && color.errors?.required" class="error">color Name required</div> -->
+        </div>
+        <div class="custom-file">
+            <br>
+            <input type="file" class="custom-file-input" id="inputGroupFile01" accept="image/*"
+                (change)="updateFileName($event)">
+            <label class="custom-file-label" id="fileInputLabel" for="inputGroupFile01" #fileLabel>Choose Log
+                Client</label>
+            <span>The allowed image types to upload are jpeg , jpg , png , gif and svg.</span>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid"
+                class="btn btn-outline-warning">Update</button>
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

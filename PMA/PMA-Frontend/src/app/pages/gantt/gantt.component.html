@@ -1,0 +1,85 @@
+
+<section>
+    <div class="content-block pt-5 px-3">
+      <div class="card mt-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <mat-card-title>
+                {{'Gantt chart' | translate }}
+            </mat-card-title>
+            <div class="d-flex justify-content-end gap-10 m-b-24">
+                <mat-form-field appearance="outline" class="theme-select">
+                    <input matInput [formControl]="search" placeholder="Project..." />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="theme-select">
+                    <mat-select placeholder="Period" (selectionChange)="onFilterChange($event.value)">
+                        @for(option of filterOptions; track option){
+                            <mat-option [value]='option'>{{ option | translate}}</mat-option>
+                        }
+    
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-12 p-2">
+          <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <mat-card class="shadow-none b-radius-30 text-center bg-green ">
+                    <mat-card-content class="p-26">
+                        <i-tabler name="checks" class="text-white icon-26"></i-tabler>
+                        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                            Completed tasks
+                        </h4>
+                        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                            {{taskCountcomp}}
+                        </h6>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <mat-card class="shadow-none b-radius-30 text-center bg-red ">
+                    <mat-card-content class="p-26">
+                        <i-tabler name="progress-x" class="text-white icon-26"></i-tabler>
+                        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                            Overdue tasks
+                        </h4>
+                        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                            {{taskCountover}}
+                        </h6>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <mat-card class="shadow-none b-radius-30 text-center bg-accent">
+                    <mat-card-content class="p-26">
+                        <i-tabler name="flag-check" class="text-white icon-26"></i-tabler>
+                        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                            Completed projects
+                        </h4>
+                        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                            {{calculateProjectStatuses(allProjects).completedProjectsCount}}
+                        </h6>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <mat-card class="shadow-none b-radius-30 text-center bg-blue">
+                    <mat-card-content class="p-26">
+                        <i-tabler name="checks" class="text-white icon-26"></i-tabler>
+                        <h4 class="mat-subtitle-2 f-w-600 text-white m-t-8">
+                            Total tasks
+                        </h4>
+                        <h6 class="m-t-4 mat-subtitle-1 f-w-600 text-white m-t-8">
+                            {{allTasks.length}}
+                        </h6>
+                    </mat-card-content>
+                </mat-card>
+            </div>  
+          </div>
+  
+          <div class="p-2">
+            <div id="gantt_here"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

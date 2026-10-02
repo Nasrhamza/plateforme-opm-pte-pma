@@ -1,0 +1,232 @@
+<div class="auth-wrapper">
+  <div class="auth-content container">
+    <div class="card shadow-sm border-0">
+      <div class="row align-items-center">
+        <div class="col-md-6 d-none d-md-flex flex-column align-items-center">
+          <!-- Prologic Logo -->
+          <div class="text-center mb-4 d-flex align-items-center justify-content-center gap-3">
+            <img src="assets/logo/Logo-Prologic.png" alt="Prologic Logo" class="img-fluid mb-2" width="150px"
+              style="border-right: 2px solid #ddd; padding-right: 15px;">
+            <img src="assets/logo/logoBlue.png" alt="Blue Logo" class="img-fluid mb-2" width="150px"
+              style="padding-left: 15px;">
+          </div>
+          <!-- Illustration -->
+          <img src="assets/images/signUp.jpg" alt="Illustration" class="img-fluid" style="max-height: 100%;">
+        </div>
+
+        <div class="col-md-6">
+          <div class="card-body">
+            <h4 class="mb-3 f-w-400 titleA">Create Your Account</h4>
+            <hr>
+            <form class="form-group" [formGroup]="technicianForm" (ngSubmit)="signUp()">
+              <div class="row mb-3">
+                <!-- First Name -->
+                <div class="col-md-6">
+                  <label for="firstName">First Name:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="feather icon-user"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                      placeholder="First Name">
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('firstName').touched && technicianForm.get('firstName').hasError('required')"
+                    class="text-danger small">
+                    * First Name is required.
+                  </div>
+                </div>
+                <!-- Last Name -->
+                <div class="col-md-6">
+                  <label for="lastName">Last Name:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="feather icon-user"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                      placeholder="Last Name">
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('lastName').touched && technicianForm.get('lastName').hasError('required')"
+                    class="text-danger small">
+                    * Last Name is required.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label for="email">E-mail:</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="feather icon-mail"></i></span>
+                  </div>
+                  <input type="email" class="form-control" id="email" formControlName="email"
+                    placeholder="Email address">
+                </div>
+                <div *ngIf="technicianForm.get('email').touched && technicianForm.get('email').hasError('required')"
+                  class="text-danger small">
+                  * Email is required.
+                </div>
+                <div *ngIf="technicianForm.get('email').touched && technicianForm.get('email').hasError('email')"
+                  class="text-danger small">
+                  * Invalid email format.
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <!-- Upload Picture -->
+                <div class="col-md-6">
+                  <label for="profilePicture" class="form-label">Upload Picture:</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="feather icon-image"></i>
+                    </span>
+                    <input 
+                      type="file" 
+                      class="form-control" 
+                      id="profilePicture" 
+                      (change)="onFileChange($event)" 
+                      accept="image/*" 
+                      aria-describedby="profilePictureHelp">
+                  </div>
+                  <small id="profilePictureHelp" class="form-text text-muted">
+                    Choose a file in JPG, PNG, or GIF format.
+                  </small>
+                  <div *ngIf="fileError" class="text-danger small mt-1">
+                    * Please upload a valid image.
+                  </div>
+                </div>
+                
+                <!-- Signature -->
+                <div class="col-md-6">
+                  <label for="signature">Signature:</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="feather icon-image"></i>
+                    </span>
+                    <input 
+                      type="file" 
+                      class="form-control" 
+                      id="signature" 
+                      (change)="onSignatureChange($event)">
+                  </div>
+                  <div *ngIf="fileError" class="text-danger small mt-1">
+                    * Signature is required.
+                  </div>
+                </div>
+              </div>
+              
+
+              <div class="row mb-3">
+                <!-- Password -->
+                <div class="col-md-6">
+                  <label for="password">Password:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="feather icon-lock"></i></span>
+                    </div>
+                    <input type="password" class="form-control" id="password" formControlName="password"
+                      placeholder="Password">
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('password').dirty && technicianForm.get('password').hasError('minlength')"
+                    class="text-danger small">
+                    * Password must be at least 8 characters long.
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('password').touched && technicianForm.get('password').hasError('required')"
+                    class="text-danger small">
+                    * Password is required.
+                  </div>
+                </div>
+                <!-- Confirm Password -->
+                <div class="col-md-6">
+                  <label for="confirmPassword">Confirm Password:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="feather icon-lock"></i></span>
+                    </div>
+                    <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword"
+                      placeholder="Confirm Password">
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('confirmPassword').touched && technicianForm.get('confirmPassword').hasError('required')"
+                    class="text-danger small">
+                    * Confirm Password is required.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Signature -->
+          
+
+              <div class="row mb-3">
+                <!-- Phone Number -->
+                <div class="col-md-6">
+                  <label for="phoneNumber">Phone Number:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="feather icon-phone"></i></span>
+                    </div>
+                    <input type="tel" class="form-control" id="phoneNumber" formControlName="phoneNumber"
+                      placeholder="Phone Number">
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('phoneNumber').touched && technicianForm.get('phoneNumber').hasError('required')"
+                    class="text-danger small">
+                    * Phone Number is required.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="permisConduire">Do you have a driving license?</label>
+                  <div class="custom-checkbox mt-2">
+                    <input type="checkbox" id="permisConduire" formControlName="permisConduire">
+                    <label for="permisConduire" class="custom-check-label"></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <!-- Passport Checkbox -->
+                <div class="col-md-6">
+                  <label for="passeport">Do you have a passport?</label>
+                  <div class="custom-checkbox mt-2">
+                    <input type="checkbox" id="passeport" formControlName="passeport"
+                      (change)="onPassportChange($event)">
+                    <label for="passeport" class="custom-check-label"></label>
+                  </div>
+                </div>
+                <!-- Expired Date -->
+                <div class="col-md-6">
+                  <label for="expiredAt">Expired At:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="feather icon-calendar"></i></span>
+                    </div>
+                    <input type="date" class="form-control" id="expiredAt" formControlName="expiredAt"
+                      placeholder="Date of Expiration" [attr.disabled]="isPassportChecked ? null : true">
+                  </div>
+                  <div
+                    *ngIf="technicianForm.get('expiredAt').touched && technicianForm.get('expiredAt').hasError('required') && isPassportChecked"
+                    class="text-danger small">
+                    * Expiration Date is required.
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+              <button type="submit" class="btn btn-primary btn-block">
+                SignUp
+              </button>
+              <div class="text-center mt-3">
+                <p class="text-muted">Already have an account? <a [routerLink]="['/auth/signin']"
+                    class="text-primary">Login here</a></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

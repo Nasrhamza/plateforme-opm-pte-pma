@@ -1,0 +1,76 @@
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.centered-cell,
+.centered-cell2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  /* Adjust as needed */
+  text-align: center;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+}
+
+td span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
+  display: inline-block;
+}
+
+.nameSite {
+  cursor: pointer;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.nameSite:hover {
+  color: black;
+  font-weight: bold;
+}
+
+.site {
+  background-color: whitesmoke;
+  border: 1px solid rgb(218, 218, 218);
+  border-radius: 2px;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.site:active {
+  border-radius: 3px;
+  border: 1px solid rgb(20, 20, 20);
+}
+
+.trashIco {
+  color: rgba(255, 6, 6, 0.644);
+  margin: 10px;
+  cursor: pointer;
+}
+
+.trashIco:hover {
+  color: rgba(255, 0, 0, 1);
+  transform: scale(1.3);
+  border-radius: 3px;
+}
+
+.icon-hover {
+  cursor: pointer;
+  transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.icon-hover:hover {
+  transform: scale(1.3);
+  /* Makes the icon slightly bigger */
+}

@@ -1,0 +1,208 @@
+<div class="row">
+  <div class="col-xl-4 col-lg-12 task-detail-right">
+    <app-card [customHeader]="true" [options]="false">
+      <div class="app-card-header">
+        <div class="row">
+          <div class="col text-left">
+            <h5 class="mb-3"><a href="#" (click)="handleTabOpen($event,'contract')"><i
+                  class="fas fa-file-contract mr-2"></i>Contracts List</a></h5>
+          </div>
+          <div class="col text-right">
+            <!-- Check if user is admin before showing the button -->
+            <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+              class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="openAddContract()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-plus">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="openTab== 'contract' && this.newListContract?.length == 0">
+        <div style="text-align: center">
+          <h6>No Contract found</h6>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="openTab=='contract' && newListContract.length > 0">
+        <div class="row site" *ngFor="let item of this.newListContract">
+          <div class="col-10">
+            <div class="nameSite" (click)="showInfoContract(item)">
+              {{item.id}}
+            </div>
+          </div>
+          <div class="col-2">
+            <!-- Show delete icon only if user is admin -->
+            <div *ngIf="userAuthority !== 'commercial'" (click)="deleteContract(item._id)">
+              <i class="fas fa-trash-alt trashIco"></i>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </app-card>
+
+    <app-card [customHeader]="true" [options]="false">
+      <div class="app-card-header">
+        <div class="row">
+          <div class="col text-left">
+            <h5 class="mb-3"><a href="#" (click)="handleSiteTabOpen($event,'site')"><i
+                  class="fas fa-building m-r-5"></i>Sites List</a></h5>
+          </div>
+          <div class="col text-right">
+            <!-- Check if user is admin before showing the button -->
+            <button *ngIf="userAuthority !== 'commercial'" id="edit-btn" type="button"
+              class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="openAddSites()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-plus">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="activeContract?.listSite?.length == 0 && openSiteTab== 'site' ">
+        <div style="text-align: center">
+          <h6>No Sites found</h6>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf=" activeContract?.listSite?.length > 0 && openSiteTab== 'site'">
+        <div class="row site" *ngFor="let item of activeContract?.listSite" id="collapseExample2">
+          <div class="col-10">
+            <div class="nameSite" (click)="showInfoSites(item)">
+              {{item.nomSite}}
+            </div>
+          </div>
+          <div class="col-2">
+            <!-- Show delete icon only if user is admin -->
+            <div *ngIf="userAuthority !== 'commercial'" class="btnDel" (click)="deleteSite(item._id)">
+              <i class="fas fa-trash-alt trashIco"></i>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </app-card>
+
+    <app-card [customHeader]="true" [options]="false">
+      <div class="app-card-header">
+        <div class="row">
+          <div class="col text-left">
+            <h5 class="mb-3">
+              <a href="#" (click)="handleFileTabOpen($event,'files')"><i class="fas fa-file-alt m-r-5"></i>Attached
+                Files</a>
+            </h5>
+          </div>
+          <div class="col text-right">
+            <!-- Check if user is admin before showing the button -->
+            <button *ngIf="userAuthority !== 'commercial'" (click)="oppenAddFile()" id="edit-btn" type="button"
+              class="btn btn-sm btn-primary waves-effect waves-light f-right">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-plus">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="activeContract?.listOfFiles?.length == 0 && openFileTab== 'files'">
+        <ul class="media-list p-0">
+          <li class="media d-flex m-b-15">
+            <div class="media-body text-center">
+              <h6>No Attached Files</h6>
+            </div>
+          </li>
+        </ul>
+      </ng-container>
+
+      <!-- Files List -->
+      <ng-container *ngIf="activeContract?.listOfFiles.length != 0  && openFileTab== 'files'">
+        <ul class="media-list p-0">
+          <ng-container *ngFor="let item of activeContract?.listOfFiles">
+            <li class="media d-flex m-b-15 border-bottom pb-2">
+              <div class="m-r-20 file-attach">
+                <!-- File Icons -->
+                <!-- DOCX – blue -->
+                <i *ngIf="FindTypefile(item.fileName) === 'DOCX'" class="far fa-file-word f-28 text-primary"></i>
+
+                <!-- PDF – red -->
+                <i *ngIf="FindTypefile(item.fileName) === 'PDF'" class="far fa-file-pdf f-28 text-danger"></i>
+
+                <!-- Images – green -->
+                <i *ngIf="['JPEG', 'JPG', 'PNG', 'GIF'].includes(FindTypefile(item.fileName))"
+                  class="far fa-image f-28 text-primary"></i>
+
+                <!-- Other – gray -->
+                <i *ngIf="!['DOCX', 'PDF', 'JPEG', 'JPG', 'PNG', 'GIF'].includes(FindTypefile(item.fileName))"
+                  class="far fa-file f-28 text-muted"></i>
+              </div>
+
+              <div class="media-body">
+                <!-- File title (tooltip reveals full name) -->
+                <a href="javascript:void(0)" class="d-block text-dark" [attr.title]="item.title">
+                  {{ item.title | shorten:30 }}
+                </a>
+
+                <!-- Meta line -->
+                <small class="text-muted">
+                  Uploaded&nbsp;
+                  <time [attr.datetime]="item.uploadDate | date:'yyyy-MM-dd'">
+                    {{ item.uploadDate | date:'mediumDate' }}
+                  </time>
+                </small>
+              </div>
+
+              <div class="float-right text-muted">
+                <i (click)="downloadFile(item.path, item.title, item.fileName)"
+                  class="fas fa-download f-18 text-success icon-hover"></i>
+
+                <!-- Share icon -->
+                <i *ngIf="userAuthority !== 'commercial'" (click)="shareFile(item)"
+                  class="fas fa-share-alt f-18 ml-2 text-primary icon-hover"></i>
+
+                <!-- Show delete icon only if user is admin -->
+                <i *ngIf="userAuthority !== 'commercial'" (click)="deleteFile(item._id)"
+                  class="fas fa-trash-alt f-18 ml-2 text-danger icon-hover"></i>
+              </div>
+
+            </li>
+          </ng-container>
+        </ul>
+      </ng-container>
+    </app-card>
+  </div>
+  <div class="col-xl-8 col-lg-12">
+    <div class="filter-bar invoice-list">
+      <nav class="navbar m-b-30 p-10 text-light">
+        <div class="row">
+          <div class="col">
+            <h4 [style.color]="this.folderInfo?.colorfoldr">{{this.folderInfo?.name}}</h4>
+          </div>
+        </div>
+        <div class="nav-item nav-grid" *ngIf="this.folderInfo?.logo">
+          <img [src]="fileurl + this.folderInfo.logo.fileName" alt="" width="50px" height="40px" srcset="" style="">
+        </div>
+      </nav>
+    </div>
+    <app-details-section *ngIf="activeContractVisible" [selectedContract]="activeContract" [folderID]="id_folder"
+      [folderInfo]="folderInfo">
+    </app-details-section>
+
+    <app-site-details-section *ngIf="activeSiteVisible" [selectedSite]="activeSite" [selectedContract]="activeContract"
+      [folderID]="id_folder" [folderInfo]="folderInfo">
+    </app-site-details-section>
+
+    <app-card *ngIf="!activeContractVisible && !activeSiteVisible">
+      <div class="centered-content" style="height: 400px;">
+        <h3>No contract or sites selected</h3>
+      </div>
+    </app-card>
+  </div>
+</div>

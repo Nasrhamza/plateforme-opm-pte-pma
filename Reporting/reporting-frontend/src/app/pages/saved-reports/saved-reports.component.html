@@ -1,0 +1,115 @@
+<main class="pt-24 p-8 min-h-screen">
+  <div class="flex justify-between items-end mb-10">
+    <div>
+      <h2 class="text-3xl font-bold tracking-tight text-on-surface mb-2">My Reports</h2>
+      <p class="text-on-surface-variant max-w-2xl">Access and manage your curated data visualizations.</p>
+    </div>
+    <button
+      (click)="goToBuilder()"
+      class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+    >
+      <span class="material-symbols-outlined">add</span>
+      New Report
+    </button>
+  </div>
+  <div class="mb-6">
+    <input
+      [value]="query()"
+      (input)="setQuery($any($event.target).value)"
+      class="w-full md:w-96 bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm"
+      placeholder="Search reports by name..."
+      type="text"
+    />
+  </div>
+
+  @if (error()) {
+    <div class="mb-6 bg-error-container text-error rounded-xl p-4 text-sm font-semibold">
+      {{ error() }}
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="bg-surface-container-lowest rounded-xl p-6 text-sm font-medium text-on-surface-variant">Loading saved reports...</div>
+  } @else if (reports().length === 0) {
+    <div class="flex flex-col items-center justify-center p-20 text-center bg-surface-container-low rounded-xl border border-outline-variant">
+      <div class="w-20 h-20 bg-surface-container rounded-full flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-outline-variant text-5xl">folder_off</span>
+      </div>
+      <h3 class="text-2xl font-bold text-on-surface">No Reports Found</h3>
+      <p class="text-on-surface-variant mt-2 max-w-sm">You have not saved any reports yet. Use the Report Builder to start.</p>
+      <button (click)="goToBuilder()" class="mt-8 bg-gradient-to-br from-primary to-primary-container text-white px-8 py-3 rounded-xl font-bold">
+        Get Started
+      </button>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (report of reports(); track report._id) {
+        <div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col group hover:ring-2 ring-primary/10 transition-all duration-300">
+          <div class="flex justify-between items-start mb-6">
+            <div class="flex gap-2 flex-wrap">
+              @for (kpi of report.kpis.slice(0, 3); track $index) {
+                <span class="px-2.5 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider" [class]="sourceClass(kpi.source)">
+                  {{ kpi.source }}
+                </span>
+              }
+            </div>
+            <button
+              (click)="toggleSchedule(report)"
+              [disabled]="savingId() === report._id"
+              class="text-outline hover:text-on-surface transition-colors text-xs font-bold"
+            >
+              {{ savingId() === report._id ? '...' : (report.schedule.enabled ? 'Disable' : 'Enable') }}
+            </button>
+          </div>
+
+          <h3 class="text-xl font-bold text-on-surface mb-1 group-hover:text-primary transition-colors">{{ report.name }}</h3>
+          <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">{{ report.description || 'No description provided.' }}</p>
+
+          <div class="bg-surface-container rounded-lg p-4 mb-6 flex justify-between items-center">
+            <div>
+              <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">KPI Count</p>
+              <p class="text-2xl font-extrabold text-on-surface tracking-tighter">
+                {{ report.kpis.length }}
+                <span class="text-xs font-medium text-on-surface-variant ml-1 tracking-normal">Metrics</span>
+              </p>
+            </div>
+            <span class="material-symbols-outlined text-primary text-4xl">insert_chart</span>
+          </div>
+
+          <div class="flex items-center gap-2 text-on-surface-variant text-xs mb-8">
+            <span class="material-symbols-outlined text-sm">schedule</span>
+            <span>{{ scheduleLabel(report) }}</span>
+          </div>
+
+          <div class="mt-auto grid grid-cols-3 gap-3">
+            <a [routerLink]="['/saved-reports', report._id]" class="bg-surface-container-high text-primary py-2.5 rounded-lg text-xs font-bold text-center hover:bg-primary hover:text-white transition-all">View</a>
+            <a [routerLink]="['/report-builder', report._id]" class="bg-surface-container-high text-primary py-2.5 rounded-lg text-xs font-bold text-center hover:bg-primary hover:text-white transition-all">Edit</a>
+            <button
+              (click)="deleteReport(report)"
+              [disabled]="deletingId() === report._id"
+              class="bg-error-container/20 text-error py-2.5 rounded-lg text-xs font-bold hover:bg-error hover:text-white transition-all"
+            >
+              {{ deletingId() === report._id ? 'Deleting...' : 'Delete' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      <div class="bg-surface-container-low rounded-xl p-6 border-2 border-dashed border-outline-variant flex flex-col items-center justify-center text-center min-h-[360px] group hover:bg-surface-container-high transition-colors">
+        <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+          <span class="material-symbols-outlined text-primary text-3xl">post_add</span>
+        </div>
+        <h3 class="text-lg font-bold text-on-surface">Build New Template</h3>
+        <p class="text-sm text-on-surface-variant max-w-[200px] mt-2 mb-6">Create a custom report structure from your available data sources.</p>
+        <button (click)="goToBuilder()" class="text-primary font-bold text-sm uppercase tracking-widest hover:underline">Launch Builder</button>
+      </div>
+    </div>
+    <div class="mt-8 flex items-center justify-between text-xs text-on-surface-variant">
+      <span>Page {{ page() }} / {{ totalPages() }} ({{ total() }} reports)</span>
+      <div class="flex gap-2">
+        <button (click)="prevPage()" class="px-3 py-1 rounded bg-surface-container-high">Prev</button>
+        <button (click)="nextPage()" class="px-3 py-1 rounded bg-surface-container-high">Next</button>
+      </div>
+    </div>
+  }
+</main>

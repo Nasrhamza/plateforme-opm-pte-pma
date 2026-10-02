@@ -1,0 +1,192 @@
+@if(loading){
+    <app-loader></app-loader>
+}@else{
+    <mat-card class="shadow-none">
+        <mat-card-content>
+            <mat-card-title class="d-flex align-items-center m-b-12 gap-6"> <img
+                    src="../../../../assets/images/svgs/filled-star.svg" width="30px" alt="yellow star"> {{ 'Project rating
+                overview' | translate }} </mat-card-title>
+            <div class="row">
+                <div class="col-sm-12 col-md-7 col-lg-7">
+                    <mat-card class="cardWithShadow">
+                        <mat-card-content>
+                            <mat-card-title class="p-y-8 d-flex justify-content-between">
+                                <div>
+                                    {{ 'Team members notes' | translate }} 
+                                </div>
+                                <span class="clickeable-card" (click)="openInformation('Members note')">
+                                    <i-tabler name='info-circle'></i-tabler>
+                                </span>
+                            </mat-card-title>
+                            @if(projectRating?.membersNotes && projectRating?.membersNotes.length){
+                                @for(item of projectRating?.membersNotes;track item){
+                                    <mat-card class="cardWithShadow">
+                                        <mat-card-content>
+                                            <div class="row">
+                                                <div class="col-md-4 col-lg-4 col-sm-12">
+                                                    <div class="d-flex align-items-center">
+                                                        <img [src]="imagesUrl + '/' + item?.user?.image" [alt]="item?.user?.fullName"
+                                                            width="60" style="aspect-ratio: 1/1;" class="rounded-circle" />
+                                                        <div class="m-l-16">
+                                                            <h6 class="mat-subtitle-1 f-s-14 f-w-600">
+                                                                {{ item?.user?.fullName }}
+                                                                @if(item.user._id == projectRating?.project.TeamLeader){
+                                                                <br>
+                                                                <span> (Team Leader) </span>
+                                                                }
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8 col-lg-8 col-sm-12">
+                                                    <h3>{{ 'Tasks' | translate }}</h3>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'Assigned tasks:' | translate }}</span><span
+                                                            class="f-w-600 f-s-20">{{ item.assignedTasks?.tasks }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'Closed tasks:' | translate }}</span><span
+                                                            class="f-w-600 f-s-20">{{ item.closedTasks?.tasks }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'In time closed tasks:' | translate }} </span><span
+                                                            class="f-w-600 f-s-20">{{ item.inTimeClosedTasks.tasks }}</span>
+                                                    </div>
+                                                    <h3>{{ 'Weights and scores:' | translate}}</h3>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'Assigned tasks weight:' | translate }} </span><span
+                                                            class="f-w-600 f-s-20">{{ item.assignedTasks?.weight }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'Closed tasks weight:' | translate }}</span><span
+                                                            class="f-w-600 f-s-20">{{ item.closedTasks?.weight }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'In time closed tasks weight:' | translate }} </span><span
+                                                            class="f-w-600 f-s-20">{{ item.inTimeClosedTasks.weight }}</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'Assigned tasks score:' | translate }} </span><span
+                                                            class="f-w-600 f-s-20">{{ item.assignedTasksScore }}</span>
+                                                    </div>
+                                                    <hr style="border: 1px solid rgb(233, 233, 233);">
+                                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                                        <span class="f-w-300">{{ 'Score:' | translate }}</span>
+                                                        <h1 style="text-align: right;">{{ item?.note }}<span class="f-w-300"
+                                                                style="color: rgb(189, 189, 189);">/100</span></h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                }
+                            }@else{
+                                <p class="text-center p-y-12">{{ 'There is no rating found for team members in this project at this moment' | translate }}</p>
+                            }
+                        </mat-card-content>
+                    </mat-card>
+    
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-5">
+                    <mat-card class="cardWithShadow">
+                        <mat-card-content>
+                            <mat-card-title class="p-y-8 d-flex justify-content-between">
+                                <div>
+                                    {{ 'Global note' | translate }} 
+                                </div>
+                                <span class="clickeable-card" (click)="openInformation('Project note')">
+                                    <i-tabler name='info-circle'></i-tabler>
+                                </span>
+                            </mat-card-title>
+                            <h1 style="text-align: center;" class="p-y-6">{{ project.finalRating ?? 0 }}<span class="f-w-300" style="color: rgb(189, 189, 189);">/100</span></h1>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="cardWithShadow">
+                        <mat-card-content>
+                            <mat-card-title class="m-b-6 text-center">{{ 'Required files' | translate }}</mat-card-title>
+                            @if(project?.hasFilesRatingConfig){
+                                @for(file of project.requiredRatingFiles;track file){
+                                    <div class="bg-light-{{ existInFiles(file) ? 'success' : 'error' }}">
+                                        <div class="d-flex justify-content-between align-items-center p-12">
+                                            <span class="f-w-300">{{ file }}</span>
+                                            @if(existInFiles(file)){
+                                                <i-tabler name="circle-check" class="text-success"></i-tabler>
+                                            }@else{
+                                                <i-tabler name="exclamation-circle" class="text-error"></i-tabler>
+                                                
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            }@else{
+                                <p class="text-center p-y-12">{{ 'There is files rating configuration for this project at this moment' | translate }}</p>
+                            }
+                            </mat-card-content>
+                    </mat-card>
+                    <mat-card class="cardWithShadow">
+                        <mat-card-content>
+                            <mat-card-title class="text-center">{{ 'Client note' | translate }} </mat-card-title>
+                            @if(!project?.note_Client){
+                                <p class="text-center p-y-12">{{ 'The client have not evaluated this project yet' | translate }}</p>
+                            }@else{
+                                <h1 style="text-align: center;" class="p-y-6">{{ project.note_Client }}<span class="f-w-300" style="color: rgb(189, 189, 189);">/100</span></h1>
+                            }
+                        </mat-card-content>
+                    </mat-card>
+                    
+                    <mat-card class="cardWithShadow">
+                        <mat-card-content>
+                            <mat-card-title class="p-y-8 d-flex justify-content-between">
+                                <div>
+                                    {{ 'Team leader note' | translate }} 
+                                </div>
+                                <span class="clickeable-card" (click)="openInformation('Team Leader note')">
+                                    <i-tabler name='info-circle'></i-tabler>
+                                </span>
+                            </mat-card-title>
+                            @if(project && project.teamLeaderNote){
+                                <div style="display: flex;flex-direction: column;align-items: center;" class="m-t-12">
+                                    <img [src]="imagesUrl + '/' + project.TeamLeader.image" [alt]="project.TeamLeader.fullName"
+                                        width="80" style="aspect-ratio: 1/1;" class="rounded-circle" />
+                                    <div>
+                                        <h6 class="mat-subtitle-1 f-s-14 f-w-600">
+                                            {{ project.TeamLeader.fullName }}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center p-y-4">
+                                    <span class="f-w-300">{{ 'Manager note:' | translate }}</span><span
+                                        class="f-w-600 f-s-20">{{ projectRating?.managerToTeamLeaderRating }}</span>
+                                </div>
+                                <h3>{{ 'Notes given to team leader by members' | translate }}</h3>
+                                @for(item of projectRating?.memberToTeamLeaderRatings;track item){
+                                    <div class="d-flex justify-content-between align-items-center p-y-4">
+                                        <div class="m-t-12 d-flex gap-4">
+                                            <img [src]="imagesUrl + '/' + item.member.image" [alt]="item.member.fullName"
+                                                width="30" style="aspect-ratio: 1/1;" class="rounded-circle" />
+                                            <div>
+                                                <span class="mat-subtitle-1 f-s-14 f-w-600">
+                                                    {{ item.member.fullName }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span class="f-w-600 f-s-20">{{item?.note }}</span>
+                                    </div>
+                                    <hr style="border: 1px solid rgb(233, 233, 233);">
+                                }
+                            <div class="d-flex justify-content-between align-items-center p-y-4">
+                                <span class="f-w-300">{{ 'note:' | translate }}</span>
+                                <h1 style="text-align: right;">{{ project.teamLeaderNote }}<span class="f-w-300"
+                                        style="color: rgb(189, 189, 189);">/100</span></h1>
+                            </div>
+                            }@else{
+                            <p class="text-center p-y-12">{{ 'There is no rating found for the team leader at this moment' |
+                                translate }}</p>
+                            }
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+}

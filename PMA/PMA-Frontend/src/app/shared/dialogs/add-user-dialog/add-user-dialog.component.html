@@ -1,0 +1,195 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ (data.action == 'Add' ? 'Add User' : 'Update User') | translate }}</h5>
+
+<mat-dialog-content style="max-width: 700px">
+    <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+        <!-- image upload -->
+        @if(data.action == 'Add'){
+        <div class="d-flex align-items-center m-b-16">
+            @if(selectedImagePreview){
+            <img class="mat-card-avatar" [src]="selectedImagePreview" class="rounded-circle" width="70"
+                style="aspect-ratio: 1/1;object-fit: cover;" />
+            }
+            <button mat-flat-button color="primary" class="{{selectedImagePreview ? 'm-l-16' : ''}} input-file-button">
+                <input type="file" (change)="selectFile($event)" />
+            </button>
+        </div>
+        }
+
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Full Name' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="fullName" />
+            @if(f['fullName'].touched && f['fullName'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['fullName'].errors && f['fullName'].errors['required']){
+                <div class="text-error">
+                    {{ 'Full Name is required' | translate }}
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Email' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="email" />
+            @if(f['email'].touched && f['email'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['email'].errors && f['email'].errors['required']){
+                <div class="text-error">
+                    {{ 'Email is required' | translate }}
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Phone' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput formControlName="phone" />
+                    @if(f['phone'].touched && f['phone'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['phone'].errors && f['phone'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Phone number is required' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Roles' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-select formControlName="roles" multiple>
+                        @for(role of ['Admin', 'Engineer', 'Team Leader', 'Client']; track role){
+                        <mat-option [value]="role">{{ role }}</mat-option>
+                        }
+                    </mat-select>
+                    @if(f['roles'].touched && f['roles'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['roles'].errors && f['roles'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Roles must have at lease 1 value' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- birthday -->
+            <div class="col-md-6 col-sm-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Birth Date' | translate
+                    }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <input matInput [matDatepicker]="birthpicker3" formControlName="DateOfBirth" />
+                    <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
+                    <mat-datepicker #birthpicker3></mat-datepicker>
+                    @if(f['DateOfBirth'].touched && f['DateOfBirth'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['DateOfBirth'].errors && f['DateOfBirth'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Birthday cannot be null' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+            <!-- hiring date -->
+            <div class="col-md-6 col-sm-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Hiring Date' | translate
+                    }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <input matInput [matDatepicker]="birthpicker2" formControlName="hiringDate" />
+                    <mat-datepicker-toggle matIconSuffix [for]="birthpicker2"></mat-datepicker-toggle>
+                    <mat-datepicker #birthpicker2></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Address' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="address" />
+        </mat-form-field>
+        
+        @if(data.action == 'update'){
+            <mat-checkbox class="m-b-12" [checked]="updatePassword" (change)="updatePassword = !updatePassword">
+                {{  "Update password ?" | translate }}
+            </mat-checkbox>
+        }
+        <!-- password section -->
+        @if(data.action == 'Add' || updatePassword){
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Password' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput formControlName="password" type="password"
+                        [type]="alignhide ? 'password' : 'text'" />
+                    <button mat-icon-button matSuffix (click)="handlePasswordHide($event)"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="alignhide">
+                        <mat-icon class="op-5">{{
+                            alignhide ? "visibility_off" : "visibility"
+                            }}</mat-icon>
+                    </button>
+                    @if(f['password'].touched && f['password'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['password'].errors && f['password'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Password is required' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{'Confirm Password' |
+                    translate}}</mat-label>
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput formControlName="confirmPassword" type="password" />
+                    @if(f['confirmPassword'].touched){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['confirmPassword'].invalid && f['confirmPassword'].errors &&
+                        f['confirmPassword'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Confirm Password is required' | translate }}
+                        </div>
+                        }
+                        @if(f['confirmPassword'].touched &&(f['confirmPassword'].value !== f['password'].value)){
+                        <div class="text-error">
+                            {{ 'Password mismatch, please verify the new password' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+        }
+
+        @if(f['roles'].value.includes('Client')){
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Company' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="company" />
+            @if(f['company'].touched && f['company'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['company'].errors && f['company'].errors['required']){
+                <div class="text-error">
+                    {{ 'Company is required' | translate }}
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+        }
+
+        <button mat-flat-button color="primary" class="w-100" [disabled]="!form.valid">
+            {{ 'Submit' | translate }}
+        </button>
+    </form>
+</mat-dialog-content>

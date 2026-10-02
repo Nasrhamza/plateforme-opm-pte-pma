@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+
+        <div class="form-group">
+            <label for="sla">Support Name</label>
+            <input type="text" class="form-control" placeholder="Support Name" id="supportName" name="supportName"
+                ngModel [(ngModel)]="this.model.supportName" #supportName="ngModel" required>
+            <div *ngIf="supportName.touched && supportName.errors?.required" class="text-danger">Support Name required</div>
+<br>
+            <label for="sla">Support Email</label>
+            <input type="text" class="form-control" placeholder="Support Email" id="supportEmail" name="supportEmail"
+                ngModel [(ngModel)]="this.model.supportEmail" #supportEmail="ngModel" required>
+            <div *ngIf="supportEmail.touched && supportEmail.errors?.required" class="text-danger">Support Email required</div>
+            <div *ngIf="add">  
+                <label for="logo">Support Image</label>
+                <input type="file" class="form-control" id="logo" name="logo" (change)="updateFileName($event)">
+                <span>The allowed image types to upload are jpeg , jpg , png , gif and svg.</span>
+            </div>
+         
+        
+        </div>
+
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add" type="submit" [disabled]="f.invalid"
+                class="btn btn-outline-warning">Update</button>
+
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-dark"
+                (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

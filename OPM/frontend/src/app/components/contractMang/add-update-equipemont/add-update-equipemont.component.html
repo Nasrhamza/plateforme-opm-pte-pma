@@ -1,0 +1,93 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form class="form" name="form" #f="ngForm" (ngSubmit)="onSubmit(f)">
+    
+    <!-- Equipment Name -->
+    <div class="form-group">
+      <label for="nomPice">Equipment Name</label>
+      <input type="text" class="form-control" placeholder="Equipment Name" id="nomPice" name="nomPice" ngModel [(ngModel)]="model.nomPice" #nomPice="ngModel" required />
+      <div *ngIf="nomPice.touched && nomPice.errors?.required" class="error">Equipment Name required</div>
+    </div>
+
+    <!-- Serial Number -->
+    <div class="form-group">
+      <label for="SN">Serial Number</label>
+      <input type="text" class="form-control" placeholder="Serial Number" id="SN" name="SN" ngModel [(ngModel)]="model.SN" #SN="ngModel" required />
+      <div *ngIf="SN.touched && SN.errors?.required" class="error">Serial Number required</div>
+    </div>
+
+    <!-- End Date Contract -->
+    <div class="form-group">
+      <label for="endDateContract">End Date Contract</label>
+      <input type="date" class="form-control" placeholder="End Date Contract" id="endDateContract" name="endDateContract" ngModel [(ngModel)]="model.endDateContract" #endDateContract="ngModel" required />
+      <div *ngIf="endDateContract.touched && endDateContract.errors?.required" class="error">End Date Contract is required</div>
+    </div>
+
+    <!-- Support Type 1 -->
+    <div class="form-group">
+      <label for="TypeSupport1">Support Type 1:</label>
+      <select class="form-control" [(ngModel)]="model.TypeSupport1" name="TypeSupport1" required>
+        <ng-container *ngFor="let item of listTypeSupport">
+          <option [value]="item._id">{{ item.supportName }}</option>
+        </ng-container>
+      </select>
+    </div>
+
+    <!-- Start Date Support 1 -->
+    <div class="form-group">
+      <label for="startDateSupport1">Start Date Support 1:</label>
+      <input type="date" class="form-control" [(ngModel)]="model.startDateSupport1" name="startDateSupport1" required />
+    </div>
+
+    <!-- End Date Support 1 -->
+    <div class="form-group">
+      <label for="endDateSupport1">End Date Support 1:</label>
+      <input type="date" class="form-control" [(ngModel)]="model.endDateSupport1" name="endDateSupport1" required />
+    </div>
+
+    <!-- Toggle for Second Support -->
+    <a class="btn collapseLink" (click)="toggleSecondSupport()">
+      Add Second Support Type
+      <i class="fas fa-angle-down icon" *ngIf="!showSecondSupport"></i>
+      <i class="fas fa-angle-up icon" *ngIf="showSecondSupport"></i>
+    </a>
+
+    <!-- Support Type 2 (Visible when toggled) -->
+    <div *ngIf="showSecondSupport">
+      <div class="form-group">
+        <label for="TypeSupport2">Support Type 2:</label>
+        <select class="form-control" [(ngModel)]="model.TypeSupport2" name="TypeSupport2" required>
+          <ng-container *ngFor="let item of listTypeSupport">
+            <option [value]="item._id">{{ item.supportName }}</option>
+          </ng-container>
+        </select>
+      </div>
+
+      <!-- Start Date Support 2 -->
+      <div class="form-group">
+        <label for="startDateSupport2">Start Date Support 2:</label>
+        <input type="date" class="form-control" [(ngModel)]="model.startDateSupport2" name="startDateSupport2" required />
+      </div>
+
+      <!-- End Date Support 2 -->
+      <div class="form-group">
+        <label for="endDateSupport2">End Date Support 2:</label>
+        <input type="date" class="form-control" [(ngModel)]="model.endDateSupport2" name="endDateSupport2" required />
+      </div>
+    </div>
+
+    <!-- Submit and Close Buttons -->
+    <div class="modal-footer">
+      <button type="submit" [disabled]="f.invalid || dateError" class="btn btn-outline-primary">
+        {{ add ? 'Save' : 'Update' }}
+      </button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+  </form>
+</div>

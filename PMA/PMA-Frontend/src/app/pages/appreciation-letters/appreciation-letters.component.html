@@ -1,0 +1,88 @@
+<mat-card class="shadow-none">
+    <mat-card-header class="d-flex align-items-center justify-content-between">
+        <mat-card-title class="d-flex align-items-center gap-10">
+            <img src="/assets/images/svgs/cup-svgrepo-com.svg" alt="appreciation letters" width="50px">
+            {{ 'Appreciation Letters' | translate }}
+        </mat-card-title>
+        <mat-form-field appearance="outline" class="theme-select" color="primary" style="min-width: 200px;">
+            <input matInput [formControl]="searchField" placeholder="{{ 'search' | translate  }}" />
+        </mat-form-field>
+    </mat-card-header>
+    <mat-card-content class="m-t-24">
+        @for(item of filteredLetters;track item._id){
+        <mat-card class="card shadow-none bg-light-primary p-16">
+            <div class="d-flex align-items-start">
+                <div class="w-100">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="f-s-14">
+                            {{ 'Project name' | translate }}
+                        </span>
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>
+                                <i-tabler name="dots" class="icon-20"></i-tabler>
+                            </mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" class="cardWithShadow" xPosition="before">
+                            <button mat-menu-item (click)="download(item.file)">
+                                <div class="d-flex align-items-center gap-4">
+                                    <i-tabler name="download"></i-tabler>
+                                    <span class="f-s-14">{{ 'Download' | translate }}</span>
+                                </div>
+                            </button>
+                            @if(role != 'Client' && role != 'Engineer'){
+                            <button mat-menu-item (click)="shareFile(item?.file, item?.project?._id)">
+                                <div class="d-flex align-items-center gap-4">
+                                    <i-tabler name="share"></i-tabler>
+                                    <span class="f-s-14">{{ 'Share' | translate }}</span>
+                                </div>
+                            </button>
+                            }
+                            @if(role == "Admin"){
+                            <button mat-menu-item (click)="delete(item._id)">
+                                <div class="d-flex align-items-center gap-4">
+                                    <i-tabler name="trash"></i-tabler>
+                                    <span class="f-s-14">{{ 'Delete' | translate }}</span>
+                                </div>
+                            </button>
+                            }
+                        </mat-menu>
+                    </div>
+                    <h3 class="f-s-16 m-0 m-b-4" style="cursor: pointer;" (click)="goToProject(item?.project?._id)">{{
+                        item?.project?.Projectname }}</h3>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-md-8 col-sm-12" >
+                            @if(item?.project?.client){
+                            <h3 class="f-s-12 m-0 m-b-4">{{ 'Client' | translate }}</h3>
+                            <div class="d-flex align-items-start social-chips">
+                                <img src="{{imagesUrl}}/{{item?.project?.client?.image}}" width="50" height="50"
+                                    alt="social" class="rounded-circle"
+                                    matTooltip="{{item?.project?.client?.fullName}}" />
+                            </div>
+                            }
+                            @if(item?.project?.TeamLeader){
+                                <h3 class="f-s-12 m-0 m-b-4">{{ 'Team Leader' | translate }}</h3>
+                                <div class="d-flex align-items-center social-chips">
+                                    <img src="{{imagesUrl}}/{{item?.project?.TeamLeader?.image}}" width="50"
+                                        height="50" alt="social" class="rounded-circle"
+                                        matTooltip="{{item?.project?.TeamLeader?.fullName}}" />
+                                </div>
+                            }
+                            <!-- --------------- CARD *----------------- -->
+                            <h3 class="f-s-12 m-0 m-b-4">{{ 'File name' | translate }}</h3>
+                            <h5 class="f-s-14 f-w-600 m-0" style="word-break: break-all;">{{ item.file }} </h5>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="pdf-preview-container">
+                                <div class="preview-overlay" (click)="openPreview(item)">
+                                    <i-tabler name="eye" class="text-white" style="font-size: 30px;"></i-tabler>
+                                </div>
+                                <iframe [src]="item.safeUrl" height="400px" width="100%"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+        }
+    </mat-card-content>
+</mat-card>

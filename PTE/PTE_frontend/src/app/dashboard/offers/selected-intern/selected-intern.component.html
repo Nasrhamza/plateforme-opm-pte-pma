@@ -1,0 +1,87 @@
+
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Interns results</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Interns</li>
+        <li class="breadcrumb-item">Results</li>
+    </ul>
+    <div class="section-body">
+        <div class="card">
+            <div class="card-header">
+                <h4>List of all selected interns</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-sm-4">
+                        <div class="d-flex">
+                            <label class="col-form-label msr-3">Search:</label>
+                            <input type="text" placeholder="Filter table" class="form-control"
+                                (keyup)='updateFilter($event)'>
+                        </div>
+                    </div>
+                </div>
+                <ngx-datatable #table class="material" [rows]="internResults" [sortType]="SortType.multi"
+                    [loadingIndicator]="loadingIndicator" columnMode="force" [headerHeight]="50" [footerHeight]="50"
+                    rowHeight="auto" [limit]="6" [scrollbarH]="scrollBarHorizontal" [reorderable]="reorderable">
+                    <ngx-datatable-column [width]="300" name="Name">
+                        <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                            <img src="{{ picsUrl+row.userId.image }}" class="data-table-img" />
+                            <div class="name-col-style">
+                                <div>{{row.userId.firstName+" "+row.userId.lastName}}</div>
+                                <div class="font-12 text-muted">{{row.userId.role}}</div>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [width]="300" name="Email">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.userId.email}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Phone">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.userId.phone}}
+                        </ng-template>
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column  name="Role">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <div class="badge-outline col-indigo">{{row.userId.role}}</div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Departement">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.userId.departement}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Score">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.score}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Documents" *ngIf="userRole ==='ASSISTANT'">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            <i class="far fa-file-archive icon"></i><a routerLink="/dashboard/intern-docs/{{row.userId._id}}" class="file-link">Show files</a>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Cv" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                            ngx-datatable-cell-template>
+                            <div (click)="openCV(row.userId.cv_file)">
+                                <i *ngIf="row.userId.cv_file!==''" class="far fa-file-pdf icon" ></i>
+                                <span class="file-name">{{row.userId.cv_file}}</span>
+                            </div>
+                            <div *ngIf="row.userId.cv_file===''">
+                                <strong>File not found</strong>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+            </div>
+        </div>
+    </div>

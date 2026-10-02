@@ -1,0 +1,44 @@
+.bigSize{
+    font-size:70px;
+    color: rgb(225, 225, 226);
+}
+.bp{
+    padding: 5px;
+}
+.bannerV{
+    background-image: url("../../../../assets/images/static/fiat.png");
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    // background: #2C3E50;  /* fallback for old browsers */
+    // background: -webkit-linear-gradient(to top, #4CA1AF, #2C3E50);  /* Chrome 10-25, Safari 5.1-6 */
+    // background: linear-gradient(to top, #4CA1AF, #2C3E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+
+.bannerV2{
+    background-image: url("../../../../assets/images/static/i10.png");
+    background-origin: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    // background: #2C3E50;  /* fallback for old browsers */
+    // background: -webkit-linear-gradient(to top, #4CA1AF, #2C3E50);  /* Chrome 10-25, Safari 5.1-6 */
+    // background: linear-gradient(to top, #4CA1AF, #2C3E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.cardSize{
+    padding-bottom: 20px;
+}
+.action{
+    margin-left: 10px;
+}
+.overPic{
+    color: rgb(228, 227, 227);
+    background-color: rgb(28, 111, 183);
+    padding: 10px;
+    border-radius: 25px 25px 25px 25px;
+    margin-bottom: 5px;
+    font-size: smaller;
+}

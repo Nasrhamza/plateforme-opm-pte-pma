@@ -1,0 +1,265 @@
+<mat-card class="shadow-none b-radius-30 theme-card">
+  <mat-card-header class="d-flex justify-content-between">
+    <mat-card-title>{{ 'Projects' | translate}} ({{ filteredProjects.length }})</mat-card-title>
+    <div class="d-flex justify-content-between align-items-center">
+      @if(currentRole=='Admin'){
+        <button mat-button (click)="addProject('Add', {})" mat-flat-button color="primary">{{'Add Project' |
+          translate}}</button>
+        }
+        <button mat-button (click)="fetchProjects()" mat-flat-button color="primary" class="m-l-6">{{'Refresh' |
+          translate}}</button>
+    </div>
+    <!-- <mat-card-subtitle class="mat-body-1">get nore item with pagination</mat-card-subtitle> -->
+  </mat-card-header>
+  <mat-card-content>
+    <div class="d-flex justify-content-end align-items-center">
+      <div class="d-flex gap-8 align-items-center">
+        <mat-form-field appearance="outline" class="theme-select">
+          <mat-select placeholder="{{'Department' | translate }}" (selectionChange)="handleDepartmentSelect($event)">
+            <mat-option value=''>{{'All' | translate}}</mat-option>
+            <mat-option value='All my department projects'>{{'All my department projects'  | translate}}</mat-option>
+            <mat-option value='Systems Infrastructure'>{{'Systems Infrastructure' | translate}}</mat-option>
+            <mat-option value='Network Infrastructure'>{{'Network Infrastructure' | translate}}</mat-option>
+            <mat-option value='Systems and Network Infrastructure'>{{'Systems and Network Infrastructure' | translate}}</mat-option>
+            <mat-option value='Development'>{{'Development' | translate}}</mat-option>
+            <mat-option value='Cyber Security'>{{'Cyber Security' | translate}}</mat-option>
+            <mat-option value='Lab'>{{'Lab' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        @if(currentRole != "Client"){
+        <mat-form-field appearance="outline" class="theme-select">
+          <input matInput [formControl]="clientInput" placeholder="{{ 'Client' |translate }}" />
+        </mat-form-field>
+        }
+        <mat-form-field appearance="outline" class="theme-select">
+          <input matInput [formControl]="projectInput" placeholder="{{'Project name' | translate }}" />
+        </mat-form-field>
+        @if(currentRole != 'Team Leader'){
+        <mat-form-field appearance="outline" class="theme-select">
+          <input matInput [formControl]="leaderInput" placeholder="{{'Team leader' | translate }}" />
+        </mat-form-field>
+        }
+        <mat-form-field appearance="outline" class="theme-select">
+          <mat-select placeholder="{{'Year'  | translate }}" (selectionChange)="handleYearSelect($event)">
+            @for(year of lastTenYears;track year){
+            <mat-option [value]='year'>{{year}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="theme-select">
+          <mat-select placeholder="{{'Status' | translate }}" (selectionChange)="handleProjectStatusFilter($event)">
+            <mat-option value=''>{{'All' | translate}}</mat-option>
+            <mat-option value='Pending'>{{'Pending' | translate}}</mat-option>
+            <mat-option value='Completed'>{{'Completed' | translate}}</mat-option>
+            <mat-option value='In Progress'>{{'In Progress' | translate}}</mat-option>
+            <mat-option value='Overdue'>{{'Overdue' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    @if(loading){
+      <app-loader></app-loader>
+    }@else{
+      @if(filteredProjects.length == 0){
+        <app-empty-data></app-empty-data>
+      }@else{
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="w-100 f-w-500 no-wrap">
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Project title' |translate }}</th>
+              <td mat-cell *matCellDef="let element" (click)="showDetails(element._id)" style="cursor: pointer;">
+                <div class="d-flex flex-column gap-8">
+                  <div class="d-flex gap-4">
+                    <span class="bg-light-accent f-s-12 f-w-600 rounded-pill p-x-6" [class.pill-lab]="element?.type === 'Lab'">{{ element.type }}</span>
+                    <span style="color: rgb(211, 211, 211);">•</span>
+                    <span style="border-bottom: 2px solid rgb(62, 224, 253);" class="f-s-12 f-w-600">{{ element.client.company }}</span>
+                  </div>
+                  <span matTooltip="{{ element.Projectname }}" style="text-wrap: wrap;">
+                    {{ element.Projectname }}
+                  </span>
+                  <div class="d-flex align-items-center social-chips">
+                    @for(user of element.equipe; track user._id){
+                    <img src="{{imagesUrl}}/{{user?.image}}" width="30" height="30" alt="social" class="rounded-circle"
+                      matTooltip="{{user?.fullName}}" />
+                    }
+                  </div>
+                  <div class="d-flex gap-4">
+                    @if(element.note_Client){
+                      <div class="bg-light-primary mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill" style="display: flex;align-items: center;">
+                        <i-tabler name="user-check" class="icon-20"></i-tabler>
+                        <span matTooltip="{{'Client rating' | translate }}">{{ element.note_Client }}</span>
+                      </div>
+                    }
+                    @if(element.hasFilesRatingConfig && currentRole !== 'Client'){
+                      <div class="bg-light-primary mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill" matTooltip="{{'This project has ' + element?.requiredRatingFiles?.length + ' files must be provided' }}">
+                        <span style="display: flex;align-items: center;">
+                          <i-tabler name="file-check" class="icon-20"></i-tabler>
+                          {{  element?.providedRequiedFiles + '/' +element?.requiredRatingFiles?.length }}
+                        </span>
+                      </div>
+                    }
+                    @if(adminCanSee() && element.rating && element.rating.memberToTeamLeaderRatings && currentRole !== 'Client' && element.progress == 100){
+                      <div class="bg-light-primary mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill" matTooltip="{{ 'Member that evaluated team leader after project completion' | translate }}">
+                        <span style="display: flex;align-items: center;">
+                          <i-tabler name="users" class="icon-20"></i-tabler>
+                          {{ element?.rating.memberToTeamLeaderRatings.length + '/' + getProjectEquipeLength(element) }}
+                        </span>
+                      </div>
+                    }
+                    @if(adminCanSee() && element.rating && element.rating.managerToTeamLeaderRating && currentRole !== 'Client'){
+                      <div class="bg-light-primary mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill" matTooltip="{{ 'Rating given to team leader by Admin' | translate }}">
+                        <span style="display: flex;align-items: center;">
+                          <i-tabler name="user-star" class="icon-20"></i-tabler>
+                          {{ element?.rating.managerToTeamLeaderRating }}
+                        </span>
+                      </div>
+                    }
+                    @if(element.finalRating && currentRole === 'Admin' && element.teamLeaderNote){
+                      <div class="bg-light-warning mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill" matTooltip="{{ 'Global rating of this project' | translate }}">
+                        <span style="display: flex;align-items: center;" class="text-warning">
+                          <i-tabler name="award" class="icon-20" class="text-warning"></i-tabler>
+                          {{ element?.finalRating }}
+                        </span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="timeline">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Timeline' | translate }}</th>
+              <td mat-cell *matCellDef="let element" class="f-s-14">
+                <app-project-timeline [start]="element.dateDebut" [deadline]="element.dateFin" [closing]="element.closedAt"></app-project-timeline>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="priority">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Priority' | translate }}</th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="bg-light-{{ element.priority === 'High' ? 'error' : element.priority === 'Medium' ? 'primary' : 'success'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.priority === 'High' ? 'error' : element.priority === 'Medium' ? 'primary' : 'success'}}">{{
+                  element.priority.toUpperCase() }}</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="progress">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">{{ 'Progress' | translate }}</th>
+              <td mat-cell *matCellDef="let element" class="f-s-14">
+                <!-- {{ element.progress }}% -->
+                <mat-progress-bar mode="determinate" [value]="element.progress" matTooltip="{{ element.progress }}%">
+                </mat-progress-bar>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                {{ 'Status' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <span
+                  class="bg-light-{{ element.status === 'Pending' ? 'warning' : element.status === 'In Progress' ? 'primary' : 'success'}} mat-body-2 f-w-700 p-x-8 p-y-4 f-s-12 rounded-pill text-{{ element.status === 'Pending' ? 'warning' : element.status === 'In Progress' ? 'primary' : 'success'}}">{{
+                  element.status.toUpperCase() }}</span>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">
+                {{ 'Actions' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let element" class="action-link" style="position: relative;">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>
+                    <i-tabler name="dots" class="icon-20"></i-tabler>
+                  </mat-icon>
+                </button>
+                <!-- <div [class.lab-banner]="element.type === 'Lab'">LAB</div> -->
+                <mat-menu #menu="matMenu" class="cardWithShadow" xPosition="before">
+                  <button mat-menu-item (click)="showDetails(element._id)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="eye"></i-tabler>
+                      <span class="f-s-14">{{ 'Details' | translate }}</span>
+                    </div>
+                  </button>
+                  @if(showEditButton){
+                  <button mat-menu-item (click)="addProject('update',element)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="pencil"></i-tabler>
+                      <span class="f-s-14">{{ 'Update' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(currentRole != 'Client'){
+                  <button mat-menu-item (click)="uploadFile(element, false)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="upload"></i-tabler>
+                      <span class="f-s-14">{{ 'Upload file' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(currentRole == 'Client' && !element.letterUploaded){
+                  <button mat-menu-item (click)="uploadFile(element, true)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="upload"></i-tabler>
+                      <span class="f-s-14">{{ 'Upload apprecialtion letter' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(currentRole == 'Admin' || currentRole == 'Team Leader'){
+                  <button mat-menu-item (click)="goToGantt(element._id)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="chart-dots"></i-tabler>
+                      <span class="f-s-14">{{ 'Gantt' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(currentRole == 'Client' && element.progress == 100 && element.status == 'Completed' && !element.note_Client){
+                  <button mat-menu-item (click)="noteProject(element)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="star"></i-tabler>
+                      <span class="f-s-14">{{ 'Note project' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(currentRole == 'Client'){
+                  <button mat-menu-item (click)="addreclamation(element)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="alert-triangle"></i-tabler>
+                      <span class="f-s-14">{{ 'Add reclamation' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(currentRole == 'Admin'){
+                  <button mat-menu-item (click)="configureRequiredFiles(element)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="file-star"></i-tabler>
+                      <span class="f-s-14">{{ 'Configure required files' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(canEvaluateTeamLeaderAsAdmin(element)){
+                  <button mat-menu-item (click)="managerEvaluateTeamLeader(element._id)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="user-star"></i-tabler>
+                      <span class="f-s-14">{{ 'Evaluate team leader as manager' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                  @if(canEvaluateTeamLeaderAsMember(element)){
+                  <button mat-menu-item (click)="memberEvaluateTeamLeader(element._id)">
+                    <div class="d-flex align-items-center gap-4">
+                      <i-tabler name="user-star"></i-tabler>
+                      <span class="f-s-14">{{ 'Evaluate my team leader' | translate }}</span>
+                    </div>
+                  </button>
+                  }
+                </mat-menu>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      }
+    }
+    <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons>
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

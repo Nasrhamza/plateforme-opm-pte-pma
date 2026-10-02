@@ -1,0 +1,62 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Upload files for this project' | translate }}</h5>
+
+<mat-dialog-content>
+    @if(loading){
+        <app-loader></app-loader>
+    }@else{
+        <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
+            <div style="display: flex;flex-direction: column;justify-content: space-between;">
+                <div style="display: flex;flex-direction: column;">
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="m-b-6 d-block">{{'Enter the file type' | translate }}</span>
+                            @if(currentRole != 'Client'){
+                                <span class="m-b-6 d-block">{{'Or choose from this predefined list' | translate }}</span>
+                                <div class="d-flex gap-10 m-b-12">
+                                    @for(t of types;track t){
+                                        <div class="item p-12 bg-{{ type.value == t.name ? '' : 'light-'}}primary rounded text-{{ type.value == t.name ? 'white' : 'primary' }}" style="cursor: pointer;" (click)="handleTypeSelect(t.name)">{{ t.name }}</div>
+                                    }
+                                </div>
+                            }
+                            <mat-form-field appearance="outline" class="w-100 m-b-6">
+                                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'File type' | translate }}</mat-label>
+                                <input type="text" matInput [formControl]="type" placeholder="{{ 'File type' | translate }}"/>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    
+                    <div class="drag-area" id="dropArea"
+                        [class.dragover]="isDragging" 
+                        (dragover)="onDragOver($event)" 
+                        (dragleave)="onDragLeave()" 
+                        (drop)="onDrop($event)"> 
+                        <p>Drag & drop files here or <label for="fileInput" style="color: #5d87ff; cursor: pointer;font-weight: bolder;">browse</label></p>
+                        <input type="file" id="fileInput" class="file-input" multiple (change)="onFileSelected($event)">
+                    </div>
+                    <ul style="display: flex;flex-direction: column;gap: 10px; max-height: 30vh;overflow-y: scroll;padding: 0;">
+                        @for(file of files; track file){
+                            <li class="d-flex gap-10 align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-10 m-b-10">
+                                    <div class="p-12 rounded bg-light-accent">
+                                        <i-tabler name="file"></i-tabler>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <span style="font-weight: bold;">{{ file.type }}</span>
+                                        <span>{{ file.id }} - {{ file.file.name }} ({{ (file.file.size / 1024).toFixed(2) }} KB)</span>
+                                    </div>
+                                </div>
+                                <div style="cursor: pointer;">
+                                    <i-tabler name="x" (click)="deleteFile(file.id)"></i-tabler>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex gap-10 justify-content-end">
+                <button class="bar-btn border-btn" (click)="closeDialog()" [disabled]="!type.valid ||loading">{{ 'Cancel' |  translate }}</button>
+                <button class="bar-btn filled-btn" (click)="onSubmit()">{{'Submit' | translate }}</button>
+            </div>
+        </div>
+    }
+</mat-dialog-content>

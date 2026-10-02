@@ -1,0 +1,157 @@
+/* Gas Card Styling */
+.gas-card {
+    background: linear-gradient(115deg, #f22b15cc, #294f90); /* Gradient background */
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    height: 100%;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .gas-card::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    right: 0%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10.01%);
+    transform: rotate(45deg);
+    pointer-events: none;
+    border: 1px solid rgba(202, 172, 172, 0.73);
+  }
+  
+  /* Card Header */
+  .gas-card-header {
+    display: flex;
+    justify-content: flex-end; /* Logo aligned to the right */
+  }
+  
+  .gas-card-logo {
+    width: 150px;
+    height: 80px;
+  }
+  
+  /* Card Chip */
+  .gas-card-chip {
+    margin-bottom: 20px;
+  }
+  
+  .chip-icon {
+    width: 80px;
+    height: 40px;
+  }
+  
+  /* Card Number and Details */
+  .gas-card-number {
+    font-size: 1rem;
+    text-align: left; /* Align text to the left */
+  }
+  
+  .gas-card-number .car-model,
+  .gas-card-number .registration-number {
+    margin: 5px 0;
+  }
+  
+  /* Card Balance and Card Number Section */
+  .gas-card-details {
+    display: flex;
+    justify-content: space-between; /* Balance on the left, Card Number on the right */
+    align-items: center; /* Vertically center align */
+    margin-top: 20px;
+  }
+  
+  .gas-card-balance,
+  .gas-card-number-right {
+    text-align: left;
+  }
+  
+  .gas-card-balance p,
+  .gas-card-number-right p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  .gas-card-balance strong,
+  .gas-card-number-right strong {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+
+  .modal{
+    background-color: transparent !important;
+  }
+  .modal-body{
+    background-color: transparent !important;
+  }
+
+
+/* Container for input and unit */
+.input-with-unit {
+    display: inline-flex; /* Align input and unit horizontally */
+    align-items: center; /* Vertically center align */
+    gap: 8px; /* Space between input and unit */
+  }
+  
+  /* Modern Input Styling */
+  .modern-input {
+    width: 200px; /* Adjust width as needed */
+    padding: 8px;
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .modern-input:focus {
+    border-color: #0056b3; /* Darker blue on focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Glow effect */
+    outline: none;
+  }
+  
+  /* Unit (DT) Styling */
+  .unit {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+  }
+  /* Send Button Styling */
+.send-button {
+    padding: 8px 16px; /* Adjust padding as needed */
+    font-size: 0.875rem; /* Smaller font size */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: background-color 0.3s ease;
+  }
+  
+  .send-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  /* Error Message Styling */
+  .text-danger {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.875rem;
+    color: #dc3545; /* Red color for errors */
+  }
+  /* Link Styling */
+  .show-text-field-link {
+    color: #007bff; /* Blue color for the link */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer; /* Show pointer cursor on hover */
+    font-size: 0.9rem;
+  }
+  
+  .show-text-field-link:hover {
+    text-decoration: underline; /* Underline on hover */
+  }

@@ -1,0 +1,205 @@
+<section class="main-content">
+  <ul class="breadcrumb breadcrumb-style ">
+    <li class="breadcrumb-item">
+      <h5 class="page-title m-b-0">Resource managment</h5>
+    </li>
+    <li class="breadcrumb-item bcrumb-1">
+      <a routerLink="/dashboard/main">
+        <i class="fas fa-home font-17"></i></a>
+    </li>
+    <li class="breadcrumb-item">Lab environment</li>
+    <li class="breadcrumb-item">Make a lab request</li>
+  </ul>
+  <div class="section-body">
+    <div class="row">
+      <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Lab environment request</h4>
+          </div>
+          <div class="card-body" >
+            <mat-stepper [linear]="isLinear" style="background-color: transparent;">
+              <mat-step [stepControl]="applicant">
+                <h3 style="text-align: center;">Applicant information</h3>
+                <form class="register-form m-4" [formGroup]="applicant"  >
+                  <ng-template matStepLabel>
+                    <i class="fas fa-user-cog" style="font-size: 30px;"></i>
+                  </ng-template>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label>First name <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" placeholder="First name" formControlName="first" required>
+                      <small class="form-text text-danger"
+                        *ngIf="!applicant.get('first')?.valid && applicant.get('first')?.touched">
+                        Please enter your first name!</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Last Name</label>
+                      <input type="text" class="form-control" placeholder="Last Name" formControlName="last">
+                      <small class="form-text text-danger"
+                        *ngIf="!applicant.get('last')?.valid && applicant.get('last')?.touched">
+                        Please enter your last name!</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label>Email<span class="text-danger">*</span></label>
+                      <input type="email" class="form-control" placeholder="Email" formControlName="email" required>
+                      <small class="form-text text-danger"
+                        *ngIf="!applicant.get('email')?.valid && (applicant.get('email')?.dirty || applicant.get('email')?.touched)">
+                        Enter valid email address!</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label>Departement<span class="text-danger">*</span></label>
+                      <select class="form-select form-control" formControlName="departement" required>
+                        <option disabled selected>Choose departement</option>
+                        <option>System</option>
+                        <option>Networking</option>
+                        <option>Development</option>
+                        <option>Cyber Security</option>
+                      </select>
+                      <small class="form-text text-danger"
+                        *ngIf="!applicant.get('departement')?.valid && applicant.get('departement')?.touched">
+                        Please enter your departement!</small>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 firstButtonContainer">
+                      <!-- <button class="btn btn-info msr-3"><i class="fas fa-arrow-left prev"></i> Previous</button> -->
+                      <button class="btn btn-info" [disabled]="!applicant.valid" matStepperNext>Next <i class="fas fa-arrow-right next"></i> </button>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="ressource">
+                <h3 style="text-align: center;">Ressource information</h3>
+                <form class="register-form m-4" [formGroup]="ressource"  >
+                  <ng-template matStepLabel><i class="fas fa-cogs" style="font-size: 30px;"></i></ng-template>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label>Type<span class="text-danger">*</span></label>
+                      <select class="form-select form-control" formControlName="type" required>
+                        <option disabled >Choose...</option>
+                        <option value="Hyper-V">Hyper-V</option>
+                        <option value="VMware">VMware</option>
+                      </select>
+                      <small class="form-text text-danger"
+                        *ngIf="!ressource.get('type')?.valid && ressource.get('type')?.touched"> Ressource type is required!
+                    </small>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Backup<span class="text-danger">*</span></label>
+                      <select class="form-select form-control" formControlName="backup" required>
+                        <option disabled>Choose...</option>
+                        <option value="true">With backup</option>
+                        <option value="false">Without backup</option>
+                      </select>
+                      <small class="form-text text-danger"
+                        *ngIf="!ressource.get('backup')?.valid && ressource.get('backup')?.touched"> Backup is required!
+                    </small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label>RAM (GO) <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" placeholder="Ram..." formControlName="ram" min="0">
+                      <small class="form-text text-danger"
+                        *ngIf="!applicant.get('ram')?.valid && applicant.get('ram')?.touched">
+                        Please enter the ram capacity!</small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label>Disk (GO)<span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" placeholder="Disk..." formControlName="disk" min="0">
+                      <small class="form-text text-danger"
+                        *ngIf="!applicant.get('disk')?.valid && applicant.get('disk')?.touched">
+                        Please enter the disk capacity!</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Processor <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" placeholder="Processor..." formControlName="processor" min="0">
+                      <small class="form-text text-danger"
+                        *ngIf="!ressource.get('processor')?.valid && ressource.get('processor')?.touched"> Processor is required!
+                    </small>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group position-relative">
+                        <label>DHCP <span class="text-danger">*</span></label>
+                        <select formControlName="dhcp" class="form-select">
+                          <option selected disabled>Choose an option...</option>
+                          <option  [ngValue]="true">Yes</option>
+                          <option  [ngValue]="false">No</option>
+                        </select>
+                        <small class="form-text text-danger"
+                          *ngIf="!ressource.get('dhcp')?.valid && ressource.get('dhcp')?.touched"> DHCP is required
+                        </small>
+                      </div>
+                </div>
+                  <div class="row ">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 buttonContainer">
+                      <button class="btn btn-info msr-3" matStepperPrevious><i class="fas fa-arrow-left prev"></i> Previous</button>
+                      <button class="btn btn-info" [disabled]="!ressource.valid" matStepperNext>Next <i class="fas fa-arrow-right next"></i> </button>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="bookingDate">
+                <h3 style="text-align: center;">Booking date</h3>
+                <form class="register-form m-4" [formGroup]="bookingDate">
+                  <ng-template matStepLabel><i class="fas fa-calendar-alt" style="font-size: 30px;"></i></ng-template>
+                  <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                      <label>Start Date<span class="text-danger">*</span></label>
+                      <input type="date" class="form-control"  formControlName="start" required>
+                      <small class="form-text text-danger"
+                        *ngIf="!bookingDate.get('start')?.valid && bookingDate.get('start')?.touched"> Start Date is required
+                    </small>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                      <label>End Date<span class="text-danger">*</span></label>
+                      <input type="date" class="form-control" placeholder="Start Date" formControlName="end" required>
+                      <small class="form-text text-danger"
+                        *ngIf="!bookingDate.get('end')?.valid && bookingDate.get('end')?.touched"> End Date is required
+                    </small>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 buttonContainer">
+                      <button class="btn btn-info msr-3" matStepperPrevious><i class="fas fa-arrow-left prev"></i> Previous</button>
+                      <button class="btn btn-info" [disabled]="!bookingDate.valid " matStepperNext>Next <i class="fas fa-arrow-right next"></i> </button>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step [stepControl]="goals">
+                <h3 style="text-align: center;">LAB goals</h3>
+                <form class="register-form m-4" [formGroup]="goals"  >
+                  <ng-template matStepLabel><i class="fas fa-star" style="font-size: 30px;"></i></ng-template>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label>Goals<span class="text-danger"></span></label>
+                      <textarea  class="form-control" placeholder="Write your lab goals..." formControlName="goals" ></textarea>
+                      <small class="form-text text-danger"
+                        *ngIf="!goals.get('end')?.valid && goals.get('end')?.touched"> LAB goals is required
+                    </small>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 buttonContainer">
+                      <button class="btn btn-info msr-3" matStepperPrevious><i class="fas fa-arrow-left prev"></i> Previous</button>
+                      <button class="btn btn-info" (click)="onSubmit()" [disabled]="!goals.valid" matStepperNext>Done <i class="fas fa-arrow-right next"></i> </button>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+            </mat-stepper>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

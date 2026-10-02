@@ -1,0 +1,29 @@
+.user-profile-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.drp-user img.user-profile-image {
+  margin-right: 10px;
+}
+
+.drp-user i.icon-settings {
+  margin-left: 10px;
+}
+
+.pro-head .user-name {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.custom-dropdown-toggle::after {
+  display: none !important;
+  /* Hide the arrow */
+
+}

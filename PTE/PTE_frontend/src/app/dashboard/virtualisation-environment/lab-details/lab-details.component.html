@@ -1,0 +1,74 @@
+<div class="specs-panel">
+    <div class="row">
+        <h5>Virtual Machine Info</h5>
+    </div>
+    <div class="row d-flex justify-content-center" style="gap: 5px;">
+        <div class="col-2 item">
+            <strong>Type</strong><br> 
+            {{payload_lab.type}}
+        </div>
+        <div class="col-2 item">
+             <strong>Backup</strong><br>
+            {{payload_lab.backup}}
+        </div>
+        <div class="col-2 item">
+             <strong>RAM</strong><br>  
+            {{payload_lab.ram}} GO
+        </div>
+        <div class="col-2 item">
+            <strong>Storage</strong><br>
+            {{payload_lab.disk}} GO
+        </div>
+        <div class="col-2 item">
+            <strong>Processor</strong><br>
+            {{payload_lab.processor}} Core
+        </div>
+        <div class="col-2 item">
+            <strong>DHCP</strong><br>
+            {{payload_lab.dhcp? 'Yes' : 'No'}}
+        </div>
+    </div>
+    <div class="row">
+        <h5>Lab Booking Date</h5>
+    </div>
+    <div class="row d-flex justify-content-center" style="gap: 5px;">
+        <div class="col-5 item">
+            <strong>{{payload_lab.start | date:'MMM d, y' }}</strong><br> 
+        </div>
+        <div class="col-2 ">
+            <i class="fas fa-arrows-alt-h icon"></i>
+        </div>
+        <div class="col-5 item">
+            <strong> {{payload_lab.end | date:'MMM d, y'  }}</strong><br> 
+        </div>
+    </div>
+    <div class="row">
+        <h5>Lab Purpose</h5>
+    </div>
+    <div class="row">
+        <strong>{{payload_lab.goals}}</strong><br>
+    </div>
+    <div class="row" *ngIf="payload_lab.offer.encadrant===userId">
+        <div class="col-6" *ngIf="payload_lab.status === 'PENDING' && (!payload_lab.isMentorAccepted && !payload_lab.isLabManagerAccepted)">
+            <button class="btn btn-danger" (click)="declineLab(payload_lab._id)">Decline <i class="far fa-times-circle action-icon"></i></button>
+        </div>
+        <div class="col-6" *ngIf="payload_lab.status === 'PENDING' && (!payload_lab.isMentorAccepted && !payload_lab.isLabManagerAccepted)">
+            <button class="btn btn-primary"  (click)="acceptLab(payload_lab._id,payload_lab)">Approve <i class="far fa-check-circle action-icon"></i></button>
+        </div>
+    </div>
+    <div class="row" *ngIf="payload_lab.offer.encadrant!==userId">
+        <div class="col-6" *ngIf="payload_lab.status === 'PENDING' && (payload_lab.isMentorAccepted && !payload_lab.isLabManagerAccepted)">
+            <button class="btn btn-danger" (click)="declineLab(payload_lab._id)">Decline <i class="far fa-times-circle action-icon"></i></button>
+        </div>
+        <div class="col-6" *ngIf="payload_lab.status === 'PENDING' && (payload_lab.isMentorAccepted && !payload_lab.isLabManagerAccepted)">
+            <button class="btn btn-primary"  (click)="acceptLab(payload_lab._id,payload_lab)">Approve <i class="far fa-check-circle action-icon"></i></button>
+        </div>
+    </div>
+    <!-- <div class="row between" *ngIf="!payload_lab.isMentorAccepted">
+        <div class="col-12">
+            <strong>
+                <span class="msg">Mentor did not accept the request yet!</span>
+            </strong>
+        </div>
+    </div> -->
+</div>

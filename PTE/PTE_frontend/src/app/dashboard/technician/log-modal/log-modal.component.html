@@ -1,0 +1,108 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-25">
+                    Technicians logs</div>
+            </div>
+            <hr>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <h6>Choose two options :</h6>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <div class="form-check">
+                <input type="radio" name="dateOption" [value]="'dateRang'" [(ngModel)]="selectedDateOption">
+                <label class="form-check-label font-16" for="dateRang">
+                    Date rang
+                </label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="dateOption" [value]="'oneDay'" [(ngModel)]="selectedDateOption">
+                <label class="form-check-label font-16" for="oneDay">
+                    particular day
+                </label>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <div class="form-check">
+                <input type="radio" name="userOption" [value]="'allUsers'" [(ngModel)]="selectedUserOption">
+                <label class="form-check-label font-16" for="allUsers">
+                    All users
+                </label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="userOption" [value]="'oneUser'" [(ngModel)]="selectedUserOption">
+                <label class="form-check-label font-16" for="oneUser">
+                    particular user
+                </label>
+            </div>
+        </div>
+    </div>
+    <form class="register-form" [formGroup]="logForm" (ngSubmit)="onSubmit(logForm)">
+        <div class="row" *ngIf="selectedDateOption==='dateRang'">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                <label>Start Date<span class="text-danger">*</span></label>
+                <input type="date" class="form-control" formControlName="dateRangStart" >
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+                <label>End Date<span class="text-danger">*</span></label>
+                <input type="date" class="form-control" formControlName="dateRangEnd" >
+            </div>
+        </div>
+        <div class="row" *ngIf="selectedDateOption==='oneDay'">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Date<span class="text-danger">*</span></label>
+                <input type="date" class="form-control" formControlName="day" >
+            </div>
+        </div>
+        <div class="row" *ngIf="selectedUserOption==='oneUser'">
+            <div  class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Choose technician<span class="text-danger">*</span></label>
+                <select  class="form-select form-control" formControlName="tech" >
+                  <option selected disabled>Please select technician</option>
+                  <option *ngFor="let tech of payload" [value]="tech._id">
+                    {{tech.firstName+" "+tech.lastName}}
+                </option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" (click)="download()">Download table <i class="fas fa-file-pdf"></i></button>
+            <button  type="submit" class="btn btn-primary">Show results</button>
+            <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+    
+    <div class="container" *ngIf="log" #pdfContent>
+        <br>
+        <h6 *ngIf="selectedDateOption==='dateRang'"><strong>Mission table on: </strong>{{logForm.value.dateRangStart| date:"dd/MM/yyyy"}} - {{logForm.value.dateRangEnd| date:"dd/MM/yyyy"}} </h6>
+        <h6 *ngIf="selectedDateOption==='oneDay'"><strong>Mission table on: </strong>{{logForm.value.day| date:"dd/MM/yyyy" }} </h6>
+        <table class="table table-responsive ">
+            <thead>
+                <tr style="text-align: center;">
+                    <th >HEURE DE SORTIE</th>
+                    <th >HEURE DE ARRIVEE</th>
+                    <th >NOM ET PRENOM DU PERSONNEL</th>
+                    <th >DESTINATION</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let l of sortedLog">
+                <tr style="text-align: center;">
+                    <td>{{l.start | date:"dd/MM/yyyy HH:mm a"}}</td>
+                    <td>{{l.end | date:"dd/MM/yyyy HH:mm a"}}</td>
+                    <td>{{l.engineer.firstName.toUpperCase()+' '+l.engineer.lastName.toUpperCase()}}</td>
+                    <td>{{l.address}}</td>
+                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

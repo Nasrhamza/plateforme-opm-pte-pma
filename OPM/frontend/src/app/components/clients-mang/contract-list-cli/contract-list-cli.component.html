@@ -1,0 +1,50 @@
+<div class="row" >
+
+    <div class="col-xl- col-lg-12 filter-bar invoice-list" >
+
+      <div class="row" >
+        <div class="col-md-4 col-sm-12" *ngFor="let item of listContrct">
+
+          <!-- <app-card  cardClass="card-border-c-blue" blockClass="card-task" [customHeader]="true"> -->
+            <app-card [cardClass]="getCardClass(item)" blockClass="card-task" [customHeader]="true">
+
+            <div class="app-card-header">
+              <a href="javascript:" class="text-secondary"><i class="fas fa-calendar-alt mr-2"></i>Start Date :</a>
+              <span *ngIf="this.comperDateContract(item.startDate,item.endDate) == 1" class="label label-success float-right"> {{item.startDate}} </span>
+              <span *ngIf="this.comperDateContract(item.startDate,item.endDate) == 2" class="label label-warning float-right"> {{item.startDate}} </span>
+              <span *ngIf="this.comperDateContract(item.startDate,item.endDate) == 3" class="label label-danger float-right"> {{item.startDate}} </span>
+            </div>
+            <div class="row">  
+              <div class="col-sm-12">
+                <p class="task-detail"><i class="fas fa-id-badge mr-2"></i>{{item.id}} :</p>
+                <p class="task-detail"><i class="fas fa-info-circle mr-2"></i> {{item.type+' - '+item.nature}}</p><br>
+                <!-- <p class="task-detail">{{}}</p> -->
+                <p *ngIf="this.comperDateContract(item.startDate,item.endDate) == 1" class="task-due"><strong> <i class="fas fa-hourglass-start mr-2"></i>Expire in : </strong><strong class="label label-success">{{item.endDate}}</strong></p>
+                <p *ngIf="this.comperDateContract(item.startDate,item.endDate) == 2" class="task-due"><strong> <i class="fas fa-hourglass-start mr-2"></i>Expire in : </strong><strong class="label label-warning">{{item.endDate}}</strong></p>
+                <p *ngIf="this.comperDateContract(item.startDate,item.endDate) == 3" class="task-due"><strong> <i class="fas fa-hourglass-start mr-2"></i>Expire in : </strong><strong class="label label-danger">{{item.endDate}}</strong></p>
+                <!-- <p class="task-due"><strong> End : </strong><strong class="label label-primary">{{item.endDate}}</strong></p> -->
+              </div>
+            </div>
+            <hr>
+            <div class="task-list-table"  >
+                <a *ngIf="item.responsableEquipeTechnique.responsable" href="javascript:"><img class="img-fluid img-radius m-r-5"  src="{{item.responsableEquipeTechnique.responsable.image.path}}" alt="1"  width="50px" height="50px" srcset="" style="border-radius: 50%; border: 2px solid rgb(255, 255, 255);" [placement]="'left'" ngbTooltip="Technical Team Manager	"  /></a>
+                <ng-container *ngIf=" item.equipeTechnique.length !=0">
+                <ng-container *ngFor="let item of item.equipeTechnique">
+                  <a href="javascript:"><img class="img-fluid img-radius m-r-5" src="{{fileurl+item.tech.image.fileName}}" alt="1" width="50px" height="50px" srcset="" style="border-radius: 50%; border: 2px solid rgb(255, 255, 255);" [placement]="'bottom'" ngbTooltip="Team Member" /></a>
+                </ng-container>
+              </ng-container>
+              <a href="javascript:"><i class="fas fa-plus"></i></a>
+            </div>
+            <div class="task-board">
+              <div class="dropdown-secondary m-r-5 dropdown"  placement="auto">
+                <button *ngIf="this.comperDateContract(item.startDate,item.endDate) == 1" class="btn btn-success btn-sm"  type="button" id="dropdown1" [routerLink]="[showdetails, item._id]"> <i class="fas fa-info-circle mr-2"></i>Show Details</button>
+                <button *ngIf="this.comperDateContract(item.startDate,item.endDate) == 2" class="btn btn-warning btn-sm"  type="button" id="dropdown1" [routerLink]="[showdetails, item._id]"> <i class="fas fa-info-circle mr-2"></i>Show Details</button>
+                <button *ngIf="this.comperDateContract(item.startDate,item.endDate) == 3" class="btn btn-danger btn-sm"  type="button" id="dropdown1" [routerLink]="[showdetails, item._id]"> <i class="fas fa-info-circle mr-2"></i>Show Details</button>
+              </div>
+            </div>
+          </app-card>
+        </div>
+        </div>
+    </div>
+  </div>
+  

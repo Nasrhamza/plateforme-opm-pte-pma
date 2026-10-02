@@ -1,0 +1,31 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Upload file' | translate }}</h5>
+
+<mat-dialog-content style="max-width: 600px">
+    @if(!isLetter){
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'File type' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-select [formControl]="type" placeholder="Select a type">
+                @for(e of types; track e.type){
+                    <mat-option [value]="e.type">{{ e.name }}</mat-option>
+                }
+            </mat-select>
+            @if(type.touched && type.invalid){
+                <mat-hint class="m-b-16 error-msg">
+                    @if(type.errors && type.errors['required']){
+                    <div class="text-error">
+                        {{ 'File type is required' | translate }}
+                    </div>
+                    }
+                </mat-hint>
+            }
+        </mat-form-field>
+    }
+    <div class="d-flex align-items-center m-b-16">
+        <button mat-flat-button color="primary" input-file-button>
+            <input type="file" (change)="selectFile($event)" />
+        </button>
+    </div>
+    <button mat-flat-button color="primary" class="w-100" [disabled]="!type || !selectedFile" (click)="onSubmit()">
+        {{ 'Submit' | translate }}
+    </button>
+</mat-dialog-content>

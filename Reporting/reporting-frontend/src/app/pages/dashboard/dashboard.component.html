@@ -1,0 +1,106 @@
+<div class="px-8 py-8 pb-12">
+  <app-filter-bar />
+  <div class="mb-8 flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold tracking-tight text-on-surface">Vue d'ensemble des performances</h2>
+      <p class="text-on-surface-variant text-sm mt-1">Tableau de bord exécutif : OPM, PTE et PMA.</p>
+    </div>
+    <button (click)="syncData()" [disabled]="syncing()"
+      class="bg-primary text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-all disabled:opacity-60">
+      {{ syncing() ? "Synchronisation..." : "Synchroniser" }}
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="bg-surface-container-lowest rounded-xl p-6 text-sm font-medium text-on-surface-variant mb-8">
+      Chargement du tableau de bord...
+    </div>
+  }
+  @if (error()) {
+    <div class="mb-6 bg-error-container text-error rounded-xl p-4 text-sm font-semibold">{{ error() }}</div>
+  }
+
+  <!-- KPIs transversaux -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-8">
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-error shadow-sm">
+      <span class="text-[10px] font-bold tracking-widest text-error bg-error-container/30 px-2 py-0.5 rounded-full">OPM</span>
+      <h3 class="text-on-surface-variant text-xs font-semibold mt-2 mb-1">Tickets ouverts</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ opmOpenTickets() }}</span>
+      <p class="text-[11px] mt-1" [class.text-emerald-600]="(trendOf('opmOpenTickets') ?? 0) >= 0" [class.text-error]="(trendOf('opmOpenTickets') ?? 0) < 0">{{ trendLabel('opmOpenTickets') }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+      <span class="text-[10px] font-bold tracking-widest text-error bg-error-container/30 px-2 py-0.5 rounded-full">OPM</span>
+      <h3 class="text-on-surface-variant text-xs font-semibold mt-2 mb-1">Taux de résolution</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ opmResolutionRate().toFixed(1) }}%</span>
+      <p class="text-[11px] mt-1" [class.text-emerald-600]="(trendOf('opmResolutionRate') ?? 0) >= 0" [class.text-error]="(trendOf('opmResolutionRate') ?? 0) < 0">{{ trendLabel('opmResolutionRate') }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-[#ffae1f] shadow-sm">
+      <span class="text-[10px] font-bold tracking-widest text-[#ffae1f] bg-[#fff4e5] px-2 py-0.5 rounded-full">PTE</span>
+      <h3 class="text-on-surface-variant text-xs font-semibold mt-2 mb-1">Jours de congé pris</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ ptePendingLeaves() }}</span>
+      <p class="text-[11px] mt-1" [class.text-emerald-600]="(trendOf('ptePendingLeaves') ?? 0) >= 0" [class.text-error]="(trendOf('ptePendingLeaves') ?? 0) < 0">{{ trendLabel('ptePendingLeaves') }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-secondary shadow-sm">
+      <span class="text-[10px] font-bold tracking-widest text-[#ffae1f] bg-[#fff4e5] px-2 py-0.5 rounded-full">PTE</span>
+      <h3 class="text-on-surface-variant text-xs font-semibold mt-2 mb-1">Missions actives</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ pteMissions() }}</span>
+      <p class="text-[11px] mt-1" [class.text-emerald-600]="(trendOf('pteMissions') ?? 0) >= 0" [class.text-error]="(trendOf('pteMissions') ?? 0) < 0">{{ trendLabel('pteMissions') }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-primary shadow-sm">
+      <span class="text-[10px] font-bold tracking-widest text-primary bg-primary-fixed px-2 py-0.5 rounded-full">PMA</span>
+      <h3 class="text-on-surface-variant text-xs font-semibold mt-2 mb-1">Projets actifs</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ pmaActiveProjects() }}</span>
+      <p class="text-[11px] mt-1" [class.text-emerald-600]="(trendOf('pmaActiveProjects') ?? 0) >= 0" [class.text-error]="(trendOf('pmaActiveProjects') ?? 0) < 0">{{ trendLabel('pmaActiveProjects') }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-error shadow-sm">
+      <span class="text-[10px] font-bold tracking-widest text-primary bg-primary-fixed px-2 py-0.5 rounded-full">PMA</span>
+      <h3 class="text-on-surface-variant text-xs font-semibold mt-2 mb-1">Projets en retard</h3>
+      <span class="text-2xl font-bold tracking-tighter text-error">{{ pmaOverdueTasks() }}</span>
+      <p class="text-[11px] mt-1" [class.text-emerald-600]="(trendOf('pmaOverdueTasks') ?? 0) >= 0" [class.text-error]="(trendOf('pmaOverdueTasks') ?? 0) < 0">{{ trendLabel('pmaOverdueTasks') }}</p>
+    </div>
+  </div>
+
+  <!-- Résumé exécutif -->
+  <div class="flex items-center gap-2 mb-4">
+    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-violet-100 text-violet-700 uppercase tracking-wider">EXEC</span>
+    <h3 class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Résumé exécutif</h3>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-violet-500 shadow-sm">
+      <h3 class="text-on-surface-variant text-xs font-semibold mb-1">Contrats à risque</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ execRevenueAtRisk() | number:'1.0-0' }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-violet-400 shadow-sm">
+      <h3 class="text-on-surface-variant text-xs font-semibold mb-1">Débit de l'entreprise</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ execCompanyThroughput() | number:'1.0-0' }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-violet-300 shadow-sm">
+      <h3 class="text-on-surface-variant text-xs font-semibold mb-1">Clients actifs</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ execActiveClients() }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-violet-300 shadow-sm">
+      <h3 class="text-on-surface-variant text-xs font-semibold mb-1">Disponibilité RH</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ execAvgWorkforceAvail().toFixed(1) }}%</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-violet-200 shadow-sm">
+      <h3 class="text-on-surface-variant text-xs font-semibold mb-1">Score PM moyen</h3>
+      <span class="text-2xl font-bold tracking-tighter text-on-surface">{{ execAvgPmScore().toFixed(2) }}</span>
+    </div>
+  </div>
+
+  <!-- Graphiques exécutifs -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+      <h3 class="font-bold text-on-surface mb-4 text-sm">Débit de l'entreprise dans le temps</h3>
+      <canvas baseChart [type]="'line'" [data]="throughputLineData()"></canvas>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+      <h3 class="font-bold text-on-surface mb-4 text-sm">Scores de santé clients</h3>
+      <canvas baseChart [type]="'bar'" [data]="clientHealthBarData()"></canvas>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+      <h3 class="font-bold text-on-surface mb-4 text-sm">Disponibilité RH par département</h3>
+      <canvas baseChart [type]="'bar'" [data]="workforceBarData()"></canvas>
+    </div>
+  </div>
+</div>

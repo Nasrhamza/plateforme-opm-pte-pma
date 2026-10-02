@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{mytitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+
+        <div class="form-group">
+            <label for="sla">Title:</label>
+            <input type="text" class="form-control"  placeholder="Title"  id="title" name="title" ngModel [(ngModel)]="this.model.title" #title="ngModel" required>
+                 <div *ngIf="title.touched && title.errors?.required" class="error">Title required</div>
+        </div>
+    
+
+    <div class="form-group">
+        <label for="sla">Date:</label>
+        <input type="date" class="form-control" autocomplete="off" placeholder="yyyy-mm-dd" name="dp"  ngbDatepicker  id="date" name="date" ngModel [(ngModel)]="this.model.date" #date="ngModel" required>
+         <div *ngIf="date.touched && date.errors?.required" class="error">Date required</div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputState">Support Type:</label>
+        <select id="inputState" class="form-control" [(ngModel)]="this.model.TypeSupport" #TypeSupport="ngModel" name="TypeSupport" required>
+            <ng-container *ngFor="let item of this.listTech">
+            <option value="{{item._id}}" selected>{{item.firstName+' '+item.lastName}}</option>
+            </ng-container>
+        </select>
+        <div class="invalid-feedback" *ngIf="TypeSupport.touched && TypeSupport.errors?.required" class="error">Support Type  required </div>
+
+    </div>
+
+<div class="modal-footer">
+    <button *ngIf="!this.add" type="submit" [disabled]="f.invalid"  class="btn btn-outline-warning">Update</button>
+
+    <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
+</form>
+</div>

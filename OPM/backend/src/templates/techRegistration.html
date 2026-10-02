@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .wrapper {
+            margin: 0;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #00796B;
+        }
+
+        .header {
+            background-color: #00796B;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .header img {
+            max-width: 120px;
+            margin-top: 10px;
+        }
+
+        .header h2 {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .content {
+            text-align: left;
+            padding: 30px;
+            background-color: #E0F2F1;
+            border-radius: 8px;
+            color: #004D40;
+        }
+
+        .content h2 {
+            color: #00796B;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .content p {
+            font-size: 16px;
+            color: #004D40;
+            line-height: 1.5;
+        }
+
+        .text-bold {
+            font-weight: bold;
+            color: #00796B;
+        }
+
+        .footer {
+            padding: 15px;
+            text-align: center;
+            background-color: #00796B;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            font-size: 12px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body style="padding: 0;margin: 0;">
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <img src="https://opm.prologic.com.tn:5600/assets/logo/logoBlue.png" alt="OPM logo"
+                    style="width: 130px;">
+                <h2>Registration Pending</h2>
+            </div>
+            <div class="content">
+                <h2>Welcome, {{fullName}}!</h2>
+                <p>Your registration is being reviewed.</p>
+                <p>You'll receive an update once approved.</p>
+                <p>Thank you for your patience!</p>
+            </div>
+            <div class="footer">
+                <p>&copy; {{year}} OPM</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

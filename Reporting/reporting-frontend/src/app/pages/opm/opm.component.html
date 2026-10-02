@@ -1,0 +1,136 @@
+<div class="px-8 py-8 pb-12">
+  <app-filter-bar />
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+    <div class="flex items-center gap-3">
+      <h2 class="text-2xl font-bold tracking-tight text-on-surface">OPM : Analyse du support</h2>
+      <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-error-container text-error uppercase tracking-wider">OPM</span>
+    </div>
+    <button type="button" (click)="syncData()" [disabled]="syncing()"
+      class="px-4 py-2 editorial-gradient text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2 cloud-shadow disabled:opacity-60">
+      <span class="material-symbols-outlined text-lg">{{ syncing() ? "sync" : "refresh" }}</span>
+      {{ syncing() ? "Synchronisation..." : "Synchroniser" }}
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="bg-surface-container-lowest rounded-xl p-6 text-sm font-medium text-on-surface-variant mb-6">Chargement des données OPM...</div>
+  }
+  @if (error()) {
+    <div class="mb-6 bg-error-container text-error rounded-xl p-4 text-sm font-semibold">{{ error() }}</div>
+  }
+
+  <!-- KPIs -->
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border border-white/40">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Total tickets</p>
+      <span class="text-3xl font-extrabold tracking-tight">{{ totalTickets() }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border border-white/40">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Ouverts</p>
+      <span class="text-3xl font-extrabold tracking-tight text-[#ffae1f]">{{ openTickets() }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border border-white/40">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Résolus</p>
+      <span class="text-3xl font-extrabold tracking-tight text-emerald-600">{{ resolvedTickets() }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border border-white/40">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Conformité SLA</p>
+      <span class="text-3xl font-extrabold tracking-tight"
+        [class.text-emerald-600]="avgSlaCompliance() >= 90"
+        [class.text-[#ffae1f]]="avgSlaCompliance() >= 70 && avgSlaCompliance() < 90"
+        [class.text-error]="avgSlaCompliance() < 70">
+        {{ avgSlaCompliance().toFixed(1) }}%
+      </span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border-l-4 border-l-error">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">SLA dépassé</p>
+      <span class="text-3xl font-extrabold tracking-tight text-error">{{ breachedTickets() }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border border-white/40">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">MTTR (h)</p>
+      <span class="text-3xl font-extrabold tracking-tight">{{ resolutionHours() }}</span>
+    </div>
+    <div class="bg-surface-container-lowest p-5 rounded-xl cloud-shadow border border-white/40">
+      <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">MTTA (h)</p>
+      <span class="text-3xl font-extrabold tracking-tight">{{ avgMtta().toFixed(1) }}</span>
+    </div>
+  </div>
+
+  <!-- FCR + Statuts -->
+  <div class="grid grid-cols-12 gap-6 mb-8">
+    <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-6 rounded-xl cloud-shadow">
+      <h3 class="text-sm font-bold tracking-tight mb-1">Taux de résolution au premier contact</h3>
+      <p class="text-[11px] text-on-surface-variant mb-5">% de tickets résolus dès le premier contact, par période</p>
+      <canvas baseChart [type]="'bar'" [data]="volumeByPeriodData()"></canvas>
+    </div>
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest p-6 rounded-xl cloud-shadow">
+      <h3 class="text-sm font-bold tracking-tight mb-1">Répartition par statut</h3>
+      <p class="text-[11px] text-on-surface-variant mb-5">Distribution des tickets par statut actuel</p>
+      <canvas baseChart [type]="'doughnut'" [data]="statusDistributionData()"></canvas>
+    </div>
+  </div>
+
+  <!-- Charge techniciens + tableau MTTR -->
+  <div class="grid grid-cols-12 gap-6">
+    <div class="col-span-12 lg:col-span-5 bg-surface-container-lowest p-6 rounded-xl cloud-shadow">
+      <div class="flex items-center justify-between mb-1">
+        <h3 class="text-sm font-bold tracking-tight">Charge des techniciens</h3>
+        <select (change)="filterTechnician.set($any($event.target).value)"
+          class="text-xs border border-outline-variant/30 rounded-lg px-2 py-1 bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30">
+          <option value="" [selected]="filterTechnician() === ''">Tous les techniciens</option>
+          @for (t of technicianOptions(); track t) {
+            <option [value]="t" [selected]="t === filterTechnician()">{{ t }}</option>
+          }
+        </select>
+      </div>
+      <p class="text-[11px] text-on-surface-variant mb-5">Identifier les agents surchargés</p>
+      <canvas baseChart [type]="'bar'" [data]="techniciansData()"></canvas>
+    </div>
+
+    <div class="col-span-12 lg:col-span-7 bg-surface-container-lowest rounded-xl cloud-shadow overflow-hidden">
+      <div class="p-5 border-b border-surface-container flex items-center justify-between gap-3">
+        <div>
+          <h3 class="text-sm font-bold tracking-tight">MTTR par contrat</h3>
+          <p class="text-[11px] text-on-surface-variant mt-0.5">Temps moyen de résolution par contrat client (h)</p>
+        </div>
+        <select (change)="filterContract.set($any($event.target).value)"
+          class="text-xs border border-outline-variant/30 rounded-lg px-2 py-1.5 bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 shrink-0">
+          <option value="" [selected]="filterContract() === ''">Tous les contrats</option>
+          @for (c of contractOptions(); track c) {
+            <option [value]="c" [selected]="c === filterContract()">{{ c }}</option>
+          }
+        </select>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr class="bg-surface-container-low">
+              <th class="px-5 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Contrat</th>
+              <th class="px-5 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">MTTR moy. (h)</th>
+              <th class="px-5 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Statut SLA</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-surface-container">
+            @for (row of filteredMttr(); track $index) {
+              <tr class="hover:bg-surface-container-low/50 transition-colors">
+                <td class="px-5 py-3 text-sm font-semibold text-primary">{{ row['contract'] ?? 'N/A' }}</td>
+                <td class="px-5 py-3 text-sm font-bold">{{ row.value | number:'1.1-1' }}</td>
+                <td class="px-5 py-3">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
+                    [class.bg-emerald-100]="row.value <= 4" [class.text-emerald-700]="row.value <= 4"
+                    [class.bg-[#fff4e5]]="row.value > 4 && row.value <= 8" [class.text-[#b76e00]]="row.value > 4 && row.value <= 8"
+                    [class.bg-error-container]="row.value > 8" [class.text-error]="row.value > 8">
+                    {{ row.value <= 4 ? 'Conforme' : row.value <= 8 ? 'À risque' : 'Dépassé' }}
+                  </span>
+                </td>
+              </tr>
+            }
+            @if (filteredMttr().length === 0) {
+              <tr><td colspan="3" class="px-5 py-6 text-sm text-on-surface-variant text-center">Aucune donnée pour ce contrat.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

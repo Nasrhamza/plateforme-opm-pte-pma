@@ -1,0 +1,22 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Update task progress' | translate }}</h5>
+<mat-dialog-content>
+    <div class="col-12 m-b-24">
+        <label class="mat-body-2 f-w-600">Progress:</label>
+    </div>
+    <div class="col-12 w-100">
+        <mat-slider
+        style="width: 100%;"
+            min="0"
+            max="100"
+            step="1"
+            showTickMarks
+            discrete
+            [displayWith]="formatLabel">
+            <input matSliderThumb [(ngModel)]="progress"/>
+        </mat-slider>
+    </div>
+    <button mat-flat-button color="primary" class="w-100 m-t-20" (click)="submit()" [disabled]="loading">
+        {{ 'Submit' | translate }}
+    </button>
+
+</mat-dialog-content>

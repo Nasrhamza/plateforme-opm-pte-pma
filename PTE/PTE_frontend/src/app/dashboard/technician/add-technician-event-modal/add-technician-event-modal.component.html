@@ -1,0 +1,225 @@
+<div class="modal-header editRowModal">
+  <h4 class="modal-title" id="modal-basic-title">
+    <div class="table-modal-header">
+      <div class="modal-about">
+        <div class="fw-bold p-t-10 font-17">
+          Add Technician Event</div>
+      </div>
+    </div>
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <hr>
+  <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+      <button class="navigations w-100" (click)="altTicket()">Reservation for ticket</button>
+    </div>
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+      <button class="navigations w-100" (click)="altProject()">Reservation for project</button>
+    </div>
+  </div>
+  <hr>
+  <div class="row" *ngIf="forTicket">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+      <label>Case Number<span class="text-danger">*</span></label>
+      <input type="text" class="form-control" placeholder="Case Number" (input)="handleCaseNumber($event)"
+        [ngClass]="{'is-invalid': outputRES, 'is-valid': validTicket}"><br>
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 warn-box" *ngIf="outputRES.length>0">
+        <span class="warning" *ngIf="outputRES">{{ outputRES }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="forProject">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+      <label>Task ref<span class="text-danger">*</span></label>
+      <input type="text" class="form-control" placeholder="Task ref" (input)="handleTaskRef($event)"
+        [ngClass]="{'is-invalid': outputRES, 'is-valid': validTask}"><br>
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 warn-box" *ngIf="outputRES.length>0">
+        <span class="warning" *ngIf="outputRES">{{ outputRES }}</span>
+      </div>
+    </div>
+
+  </div>
+  <div class="row" *ngIf="validTicket">
+    <form class="register-form" [formGroup]="EventForm" (ngSubmit)="onSubmit(EventForm)">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Title<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Title" formControlName="title" required readonly>
+          <small class="form-text text-danger"
+            *ngIf="!EventForm.get('title')?.valid && EventForm.get('title')?.touched"> Title is required
+          </small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>Start Date<span class="text-danger">*</span></label>
+          <input type="datetime-local" class="form-control" formControlName="start" required>
+          <small class="form-text text-danger"
+            *ngIf="!EventForm.get('start')?.valid && EventForm.get('start')?.touched"> Start Date is required
+          </small>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>End Date<span class="text-danger">*</span></label>
+          <input type="datetime-local" class="form-control" placeholder="Start Date" formControlName="end" required>
+          <small class="form-text text-danger" *ngIf="!EventForm.get('end')?.valid && EventForm.get('end')?.touched">
+            End Date is required
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Job<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Job" formControlName="job" required readonly>
+          <small class="form-text text-danger" *ngIf="!EventForm.get('job')?.valid && EventForm.get('job')?.touched">
+            Job is required
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Destination<span class="text-danger">*</span></label>
+          <div leaflet style="height: 300px; width: 100%;" [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label><strong>Need a ride? </strong> 
+            <a class="attachCard" (click)="needCar=true">yes</a> or 
+            <a class="attachCard" (click)="needCar=false">no</a>
+          </label>
+        </div>
+      </div>
+      <div class="row" *ngIf="needCar">
+        <div *ngIf="endDateValue">
+          <span style="padding-top: 15px; margin-bottom: 15px;">
+            Cars available for booking <strong>from {{EventForm.get('start')?.value | date :'short'}} to
+              {{EventForm.get('end')?.value | date :'short'}}</strong>. Choose your preferred car to proceed:
+          </span>
+          <div class="carContainer">
+            <div class="car" *ngFor="let car of vehicles" (click)="selectCar(car._id)"
+              [ngClass]="{ 'selected-car': selectedcar === car._id }">
+              <i class="fas fa-car icon" *ngIf="car.type === 'civil'"></i>
+              <i class="fas fa-truck icon" *ngIf="car.type === 'commercial'"></i><br>
+              <strong><span>{{car.model}}</span></strong><br>
+              <span>{{car.registration_number}}</span>
+              <i class="fas fa-check checkmark" *ngIf="selectedcar === car._id"></i>
+            </div>
+          </div>
+        </div>
+        <div class="no-date-selected" *ngIf="!endDateValue">
+          <h3>please select the end date</h3>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Add Event</button>
+
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>
+  <div class="row" *ngIf="validTask">
+    <form class="register-form" [formGroup]="EventForm" (ngSubmit)="onSubmit(EventForm)">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Title<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Title" formControlName="title" required readonly>
+          <small class="form-text text-danger"
+            *ngIf="!EventForm.get('title')?.valid && EventForm.get('title')?.touched"> Title is required
+          </small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>Start Date<span class="text-danger">*</span></label>
+          <input type="datetime-local" class="form-control" formControlName="start" required>
+          <small class="form-text text-danger"
+            *ngIf="!EventForm.get('start')?.valid && EventForm.get('start')?.touched"> Start Date is required
+          </small>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>End Date<span class="text-danger">*</span></label>
+          <input type="datetime-local" class="form-control" placeholder="Start Date" formControlName="end" required>
+          <small class="form-text text-danger" *ngIf="!EventForm.get('end')?.valid && EventForm.get('end')?.touched">
+            End Date is required
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Job<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Job" formControlName="job" required readonly>
+          <small class="form-text text-danger" *ngIf="!EventForm.get('job')?.valid && EventForm.get('job')?.touched">
+            Job is required
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>Destination<span class="text-danger">*</span></label>
+          <div leaflet style="height: 300px; width: 100%;" [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label><strong>Need a ride? </strong> 
+            <a class="attachCard" (click)="needCar=true">yes</a> or 
+            <a class="attachCard" (click)="needCar=false">no</a>
+          </label>
+        </div>
+      </div>
+      <div class="row" *ngIf="needCar">
+        <div *ngIf="endDateValue">
+          <span style="padding-top: 15px; margin-bottom: 15px;">
+            Cars available for booking <strong>from {{EventForm.get('start')?.value | date :'short'}} to
+              {{EventForm.get('end')?.value | date :'short'}}</strong>. Choose your preferred car to proceed:
+          </span>
+          <div class="carContainer">
+            <div class="car" *ngFor="let car of vehicles" (click)="selectCar(car._id)"
+              [ngClass]="{ 'selected-car': selectedcar === car._id }">
+              <i class="fas fa-car icon" *ngIf="car.type === 'civil'"></i>
+              <i class="fas fa-truck icon" *ngIf="car.type === 'commercial'"></i><br>
+              <strong><span>{{car.model}}</span></strong><br>
+              <span>{{car.registration_number}}</span>
+              <i class="fas fa-check checkmark" *ngIf="selectedcar === car._id"></i>
+            </div>
+          </div>
+        </div>
+        <div class="no-date-selected" *ngIf="!endDateValue">
+          <h3>please select the end date</h3>
+        </div>
+        <!-- <div class="p-t-10 p-b-10" *ngIf="selectedcar">
+          <ng-select [items]="filteredDrivers" bindLabel="firstName" bindValue="_id" placeholder="Please select a driver"
+            (change)="onDriverSelect($event)">
+          
+            <ng-template ng-label-tmp let-item="item">
+              <div class="driver-option">
+                <img [src]="picsUrl + item.image" alt="{{ item.firstName }}" class="driver-image" />
+                <span>{{ item.firstName }} {{ item.lastName }}</span>
+              </div>
+            </ng-template>
+          
+            <ng-template ng-option-tmp let-item="item">
+              <div class="driver-option">
+                <img [src]="picsUrl + item.image" alt="{{ item.firstName }}" class="driver-image" />
+                <span>{{ item.firstName }} {{ item.lastName }}</span>
+              </div>
+            </ng-template>
+          
+          </ng-select>
+        
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Add Event</button>
+
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>
+</div>

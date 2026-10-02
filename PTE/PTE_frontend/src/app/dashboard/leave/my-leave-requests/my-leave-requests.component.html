@@ -1,0 +1,304 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Leave request</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Leave</li>
+        <li class="breadcrumb-item">Request</li>
+    </ul>
+    <div class="section-body" *ngIf="user">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>My leave requests</h4>
+                    </div>
+                    <div class="card-body">
+                        <div *ngIf="role==='ENGINEER' || role==='LAB-MANAGER'">
+                            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                                <li [ngbNavItem]="1">
+                                    <a ngbNavLink>My Leave requests</a>
+                                    <ng-template ngbNavContent>
+                                        <div class="search">
+                                            <label for="search">Search</label>
+                                            <input type="text" class="form-control text" name="search" placeholder="Filter by name, ref or type..." (input)="handleMyLeaveSearch($event)">
+                                        </div>
+                                        <ngx-datatable #table class="material" [rows]="allLeaves" [loadingIndicator]="loadingIndicator"
+                                            columnMode="force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10"
+                                            [scrollbarH]="scrollBarHorizontal" [reorderable]="reorderable">
+                    
+                                            <ngx-datatable-column name="Ref">
+                                                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                                                    <div class="name-col-style">
+                                                        <div>{{row.code}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Name">
+                                                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                                                    <div class="name-col-style">
+                                                        <div>{{row.fullName}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Type">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.type}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Start date" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template >
+                                                    <span *ngIf="row.type ==='1/2 day' || row.type ==='Authorization'">{{row.startDate| date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                    <span *ngIf="row.type ==='Personal Leave' || row.type ==='Annual Leave' || row.type ==='Maternity Leave' || row.type ==='Unpaid Leave'">{{row.startDate| date:'dd/MM/yyyy'}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="End date" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template >
+                                                    <span *ngIf="row.type ==='1/2 day' || row.type ==='Authorization'">{{row.endDate| date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                    <span *ngIf="row.type ==='Personal Leave' || row.type ==='Annual Leave' || row.type ==='Maternity Leave' || row.type ==='Unpaid Leave'">{{row.endDate| date:'dd/MM/yyyy'}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Supervisor">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span *ngIf="row.supervisor">
+                                                        {{row.supervisor.firstName+" "+row.supervisor.lastName}}
+                                                    </span>
+                                                    <span *ngIf="!row.supervisor">
+                                                        No supervisor provided
+                                                    </span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Status">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div *ngIf="row.status==='Approved'" class="badge-outline col-green">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Pending 0/2'" class="badge-outline col-yellow">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Pending 1/2'" class="badge-outline col-indigo">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Declined'" class="badge-outline col-red">
+                                                        {{row.status}}
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <!-- <ngx-datatable-column name="Actions" [sortable]=false>
+                                                                <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                                    ngx-datatable-cell-template>
+                                                                    <a class="msr-2 h-auto tblEditBtn">
+                                                                        <i class="fas fa-pen"></i>
+                                                                    </a>
+                                                                    <a class="h-auto tblDelBtn">
+                                                                        <i class="far fa-trash-alt"></i>
+                                                                    </a>
+                                                                </ng-template>
+                                                            </ngx-datatable-column> -->
+                                        </ngx-datatable>
+                                    </ng-template>
+                                </li>
+                                <li [ngbNavItem]="2" *ngIf="user.teamLeader==true">
+                                    <a ngbNavLink>Team requests to approve</a>
+                                    <ng-template ngbNavContent>
+                                        <div class="search">
+                                            <label for="search">Search</label>
+                                            <input type="text" class="form-control text" name="search" placeholder="Filter by name, ref or type..." (input)="handleTeamLeaveSearch($event)">
+                                        </div>
+                                        <ngx-datatable #table class="material" [rows]="teamLeaves" [loadingIndicator]="loadingIndicator"
+                                            columnMode="force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10"
+                                            [scrollbarH]="scrollBarHorizontal" [reorderable]="reorderable">
+
+                                            <ngx-datatable-column name="Ref">
+                                                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                                                    <div class="name-col-style">
+                                                        <div>{{row.code}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Name">
+                                                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                                                    <div class="name-col-style">
+                                                        <div>{{row.fullName}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Type">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.type}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Start date" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template >
+                                                    <span *ngIf="row.type ==='1/2 day' || row.type ==='Authorization'">{{row.startDate| date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                    <span *ngIf="row.type ==='Personal Leave' || row.type ==='Annual Leave' || row.type ==='Maternity Leave' || row.type ==='Unpaid Leave'">{{row.startDate| date:'dd/MM/yyyy'}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="End date" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template >
+                                                    <span *ngIf="row.type ==='1/2 day' || row.type ==='Authorization'">{{row.endDate| date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                    <span *ngIf="row.type ==='Personal Leave' || row.type ==='Annual Leave' || row.type ==='Maternity Leave' || row.type ==='Unpaid Leave'">{{row.endDate| date:'dd/MM/yyyy'}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Status">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div *ngIf="row.status==='Approved'" class="badge-outline col-green">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Pending 0/2'" class="badge-outline col-yellow">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Pending 1/2'" class="badge-outline col-indigo">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Declined'" class="badge-outline col-red">
+                                                        {{row.status}}
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Actions" [sortable]=false>
+                                                <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <a *ngIf="row.status=='Pending 0/2'" class="msr-2 h-auto tblEditBtn"
+                                                        ngbPopover="Approve request" triggers="mouseenter:mouseleave" placement="left"
+                                                        (click)="workerApproveRequest(row._id)">
+                                                        <i class="fas fa-check"></i>
+                                                    </a>
+                                                    <a *ngIf="row.status=='Pending 0/2'" class="h-auto tblDelBtn"
+                                                        ngbPopover="Decline request" triggers="mouseenter:mouseleave" placement="left"
+                                                        (click)="workerDeclineRequest(row._id)">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </a>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </ngx-datatable>
+                                    </ng-template>
+                                </li>
+                            </ul>
+                            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                        </div>
+
+                    <div>
+                        <div *ngIf="role==='ADMIN' || role==='ASSISTANT'">
+                            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                                <li [ngbNavItem]="1">
+                                    <a ngbNavLink>All Leave requests</a>
+                                    <ng-template ngbNavContent>
+                                        <div class="search">
+                                            <label for="search">Search</label>
+                                            <input type="text" class="form-control text" name="search" placeholder="Filter by name, ref or type..." (input)="handleAllLeaveSearch($event)">
+                                        </div>
+                                        <ngx-datatable #table class="material" [rows]="allLeaves"
+                                            [loadingIndicator]="loadingIndicator" columnMode="force" [headerHeight]="50"
+                                            [footerHeight]="50" rowHeight="auto" [limit]="10"
+                                            [scrollbarH]="scrollBarHorizontal" [reorderable]="reorderable">
+    
+                                            <ngx-datatable-column name="Ref">
+                                                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                                                    <div class="name-col-style">
+                                                        <div>{{row.code}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Name">
+                                                <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+                                                    <div class="name-col-style">
+                                                        <div>{{row.fullName}}</div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Type" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.type}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Start date" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template >
+                                                    <span *ngIf="row.type ==='1/2 day' || row.type ==='Authorization'">{{row.startDate| date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                    <span *ngIf="row.type ==='Personal Leave' || row.type ==='Annual Leave' || row.type ==='Maternity Leave' || row.type ==='Unpaid Leave'">{{row.startDate| date:'dd/MM/yyyy'}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="End date" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template >
+                                                    <span *ngIf="row.type ==='1/2 day' || row.type ==='Authorization'">{{row.endDate| date:'dd/MM/yyyy hh:mm a'}}</span>
+                                                    <span *ngIf="row.type ==='Personal Leave' || row.type ==='Annual Leave' || row.type ==='Maternity Leave' || row.type ==='Unpaid Leave'">{{row.endDate| date:'dd/MM/yyyy'}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Supervisor">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span *ngIf="row.supervisor">
+                                                        {{row.supervisor.firstName+" "+row.supervisor.lastName}}
+                                                    </span>
+                                                    <span *ngIf="!row.supervisor">
+                                                        No supervisor provided
+                                                    </span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Status" >
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <div *ngIf="row.status==='Approved'" class="badge-outline col-green">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Pending 0/2'" class="badge-outline col-yellow">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Pending 1/2'" class="badge-outline col-indigo">
+                                                        {{row.status}}
+                                                    </div>
+                                                    <div *ngIf="row.status==='Declined'" class="badge-outline col-red">
+                                                        {{row.status}}
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="leave form" *ngIf="role==='ASSISTANT'">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <button class="btn pdf" *ngIf="row.status==='Approved'" (click)="downloadDoc(row)"><i class="fas fa-file-pdf fa-lg"></i></button>
+                                                    <span *ngIf="row.status!=='Approved'">
+                                                        No leave form provided
+                                                    </span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="Certification" *ngIf="role==='ASSISTANT'">
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <button class="btn pdfCert" *ngIf="row.status==='Approved' && row.type==='Maternity Leave'" (click)="downloadCertif(row)"> <i class="fas fa-file-medical"></i></button>
+                                                    <span *ngIf="!row.certif">
+                                                        No certificaion needed
+                                                    </span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column *ngIf="role==='ADMIN'" name="Actions" [sortable]=false>
+                                                <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template >
+                                                    <a *ngIf="row.status=='Pending 1/2'" class="msr-2 h-auto tblEditBtn"
+                                                            ngbPopover="Approve request"
+                                                            triggers="mouseenter:mouseleave"
+                                                            placement="left"
+                                                            (click)="managerApproveRequest(row._id)">
+                                                        <i class="fas fa-check"></i>
+                                                    </a>
+                                                    <a *ngIf="row.status=='Pending 1/2' " class="h-auto tblDelBtn"
+                                                            ngbPopover="Decline request"
+                                                            triggers="mouseenter:mouseleave"
+                                                            placement="left"
+                                                            (click)="managerDeclineRequest(row._id)">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </a>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </ngx-datatable>
+                                    </ng-template>
+                                </li>
+                            </ul>
+                            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

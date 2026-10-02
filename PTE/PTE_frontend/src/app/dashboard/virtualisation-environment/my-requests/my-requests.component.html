@@ -1,0 +1,392 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Resource managment</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Lab environment</li>
+        <li class="breadcrumb-item">My Requests</li>
+    </ul>
+    <div class="section-body">
+        <div class="col-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="padding-20">
+                    <ul ngbNav #nav="ngbNav" [(activeId)]="activee" class="nav-tabs">
+                        <li [ngbNavItem]="1">
+                            <a ngbNavLink>My lab requests</a>
+                            <ng-template ngbNavContent>
+                                <div class="tab-pane">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4>My lab environment requests</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="search">
+                                                                <label for="search">Search</label>
+                                                                <input type="text" class="form-control text"
+                                                                    name="search"
+                                                                    placeholder="Filter by name, ref or status..."
+                                                                    (input)="handleLabSearch($event)">
+                                                            </div>
+                                                            <ngx-datatable #table class="material" [rows]="rows"
+                                                                [loadingIndicator]="loadingIndicator" columnMode="force"
+                                                                [headerHeight]="50" [footerHeight]="50" rowHeight="auto"
+                                                                [limit]="10" [scrollbarH]="scrollBarHorizontal"
+                                                                [reorderable]="reorderable" (page)="onPage($event)">
+
+                                                                <ngx-datatable-row-detail [rowHeight]="150" #myDetailRow
+                                                                    (toggle)="onDetailToggle($event)">
+                                                                    <ng-template let-row="row" let-expanded="expanded"
+                                                                        ngx-datatable-row-detail-template>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <th>
+                                                                                    <div>
+                                                                                        <div
+                                                                                            style="padding-right: 10px;margin-top: -45%;">
+                                                                                            <strong>Ressource info
+                                                                                                :</strong>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </th>
+                                                                                <td>
+                                                                                    <div
+                                                                                        style="margin-left: 5%;width: 200px;">
+                                                                                        <div><span>Type : </span>{{
+                                                                                            row.type }} </div>
+                                                                                        <div><span>Backup : </span>{{
+                                                                                            row.backup }} </div>
+                                                                                        <div><span>RAM : </span>{{
+                                                                                            row.ram }} GO </div>
+                                                                                        <div><span>Disk storage :
+                                                                                            </span>{{ row.disk }} GO
+                                                                                        </div>
+                                                                                        <div><span>Processor : </span>{{
+                                                                                            row.processor }} Core </div>
+                                                                                        <div *ngIf="row.dhcp===true">
+                                                                                            <span>DHCP : </span> Yes
+                                                                                        </div>
+                                                                                        <div *ngIf="row.dhcp===false">
+                                                                                            <span>DHCP : </span> No
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <th>
+                                                                                    <div>
+                                                                                        <div
+                                                                                            style="padding-right: 10px;margin-top: -50%;">
+                                                                                            <strong>Booking info
+                                                                                                :</strong>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </th>
+                                                                                <td>
+                                                                                    <div
+                                                                                        style="margin-left: 5%;width: 200px;margin-top: -25%;">
+                                                                                        <div><span>Start Date :
+                                                                                            </span>{{ row.start|
+                                                                                            date:"dd/MM/YYYY" }} </div>
+                                                                                        <div><span>End Date : </span>{{
+                                                                                            row.end| date:"dd/MM/YYYY"
+                                                                                            }} </div>
+
+                                                                                    </div>
+                                                                                </td>
+                                                                                <th>
+                                                                                    <div>
+                                                                                        <div
+                                                                                            style="padding-right: 10px;margin-top: -65%;">
+                                                                                            <strong>Objective :</strong>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </th>
+                                                                                <td>
+                                                                                    <div
+                                                                                        style="width: 200px;margin-top: -5%;position: fixed;">
+                                                                                        <div>{{ row.goals }} </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </ng-template>
+                                                                </ngx-datatable-row-detail>
+                                                                <ngx-datatable-column [width]="350" [resizeable]="false"
+                                                                    [sortable]="true" [draggable]="false"
+                                                                    [canAutoResize]="true">
+                                                                    <ng-template let-row="row" let-expanded="expanded"
+                                                                        ngx-datatable-cell-template>
+                                                                        <a href="javascript:void(0)"
+                                                                            [class.datatable-icon-right]="!expanded"
+                                                                            [class.datatable-icon-down]="expanded"
+                                                                            title="Expand/Collapse Row"
+                                                                            (click)="toggleExpandRow(row)">
+                                                                        </a>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+
+                                                                <ngx-datatable-column [width]="100" name="LAB Ref">
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-i="index" ngx-datatable-cell-template>
+                                                                        <div class="name-col-style">
+                                                                            <div>{{ row.code }} </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column [width]="400" name="Name">
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-i="index" ngx-datatable-cell-template>
+                                                                        <div class="name-col-style">
+                                                                            <div>{{ row.firstName }} {{ row.lastName }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column [width]="400" name="Email">
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-i="index" ngx-datatable-cell-template>
+                                                                        <div class="name-col-style">
+                                                                            <div>{{ row.email }} </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column [width]="100" name="Departement">
+                                                                    <ng-template let-row="row"
+                                                                        ngx-datatable-cell-template>
+                                                                        {{row.departement}}
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column [width]="100" name="Status">
+                                                                    <ng-template let-row="row"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div *ngIf="row.status==='Active'"
+                                                                            class="badge-outline col-green">
+                                                                            {{row.status}}
+                                                                        </div>
+                                                                        <div *ngIf="row.status==='Declined'"
+                                                                            class="badge-outline col-red">
+                                                                            {{row.status}}
+                                                                        </div>
+                                                                        <div *ngIf="row.status==='Pending'"
+                                                                            class="badge-outline col-indigo">
+                                                                            {{row.status}}
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column [width]="100" name="Actions"
+                                                                    [sortable]="false" *ngIf="role=='LAB-MANAGER'">
+                                                                    <ng-template let-value="value" let-row="row"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <a class="msr-2 h-auto tblEditBtn">
+                                                                            <i class="fas fa-check"
+                                                                                *ngIf="row.status=='Pending'"
+                                                                                (click)="approveRequestModal(row._id,row)"></i>
+                                                                        </a>
+                                                                        <a class="h-auto tblDelBtn">
+                                                                            <i class="far fa-window-close"
+                                                                                *ngIf="row.status=='Pending'"
+                                                                                (click)="declineRequest(row._id)"></i>
+                                                                        </a>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                            </ngx-datatable>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2">
+                            <a ngbNavLink>Intern's lab requests</a>
+                            <ng-template ngbNavContent>
+                                <div class="tab-pane" >
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <h5>Select offer to see lab requests</h5>
+                                            <div class="not-selected" *ngIf="mentorOffers.length===0">
+                                                <h5 style="padding-top: 30px;">You have no offer</h5>
+                                            </div>
+                                            <div *ngIf="mentorOffers.length>0">
+                                                <ng-scrollbar style="height: 600px" visibility="hover">
+                                                    <div class="row offers-panel" (click)="selectOffer(offer)" *ngFor="let offer of mentorOffers; let i = index">
+                                                        <div class="col-11">
+                                                            <h6>{{offer.title}}</h6>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <div *ngIf="offer.labCount === undefined" class="badge bg-info text-dark">Loading...</div>
+                                                            <div *ngIf="offer.labCount !== undefined" class="badge bg-info text-dark">{{ offer.labCount }}</div>
+                                                        </div>
+                                                    </div>
+                                                </ng-scrollbar>
+                                            </div>
+                                        </div>
+                                        <div class="col-7" *ngIf="mentorOffers.length>0">
+                                            <h5>Lab requests by offer</h5>
+                                            <div class="not-selected" *ngIf="!offerSelected">
+                                                <h5 style="padding-top: 30px;">Select offer to see its lab requests</h5>
+                                            </div>
+                                            <div class="not-selected" *ngIf="offerEmpty">
+                                                <h5 style="padding-top: 30px;">The select offer has no lab requests</h5>
+                                            </div>
+                                            <div *ngIf="offerSelected && !offerEmpty">
+                                                <div class="offers-panel" (click)="selectRequest(req)"
+                                                    *ngFor="let req of offer_labs">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <h5><strong>REF: </strong>{{req.code}}</h5>
+                                                        </div>
+                                                        <div class="col-4" >
+                                                            <div *ngIf="req.isMentorAccepted" class="badge bg-info text-dark">Mentor <i class="fas fa-check-circle"></i></div>
+                                                            <div *ngIf="req.isLabManagerAccepted" class="badge bg-success text-dark">Lab-manager <i class="fas fa-check-circle"></i></div>
+                                                        </div>
+                                                        <div class="col-2  text-end">
+                                                            <div class="badge bg-secondary"
+                                                                *ngIf="req.status==='PENDING'">{{req.status}}</div>
+                                                            <div class="badge bg-warning text-dark"
+                                                                *ngIf="req.status==='ACTIVE'">{{req.status}}</div>
+                                                            <div class="badge bg-primary"
+                                                                *ngIf="req.status==='COMPLETED'">{{req.status}}</div>
+                                                            <div class="badge bg-danger"
+                                                                *ngIf="req.status==='DECLINED'">{{req.status}}</div>
+                                                        </div>
+                                                        <div class="col-3  text-end">
+                                                            Expire In: {{req.end| date}}
+                                                        </div>
+                                                    </div>
+                                                    <h5>Applicant</h5>
+                                                    <div class="row" style="padding: 15px 15px 0px 0px ;">
+                                                        <div class="col-1">
+                                                            <img src="{{ picsUrl+req.applicant.image }}"
+                                                                class="enc-img" />
+                                                        </div>
+                                                        <div class="col-11 name-col-style">
+                                                            <div class="font-16">
+                                                                <strong>{{req.applicant.firstName+"
+                                                                    "+req.applicant.lastName}}</strong>
+                                                            </div>
+                                                            <div class="font-12 text-muted">{{req.applicant.role}} |
+                                                                {{req.applicant.departement}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <h5>Lab purpose</h5>
+                                                    <div class="row" style="padding: 10px;">
+                                                        {{req.goals}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3" *ngIf="role==='LAB-MANAGER'">
+                            <a ngbNavLink>All Intern's lab requests</a>
+                            <ng-template ngbNavContent>
+                                <div class="tab-pane">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <h5>Select offer to see lab requests</h5>
+                                            <ng-scrollbar style="height: 600px" visibility="hover">
+                                                <div class="not-selected" *ngIf="AllMentorOffers.length===0">
+                                                    <h5 style="padding-top: 30px;">You have no offer</h5>
+                                                </div>
+                                                <div *ngIf="AllMentorOffers.length>0">
+                                                    <div class="row offers-panel" (click)="selectOffer(offer)"
+                                                        *ngFor="let offer of AllMentorOffers; let i = index">
+                                                        <div class="col-11">
+                                                            <h6>{{offer.title}}</h6>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <div *ngIf="offer.labCount === undefined" class="badge bg-info text-dark">Loading...</div>
+                                                            <div *ngIf="offer.labCount !== undefined" class="badge bg-info text-dark">{{ offer.labCount }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-scrollbar>
+                                        </div>
+                                        <div class="col-7" *ngIf="AllMentorOffers.length>0">
+                                            <h5>Lab requests by offer</h5>
+                                            <div class="not-selected" *ngIf="!offerSelected">
+                                                <h5 style="padding-top: 30px;">Select offer to see its lab requests</h5>
+                                            </div>
+                                            <div class="not-selected" *ngIf="offerEmpty">
+                                                <h5 style="padding-top: 30px;">The select offer has no lab requests</h5>
+                                            </div>
+                                            <div *ngIf="offerSelected && !offerEmpty">
+                                                <div class="offers-panel" (click)="selectRequest(req)"
+                                                    *ngFor="let req of offer_labs">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <h5><strong>REF: </strong>{{req.code}}</h5>
+                                                        </div>
+                                                        <div class="col-4" >
+                                                            <div *ngIf="req.isMentorAccepted" class="badge bg-info text-dark">Mentor <i class="fas fa-check-circle"></i></div>
+                                                            <div *ngIf="req.isLabManagerAccepted" class="badge bg-success text-dark">Lab-manager <i class="fas fa-check-circle"></i></div>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <div class="badge bg-secondary"
+                                                                *ngIf="req.status==='PENDING'">{{req.status}}</div>
+                                                            <div class="badge bg-warning text-dark"
+                                                                *ngIf="req.status==='ACTIVE'">{{req.status}}</div>
+                                                            <div class="badge bg-primary"
+                                                                *ngIf="req.status==='COMPLETED'">{{req.status}}</div>
+                                                            <div class="badge bg-danger"
+                                                                *ngIf="req.status==='DECLINED'">{{req.status}}</div>
+                                                        </div>
+                                                        <div class="col-3 text-end">
+                                                            Expire In: {{req.end| date}}
+                                                        </div>
+                                                    </div>
+                                                    <h5>Applicant</h5>
+                                                    <div class="row" style="padding: 15px 15px 0px 0px ;">
+                                                        <div class="col-1">
+                                                            <img src="{{ picsUrl+req.applicant.image }}"
+                                                                class="enc-img" />
+                                                        </div>
+                                                        <div class="col-11 name-col-style">
+                                                            <div class="font-16">
+                                                                <strong>{{req.applicant.firstName+"
+                                                                    "+req.applicant.lastName}}</strong>
+                                                            </div>
+                                                            <div class="font-12 text-muted">{{req.applicant.role}} |
+                                                                {{req.applicant.departement}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <h5>Lab purpose</h5>
+                                                    <div class="row" style="padding: 10px;">
+                                                        {{req.goals}}
+                                                    </div>
+                                                    <!-- <div class="row" style="padding: 10px;">
+                                                        <div class="col-6">
+                                                        </div>
+                                                         <div class="col-6 text-end" *ngIf="req.isMentorAccepted">
+                                                            <i class="far fa-times-circle icon-decline"></i>
+                                                            <i class="far fa-check-circle icon-approve"></i>
+                                                        </div> 
+                                                        
+                                                        
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

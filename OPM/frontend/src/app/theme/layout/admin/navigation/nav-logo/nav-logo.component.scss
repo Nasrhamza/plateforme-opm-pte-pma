@@ -1,0 +1,24 @@
+.navbar-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure the brand section spans the full width */
+    position: relative; /* To position the mobile menu icon correctly */
+  }
+  
+  .b-brand img {
+    display: block;
+    margin-right: 10px; /* Center the logo */
+  }
+  
+  .mobile-menu {
+    position: absolute;
+    right: 10px; /* Adjust this value to suit your layout */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  // .navbar-brand.header-logo {
+  //   background-color: rgb(255, 255, 255); /* or use a specific shade like #808080 */
+  // }
+  

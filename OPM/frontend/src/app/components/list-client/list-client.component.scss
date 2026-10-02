@@ -1,0 +1,87 @@
+/* Toggle Switch Styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 25px;
+  text-align: center;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.dropdown-toggle::after {
+  display: none !important;
+}
+/* Center Table and Adjust Row Styles */
+.table-wrapper {
+  max-width: 900px;
+  margin: 15px auto;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 8px 12px;
+  line-height: 1.4;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Profile Container Styling */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-image {
+  border-radius: 50%;
+  border: 2px solid #007bff;
+}
+
+.profile-name {
+  margin-top: 5px;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  margin-top: 10px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+/* Pagination Block Margin */
+.pagination-block {
+  margin-top: 15px;
+}
+
+/* Search Input Styling */
+.search-input {
+  width: 30%;
+  margin-left: auto;
+  margin-right: 0;
+  display: block;
+}
+
+/* Card Body Padding */
+.card-body {
+  padding: 15px;
+}
+
+/* Responsive Table */
+.table-responsive {
+  overflow-x: auto;
+}
+.quarter-width {
+  width: 25%;
+}

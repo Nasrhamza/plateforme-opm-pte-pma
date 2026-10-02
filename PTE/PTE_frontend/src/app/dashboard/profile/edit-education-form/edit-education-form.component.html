@@ -1,0 +1,82 @@
+
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Edit Education 
+          </div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="register-form" [formGroup]="editEducationForm"  (ngSubmit)="onSubmit(editEducationForm)" >
+      
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Establishment<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Establishment" formControlName="establishment" required>
+              <small class="form-text text-danger"
+                  *ngIf="!editEducationForm.get('establishment')?.valid && editEducationForm.get('establishment')?.touched"> Establishment
+                  is required
+              </small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Section<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Section" formControlName="section" required>
+              <small class="form-text text-danger"
+                  *ngIf="!editEducationForm.get('section')?.valid && editEducationForm.get('section')?.touched"> Establishment
+                  is required
+              </small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Diploma<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Diploma" formControlName="diploma" required>
+              <small class="form-text text-danger"
+                  *ngIf="!editEducationForm.get('diploma')?.valid && editEducationForm.get('diploma')?.touched"> Establishment
+                  is required
+              </small>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <label>Start<span class="text-danger">*</span></label>
+            <input type="date" class="form-control"  formControlName="year_start" required>
+            <small class="form-text text-danger"
+              *ngIf="!editEducationForm.get('year_start')?.valid && editEducationForm.get('year_start')?.touched"> Start Date is required
+          </small>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <label>End<span class="text-danger">*</span></label>
+            <input type="date" class="form-control" placeholder="Start Date" formControlName="year_end" >
+            <div class="form-check" style="margin-top: 3px;">
+              <input type="checkbox" class="form-check-input" formControlName="present" id="present">
+              <label class="form-check-label" for="present">
+                To present
+              </label>
+            </div>
+            <!-- <small class="form-text text-danger"
+              *ngIf="!editEducationForm.get('year_end')?.valid && editEducationForm.get('year_end')?.touched"> End Date is required
+          </small> -->
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button  type="submit" class="btn btn-primary">Submit</button>
+          
+          <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+      </form>
+  </div>
+
+  

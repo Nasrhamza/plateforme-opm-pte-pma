@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="margin: 0; padding: 0; background-color: #f5f5f5;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f5f5f5">
+        <tr>
+            <td align="center" style="padding: 50px 0;">
+                <table role="presentation" width="800" cellspacing="0" cellpadding="0" border="0"
+                    style="max-width: 800px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); border: 2px solid #0056b3;">
+                    <!-- Header -->
+                    <tr>
+                        <td align="center" bgcolor="#0056b3"
+                            style="padding: 20px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                            <img src="https://opm.prologic.com.tn:5600/assets/logo/logoWhite.png" alt="OPM logo"
+                                width="120" style="display: block;">
+                            <h2
+                                style="color: white; font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; margin-top: 10px;">
+                                Ticket Assigned</h2>
+                        </td>
+                    </tr>
+                    <!-- Content -->
+                    <tr>
+                        <td
+                            style="padding: 40px; background-color: #d6e9ff; color: #003366; font-family: Arial, sans-serif; text-align: left;">
+                            <h2 style="color: #003366; font-size: 24px; font-weight: bold;">New Ticket Assignment</h2>
+                            <p style="font-size: 16px; color: #6c757d; line-height: 1.6;">
+                                This is to inform you that a new ticket has been assigned to you. Please review the
+                                details and take the necessary actions to resolve the issue.
+                            </p>
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="10" border="0"
+                                bgcolor="#c2dbff" style="margin-top: 20px; border-left: 5px solid #0056b3;">
+                                <tr>
+                                    <td><strong style="color: #0056b3;">Ticket Number:</strong> {{ticketNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="color: #0056b3;">Title:</strong> {{ticketTitle}}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="color: #0056b3;">Client:</strong> {{ticketClient}}</td>
+                                </tr>
+                            </table>
+                            <p style="font-size: 16px; color: #6c757d; line-height: 1.6;">
+                                Please ensure timely resolution as per the SLA guidelines. If you have any questions,
+                                reach out to your supervisor.
+                            </p>
+                            <p style="font-size: 16px; color: #6c757d; line-height: 1.6;">
+                                Best regards,<br><a href="https://opm.prologic.com.tn:5600"
+                                    style="color: #0056b3; text-decoration: none; font-weight: bold;"> OPM</a>
+                            </p>
+                            <p></p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" bgcolor="#0056b3"
+                            style="padding: 20px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; font-size: 12px; color: white;">
+                            &copy; {{year}} OPM - Prologic
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

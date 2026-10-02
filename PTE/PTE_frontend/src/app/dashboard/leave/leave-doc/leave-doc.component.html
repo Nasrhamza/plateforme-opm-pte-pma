@@ -1,0 +1,171 @@
+<!-- <div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">Download Leave Document</div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close('modal closed')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div> -->
+<div>
+    <div #pdfContent style="margin-left: 10px;margin-right: 10px;padding: 20px;">
+        <div class="row">
+            <div class="col-5">
+                <span><strong>Date:</strong> {{currentDate| date:'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="col-7" align="right">
+                <img src="../../../../assets/images/static/logo.png" style="width:100px;height:40px;">
+            </div>
+        </div><br>
+        <div class="row">
+            <h4 class="title"><u>AUTORISATION D’ABSENCE/TITRE DE CONGE</u></h4>
+        </div><br>
+        <div class="row">
+            <span><strong>Nom & prénom: </strong>{{payload.fullName}}</span>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-3">solde de congé</div>
+            <div class="col-3">
+                <div style="width: 20px;height: 20px;border:0.5px solid black"><i class="fas fa-check"></i></div>
+            </div>
+            <div class="col-4">Nombre de jour/heur à prendre</div>
+            <div class="col-2">
+                <div *ngIf="datesDiff>0 && payload.type!=='1/2 day' && payload.type!=='Authorization'" style="width: 20px;height: 20px;border:0.5px solid black">{{datesDiff+1}}J</div>
+                <div *ngIf="datesDiff==0 && payload.type!=='1/2 day' && payload.type!=='Authorization'" style="width: 20px;height: 20px;border:0.5px solid black">1J</div>
+                <div *ngIf="payload.type=='1/2 day'" style="width: 30px;height: 20px;border:0.5px solid black">0.5J</div>
+                <div *ngIf="payload.type=='Authorization'" style="width: 30px;height: 20px;border:0.5px solid black">{{hours}}H</div>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="margin-left: 25%;font-size: x-small;">
+            ATTENTION: remplir un formulaire distinct pour chaque absence de nature différente
+        </div>
+        <div class="row" style="margin-left: 10px;margin-right: 10px; border: 1px solid black;border-radius: 5px;padding: 10px;">
+            <strong style="text-align: center;"><u>Periode de l'absence</u></strong><br>
+            <div class="row" style="margin-left: 20px;">
+                <div class="col-3"><strong> A compter de :</strong></div>
+                <div class="col-3">
+                    <div *ngIf="payload.type==='Authorization' || payload.type==='1/2 day'">{{payload.startDate|
+                        date:'dd/MM/yyyy hh:mm'}}</div>
+                    <div
+                        *ngIf="payload.type==='Personal Leave' || payload.type==='Annual Leave' || payload.type==='Maternity Leave' || payload.type==='Unpaid Leave'">
+                        {{payload.startDate| date:'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="col-2"><strong>jusqu'à</strong></div>
+                <div class="col-4">
+                    <div *ngIf="payload.type==='Authorization' || payload.type==='1/2 day'">{{payload.endDate|
+                        date:'dd/MM/yyyy hh:mm'}}</div>
+                    <div
+                        *ngIf="payload.type==='Personal Leave' || payload.type==='Annual Leave' || payload.type==='Maternity Leave' || payload.type==='Unpaid Leave'">
+                        {{payload.endDate| date:'dd/MM/yyyy'}}</div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row" style="margin-left: 10px;margin-right: 10px;text-align: center;border: 1px solid black; border-radius: 5px;padding: 10px;">
+            <strong><u>Motif de l'absence</u></strong>
+        </div>
+        <br>
+        <div class="row" >
+            <div class="col-1">
+                <div style="width: 20px;height: 20px;border:0.5px solid black"><i class="fas fa-check"
+                        *ngIf="payload.type==='Personal Leave' || payload.type==='1/2 day'"></i></div>
+            </div>
+            <div class="col-5">
+                <div>CONGE PERSONNEL</div>
+            </div>
+            <div class="col-1">
+                <div style="width: 20px;height: 20px;border:0.5px solid black"><i class="fas fa-check"
+                        *ngIf="payload.type==='Authorization'"></i></div>
+            </div>
+            <div class="col-5">
+                <div>AUTORISATION</div>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-1">
+                <div style="width: 20px;height: 20px;border:0.5px solid black"><i class="fas fa-check"
+                        *ngIf="payload.type==='Annual Leave'"></i></div>
+            </div>
+            <div class="col-5">
+                <div> CONGE ANNUEL</div>
+            </div>
+            <div class="col-1">
+                <div style="width: 20px;height: 20px;border:0.5px solid black"><i class="fas fa-check"
+                        *ngIf="payload.type==='Maternity Leave'"></i></div>
+            </div>
+            <div class="col-5">
+                <div>CONGE DE MATERNITE</div>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-1">
+                <div style="width: 20px;height: 20px;border:0.5px solid black"><i class="fas fa-check"
+                        *ngIf="payload.type==='Unpaid Leave'"></i></div>
+            </div>
+            <div class="col-5">
+                <div>CONGE SANS SOLDE</div>
+            </div>
+            <div class="col-6"></div>
+        </div>
+        <br>
+        <div style="padding: 25px; border: 1px solid black;border-radius: 10px;" *ngIf="payload.note!==''">
+            <strong>REMARQUE : </strong>
+            <span>{{payload.note}}</span>
+        </div>
+        <br>
+        <table *ngIf="admin">
+            <tr style="text-align: center;font-size: small;">
+                <th scope="col">NOM & PRENOM DU BENEFICIAIRE</th>
+                <th scope="col">NOM & PRENOM DE L'INTERIMAIRE</th>
+                <th scope="col">NOM & PRENOM DU RESPONSABLE HIERARCHIQUE</th>
+                <th scope="col">SERVICE DES RESSOURCES HUMAINES</th>
+            </tr>
+            <tr style="text-align: center;font-size: small;">
+                <td>{{payload.fullName}}</td>
+                <td>
+                    <span *ngIf="payload.applicant.teamLeader===false && payload.supervisor._id !== admin._id">{{payload.supervisor.firstName+" "+payload.supervisor.lastName}}</span>
+                    <span *ngIf="(payload.applicant.teamLeader===false || payload.applicant.teamLeader===true) && payload.supervisor._id === admin._id">.</span>
+                </td>
+                <td>
+                    {{admin.firstName+" "+admin.lastName}}
+                </td>
+                <td>.</td>
+            </tr>
+            <tr style="text-align: center;font-size: small;">
+                <th scope="col">SIGNATURE</th>
+                <th scope="col">SIGNATURE</th>
+                <th scope="col">SIGNATURE</th>
+                <th scope="col">SIGNATURE</th>
+            </tr>
+            <tr *ngIf="admin" style="text-align: center;font-size: medium;">
+                <td>
+                    <img [src]="base64ApplicantSig" alt="sig">    
+                    <!-- <img src="{{sigUrl+applicant.signature}}" alt="sig">     -->
+                </td>
+                <td *ngIf="payload.applicant.teamLeader===false && payload.supervisor._id !== admin._id">
+                    <!-- <img src="{{sigUrl+payload.supervisor.signature}}" alt="sig">     -->
+                    <img [src]="base64SupervisorSig"  alt="sig">    
+                </td>
+                <td *ngIf="(payload.applicant.teamLeader===false || payload.applicant.teamLeader===true) && payload.supervisor._id === admin._id">.</td>
+                <!-- <td ></td> -->
+                <td >
+                    <!-- <img src="{{sigUrl+admin.signature}}" alt="sig">   -->
+                    <img [src]="base64AdminSig" alt="sig">  
+                </td>
+                <td>.</td>
+            </tr>
+        </table>
+    </div>
+    <button class="btn btn-outline-primary" (click)="DownloadLeaveDoc()">Download <i
+        class="fas fa-download"></i></button>
+</div>
+<!-- <div class="footer-section">
+    <div class="row">
+        
+    </div>
+</div> -->

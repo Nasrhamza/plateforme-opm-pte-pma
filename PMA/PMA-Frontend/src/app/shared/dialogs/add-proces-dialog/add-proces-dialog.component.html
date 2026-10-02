@@ -1,0 +1,87 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ (data.action == 'Add' ? 'Add Proces' : 'Update Proces') | translate }}
+</h5>
+
+<mat-dialog-content style="max-width: 700px">
+    <form class="m-t-30" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Title' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput formControlName="Titre" />
+            @if(f['Titre'].touched && f['Titre'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['Titre'].errors && f['Titre'].errors['required']){
+                <div class="text-error">
+                    {{ 'Title is required' | translate }}.
+                </div>
+                }
+            </mat-hint>
+            }
+        </mat-form-field>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Type Communication' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-select formControlName="Type_Communication">
+                        @for(type of ['internal meeting', 'Official meeting', 'Client Request']; track type){
+                        <mat-option [value]="type">{{ type }}</mat-option>
+                        }
+                    </mat-select>
+                    @if(f['Type_Communication'].touched && f['Type_Communication'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['Type_Communication'].errors && f['Type_Communication'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Type communication is required' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Project' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-select formControlName="Project">
+                        @for(p of projects; track p._id){
+                        <mat-option [value]="p._id">{{ p?.Projectname }}</mat-option>
+                        }
+                    </mat-select>
+                    @if(f['Project'].touched && f['Project'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['Project'].errors && f['Project'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Project is required' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+        </div>
+       
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Members' | translate }}</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="equipe" multiple>
+                    @for(e of users; track e._id){
+                        <mat-option [value]="e._id">{{ e?.fullName }}</mat-option>
+                    }
+                </mat-select>
+                @if(f['equipe'].touched && f['equipe'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['equipe'].errors && f['equipe'].errors['required']){
+                        <div class="text-error">
+                            {{ 'At lease 1 member must be selected' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                }
+            </mat-form-field>
+
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Description' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <textarea matInput rows="5" formControlName="description"></textarea>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="w-100" [disabled]="!form.valid || loading">
+            {{ 'Submit' | translate }}
+        </button>
+    </form>
+</mat-dialog-content>

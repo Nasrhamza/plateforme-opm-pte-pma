@@ -1,0 +1,45 @@
+<div *ngIf="vehicle">
+    <div class="modal-header editRowModal">
+        <h4 class="modal-title" id="modal-basic-title">
+            <div class="table-modal-header">
+                <div class="modal-about">
+                    <div class="fw-bold p-t-10 font-17">
+                        Analytics of {{vehicle.model}} | {{vehicle.registration_number}}</div>
+                </div>
+            </div>
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.close('modal closed')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>{{vehicle.model}} | {{vehicle.registration_number}}</h4>
+                <table class="table table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Event Title</th>
+                            <th scope="col">Kilometrage</th>
+                            <th scope="col">Reservation Date</th>
+                            <th scope="col">Associated event</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let log of vehicle.log">
+                            <td scope="col">{{log.event.title}}</td>
+                            <td scope="col">{{log.kilometrage}}</td>
+                            <td scope="col">{{log.reservationDate| date : 'short'}}</td>
+                            <td scope="col">
+                                <a routerLink="">View Event</a>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>

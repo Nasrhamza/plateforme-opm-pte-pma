@@ -1,0 +1,29 @@
+<div style="max-height: 95vh;overflow-y: scroll;">
+<div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="Onsubmit(f)">
+      <div class="form-group">
+        <label for="sla">Site Name:</label>
+        <input type="text" class="form-control" placeholder="Site Name" id="nomSite" name="nomSite" ngModel [(ngModel)]="model.nomSite" #nomSite="ngModel" required>
+        <div *ngIf="nomSite.touched && nomSite.errors?.required" class="error">Site Name required</div>
+      </div>
+      <div class="form-group">
+        <label for="map">Address:</label>
+        <app-map (addressSelected)="onAddressSelected($event)"></app-map>
+        <input type="text" class="form-control" placeholder="Address" id="adress" name="adress" ngModel [(ngModel)]="model.adress" #adress="ngModel" required>
+        <div *ngIf="adress.touched && adress.errors?.required" class="error">Adress required</div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="!add" type="submit" [disabled]="f.invalid" class="btn btn-outline-warning">Update</button>
+        <button *ngIf="add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(null)">Close</button>
+      </div>
+    </form>
+  </div>
+  </div>
+  

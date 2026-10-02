@@ -1,0 +1,41 @@
+<ul class="navbar-nav">
+  <!-- Search Item -->
+  <li class="nav-item">
+    <app-nav-search></app-nav-search>
+  </li>
+  <li class="nav-item">
+    <app-notification></app-notification>
+  </li>
+
+  <!-- User Dropdown -->
+  <li class="nav-item" *ngIf="user$ | async as user; else loading" style="cursor: pointer;">
+    <div class="dropdown drp-user" ngbDropdown placement="auto">
+      <a ngbDropdownToggle class="custom-dropdown-toggle">
+        <img [src]="user.userImage" style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid #FFF; overflow: hidden; display: inline-block; margin-right: 8px;" class="img-radius user-profile-image" alt="User-Profile-Image" />
+        <span class="user-name">{{ user.userName }} {{ user.lastName }}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right profile-notification" ngbDropdownMenu>
+        <div class="pro-head">
+          <img [src]="user.userImage" style="width: 35px; height: 35px; border-radius: 50%; border: 1px solid #FFF; overflow: hidden; display: inline-block; margin-right: 8px;" class="img-radius" alt="User-Profile-Image" />
+          <span class="user-name">{{ user.userName }} {{ user.lastName }}</span>
+          <a class="dud-logout" title="Logout" (click)="logout()" style="cursor: pointer">
+            <i class="feather icon-log-out"></i>
+          </a>
+        </div>
+        <ul class="pro-body">
+          <li>
+            <a routerLink="/main/test/profile" class="dropdown-item">
+              <i class="feather icon-user"></i> Profile
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+  <ng-template #loading>
+    <li class="nav-item">
+      <span>Loading...</span>
+    </li>
+  </ng-template>
+  
+</ul>

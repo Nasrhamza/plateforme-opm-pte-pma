@@ -1,0 +1,149 @@
+<div #pdfContent>
+    <div class="header-section">
+        <div class="row">
+            <div class="col-12" style="text-align: center;">
+                <strong>
+                    <h1>{{user.firstName +" "+user.lastName}}</h1>
+                </strong>
+                <h3>{{user.title}}</h3>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="body-section">
+        <div class="row">
+            <div class="col-5">
+                <div>
+                    <h4>Personal Details</h4><br>
+                    <p class="clearfix">
+                        <span class="float-start">
+                            Phone
+                        </span>
+                        <span class="float-end text-muted">
+                            {{user.phone}}
+                        </span>
+                    </p>
+                    <p class="clearfix">
+                        <span class="float-start">
+                            Mail
+                        </span>
+                        <span class="float-end text-muted">
+                            {{user.email}}
+                        </span>
+                    </p>
+                    <p class="clearfix">
+                        <span class="float-start">
+                            Departement
+                        </span>
+                        <span class="float-end text-muted">
+                            {{user.departement}}
+                        </span>
+                    </p>
+                    <p class="clearfix">
+                        <span class="float-start">
+                            Driving license
+                        </span>
+                        <span class="float-end text-muted">
+                            {{lisence}}
+                        </span>
+                    </p>
+                </div>
+
+                <div *ngIf="educations.length>0">
+                    <hr>
+                    <h4>Education</h4><br>
+                    <div class="card-body">
+                        <div class="row eduSection" *ngFor="let edu of educations">
+                            <div class="col-3 ">
+                                <span style="color: rgb(133, 133, 134);">
+                                    <small>{{edu.year_start| date:"MM/YYYY"}} to
+                                        {{edu.year_end|date:"MM/YYYY"}}</small>
+                                </span>
+                            </div>
+                            <div class="col-9">
+                                <strong>{{edu.diploma}} - {{edu.section}}</strong>
+                                <br />
+                                <span>{{edu.establishment}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="languages.length>0">
+                    <hr>
+                    <h4>Languages</h4>
+                    <div class="card-body" *ngFor="let lang of languages">
+                        <ul>
+                            <li>
+                                <strong class="skills">{{lang.name}}</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div *ngIf="skills.length>0">
+                    <hr>
+                    <h4>Skills</h4>
+                    <div class="card-body" *ngFor="let skill of skills">
+                        <ul>
+                            <li>
+                                <strong class="skills">{{skill.name}}</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-sm-1" style="border-right:1px solid rgb(69, 68, 68); width: 1px; "></div> -->
+            <div class="col-7">
+                <div *ngIf="user.cv.summary!=''">
+                    <h4>Summary</h4>
+                    <p class="m-t-10 mainSection">
+                        {{user.cv.summary}}
+                    </p>
+                </div>
+                <div *ngIf="experiences.length>0">
+                    <h4>Professional Experience</h4>
+                    <div class="row mainSection" *ngFor="let exp of experiences">
+                        <h6>{{exp.job}} - {{exp.company}}</h6>
+                        <small>
+                            <strong>{{exp.start| date:"MM/YYYY"}} - {{exp.end|date:"MM/YYYY"}}</strong>
+                        </small>
+                        <p class="m-t-10">{{exp.task_description}}</p>
+                    </div>
+                </div>
+                <div *ngIf="certifications.length>0">
+                    <h4>Certifications</h4>
+                    <div class="row mainSection" *ngFor="let cert of certifications">
+                        <div>
+                            <h6>{{cert.domaine}} </h6>
+                            <small>
+                                <strong>{{cert.date| date:"MM/YYYY"}} </strong>
+                            </small>
+                            <br>
+                            <span>Credential ID: {{cert.credential}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="projets.length>0">
+                    <h4>Projects</h4>
+                    <div class="row mainSection" *ngFor="let proj of projets">
+                        <div>
+                            <h6>{{proj.title}}</h6><span>{{proj.organization}}</span>
+                            <small>
+                                <strong> - {{proj.date| date:"MM/YYYY"}}</strong>
+                            </small>
+                            <p class="m-t-10">{{proj.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="footer-section">
+    <div class="row">
+        <button class="btn btn-outline-primary" (click)="DownloadCV()" type="button">Download <i
+                class="fas fa-download"></i></button>
+    </div>
+</div>
+
+<!-- printSectionId="pdfContent" [useExistingCss]="true" ngxPrint -->

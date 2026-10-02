@@ -1,0 +1,547 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Profile</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">User</li>
+        <li class="breadcrumb-item">My Profile</li>
+    </ul>
+    <div class="row">
+        <div class="col-7 col-md-7 col-lg-7" *ngIf="user">
+            <div *ngIf="loading==true" class="d-flex justify-content-center align-items-center loading">
+                <div class="spinner-border">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <form class="register-form" [formGroup]="postForm" (ngSubmit)="onSubmit(postForm,desc)">
+                        <div class="row">
+                            <textarea class="form-control" placeholder="What's on your mind, {{user.firstName}} ?"
+                                formControlName="description" #desc></textarea>
+                            <small class="form-text text-danger"
+                                *ngIf="!postForm.get('description')?.valid && postForm.get('description')?.touched">
+                                Description is required
+                            </small>
+                        </div>
+                        <div class="row">
+                            <div class="col-8"></div>
+                            <div class="col-4" style="text-align: right;">
+                                <label class="custom-switch mt-2">
+                                    <input type="checkbox" formControlName="switch" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Add attachement</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="postForm.get('switch')!.value">
+                            <div class="col-md-12">
+                                <ngx-dropzone style="background-color: transparent;"
+                                    [multiple]="true" (change)="onSelect($event)">
+                                    <ngx-dropzone-label>
+                                        You can click or drag & drop here! <br>
+                                        <small><strong>(Only jpg, png, jpeg files allowed)</strong></small>
+                                    </ngx-dropzone-label>
+                                    <ngx-dropzone-image-preview style="width: 250px;" *ngFor="let f of images" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                                        <!-- <ngx-dropzone-label>
+                                            <div style="color: rgb(151, 82, 82);width: 150px;height: 150px;"></div>
+                                        </ngx-dropzone-label> -->
+                                    </ngx-dropzone-image-preview>
+                                </ngx-dropzone>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-primary" [disabled]="!postForm.valid">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-5 col-md-5 col-lg-5" *ngIf="quote">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{quote[0].author}} said :</h5>
+                    <div class="row">
+                        <span>{{quote[0].content}}</span>
+                    </div><br>
+                    <div class="row">
+                        <span *ngFor="let tag of quote[0].tags">#{{tag}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7 col-md-7 col-lg-7">
+            <div class="card">
+                <div class="padding-20">
+                    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                        <li [ngbNavItem]="1" (click)="getAllPosts()">
+                            <a ngbNavLink>Feeds<span class="buttonBadge">{{allPosts}}</span></a>
+                            <ng-template ngbNavContent>
+                                <div class="section-body" *ngIf="reversedPosts.length==0">
+                                    <div class="row">
+                                        <h3>No feeds yet.</h3>
+                                    </div>
+                                </div>
+                                <div *ngFor="let p of reversedPosts">
+                                    <div class="post-container">
+                                        <div class="row post-header">
+                                            <div class="col-1">
+                                                <img class="proPic" src="{{picsUrl+p.user.image}}"
+                                                    alt="user image">
+                                            </div>
+                                            <div class="col">
+                                                <div class="name">
+                                                    <strong style="margin-left: 5px;">{{p.user.firstName+"
+                                                        "+p.user.lastName}}</strong>
+                                                    <i *ngIf="p.status === 'Approved'"
+                                                        class="fas fa-check-circle statusBadgeApprove"></i>
+                                                    <i *ngIf="p.status === 'Declined'"
+                                                        class="fas fa-window-close statusBadgeDecline"></i>
+                                                    <i *ngIf="p.status === 'Pending'"
+                                                        class="fas fa-clock statusBadgePending"></i>
+                                                </div>
+                                                <div class="date" style="margin-left: 5px;">{{p.createdAt| date:'MMM d,y, h:mm a'}}</div>
+                                            </div>
+                                            <div class="col-1" *ngIf="p.status=='Approved' && p.isAccepted==true">
+                                                <i class="fas fa-ellipsis-v" *ngIf="p.user._id===userID"
+                                                    [matMenuTriggerFor]="appMenu" style="cursor:pointer;"></i>
+                                                <mat-menu #appMenu="matMenu">
+                                                    <button mat-menu-item (click)="openEditPostModal(p)">Edit</button>
+                                                    <button mat-menu-item (click)="deletePost(p._id)">Delete</button>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                        <div class="row post-body-description">
+                                            {{p.description}}
+                                        </div>
+                                        <div class="row post-body-carrousel">
+                                            <ngb-carousel [interval]="0" *ngIf="p.images.length!=0">
+                                                <ng-template ngbSlide *ngFor="let image of p.images">
+                                                    <div class="picsum-img-wrapper">
+                                                        <img [src]="postPics+image" alt="" class="carousel-img-size">
+                                                    </div>
+                                                    <!-- <div class="picsum-img-wrapper" *ngIf="image.substring(image.lastIndexOf('.') + 1)=='mp4'">
+                                                        <video width="320" height="240" autoplay>
+                                                            <source src="image" type="video/mp4">
+                                                          </video> 
+                                                    </div> -->
+                                                </ng-template>
+                                            </ngb-carousel>
+                                        </div>
+                                        <div class="row post-body-indicator">
+                                            <div class="col-6">
+                                                <div class="likeIndicator">
+                                                    <span class="likeIndicator" (click)="showLikes(p.likes)" *ngIf="p.likes.length>=2">
+                                                        {{p.likes.length}} likes</span>
+                                                    <span class="likeIndicator" (click)="showLikes(p.likes)" *ngIf="p.likes.length<=1">
+                                                        {{p.likes.length}} like</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="commentIndicator">
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length>=2" (click)="showSection(posts.indexOf(p))">{{p.comments.length}}
+                                                        comments</span>
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length<=1" (click)="showSection(posts.indexOf(p))">{{p.comments.length}}
+                                                        comment</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row post-footer">
+                                            <div class="col-4">
+                                                <button class="action-container" (click)="addLik(p._id)">
+                                                    <i class="fas fa-heart action" [ngStyle]="{'color':isLike(p._id) ? 'red' : 'rgb(123, 125, 128)' }"></i>
+                                                    <span class="label-icon">{{!isLike(p._id)?"Like":"Dislike"}}</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="action-container"
+                                                    (click)="showSection(posts.indexOf(p))">
+                                                    <i class="fas fa-comment action"></i>
+                                                    <span class="label-icon">Comment</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="action-container" (click)="savePost(p._id,userID)">
+                                                    <i class="fas fa-bookmark action" [ngStyle]="{'color':isSave(p._id) ? '#2e6bed' : 'rgb(123, 125, 128)' }"></i>
+                                                    <span class="label-icon">{{!isSave(p._id)?"Save":"Unsave"}}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="alignCommentSection[posts.indexOf(p)]">
+                                        <app-all-comments [post]="p"></app-all-comments>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="2" *ngIf="userRole!='ADMIN'" (click)="getPending()">
+                            <a ngbNavLink>Pending posts <span class="buttonBadge">{{myPendingPosts}}</span></a>
+                            <ng-template ngbNavContent>
+                                <div class="section-body" *ngIf="ReversedPending.length==0">
+                                    <div class="row">
+                                        <h3>You have no pending posts yet.</h3>
+                                    </div>
+                                </div>
+                                <div *ngFor="let p of ReversedPending">
+                                    <div class="post-container">
+                                        <div class="row post-header">
+                                            <div class="col-1">
+                                                <img class="proPic" src="{{picsUrl+p.user.image}}"
+                                                    alt="user image">
+                                            </div>
+                                            <div class="col">
+                                                <div class="name">
+                                                    <strong style="margin-left: 5px;">{{p.user.firstName+"
+                                                        "+p.user.lastName}}</strong>
+                                                    <i *ngIf="p.status === 'Approved'"
+                                                        class="fas fa-check-circle statusBadgeApprove"></i>
+                                                    <i *ngIf="p.status === 'Declined'"
+                                                        class="fas fa-window-close statusBadgeDecline"></i>
+                                                    <i *ngIf="p.status === 'Pending'"
+                                                        class="fas fa-clock statusBadgePending"></i>
+                                                </div>
+                                                <div class="date" style="margin-left: 5px;">{{p.createdAt| date:'MMM d,y, h:mm a'}}</div>
+                                            </div>
+                                            <div class="col-1" *ngIf="p.status=='Approved' && p.isAccepted==true">
+                                                <i class="fas fa-ellipsis-v" *ngIf="p.user._id===userID"
+                                                    [matMenuTriggerFor]="appMenu" style="cursor:pointer;"></i>
+                                                <mat-menu #appMenu="matMenu">
+                                                    <button mat-menu-item (click)="openEditPostModal(p)">Edit</button>
+                                                    <button mat-menu-item (click)="deletePost(p._id)">Delete</button>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                        <div class="row post-body-description">
+                                            {{p.description}}
+                                        </div>
+                                        <div class="row post-body-carrousel">
+                                            <ngb-carousel [interval]="0" *ngIf="p.images.length!=0">
+                                                <ng-template ngbSlide *ngFor="let image of p.images">
+                                                    <div class="picsum-img-wrapper">
+                                                        <img [src]="postPics+image" alt="" class="carousel-img-size">
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-carousel>
+                                        </div>
+                                        <div class="row post-body-indicator">
+                                            <div class="col-6">
+                                                <div class="likeIndicator">
+                                                    <span class="likeIndicator" *ngIf="p.likes.length>=2">
+                                                        {{p.likes.length}} likes</span>
+                                                    <span class="likeIndicator" *ngIf="p.likes.length<=1">
+                                                        {{p.likes.length}} like</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="commentIndicator">
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length>=2">{{p.comments.length}}
+                                                        comments</span>
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length<=1">{{p.comments.length}}
+                                                        comment</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="alignCommentSection[posts.indexOf(p)]">
+                                        <app-all-comments [post]="p"></app-all-comments>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="3" *ngIf="userRole!='ADMIN'" (click)="getDeclined()">
+                            <a ngbNavLink>Declined posts <span class="buttonBadge">{{myDeclinedPosts}}</span></a>
+                            <ng-template ngbNavContent>
+                                <div class="section-body" *ngIf="ReversedDeclined.length==0">
+                                    <div class="row">
+                                        <h3>You have no declined posts yet.</h3>
+                                    </div>
+                                </div>
+                                <div *ngFor="let p of ReversedDeclined">
+                                    <div class="post-container">
+                                        <div class="row post-header">
+                                            <div class="col-1">
+                                                <img class="proPic" src="{{picsUrl+p.user.image}}"
+                                                    alt="user image">
+                                            </div>
+                                            <div class="col">
+                                                <div class="name">
+                                                    <strong style="margin-left: 5px;">{{p.user.firstName+"
+                                                        "+p.user.lastName}}</strong>
+                                                    <i *ngIf="p.status === 'Approved'"
+                                                        class="fas fa-check-circle statusBadgeApprove"></i>
+                                                    <i *ngIf="p.status === 'Declined'"
+                                                        class="fas fa-window-close statusBadgeDecline"></i>
+                                                    <i *ngIf="p.status === 'Pending'"
+                                                        class="fas fa-clock statusBadgePending"></i>
+                                                </div>
+                                                <div class="date" style="margin-left: 5px;">{{p.createdAt| date:'MMM d,y, h:mm a'}}</div>
+                                            </div>
+                                            <div class="col-1" *ngIf="p.status=='Approved' && p.isAccepted==true">
+                                                <i class="fas fa-ellipsis-v" *ngIf="p.user._id===userID"
+                                                    [matMenuTriggerFor]="appMenu" style="cursor:pointer;"></i>
+                                                <mat-menu #appMenu="matMenu">
+                                                    <button mat-menu-item (click)="openEditPostModal(p)">Edit</button>
+                                                    <button mat-menu-item (click)="deletePost(p._id)">Delete</button>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                        <div class="row post-body-description">
+                                            {{p.description}}
+                                        </div>
+                                        <div class="row post-body-carrousel">
+                                            <ngb-carousel [interval]="0" *ngIf="p.images.length!=0">
+                                                <ng-template ngbSlide *ngFor="let image of p.images">
+                                                    <div class="picsum-img-wrapper">
+                                                        <img [src]="postPics+image" alt="" class="carousel-img-size">
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-carousel>
+                                        </div>
+                                        <div class="row post-body-indicator">
+                                            <div class="col-6">
+                                                <div class="likeIndicator">
+                                                    <span class="likeIndicator" *ngIf="p.likes.length>=2">
+                                                        {{p.likes.length}} likes</span>
+                                                    <span class="likeIndicator" *ngIf="p.likes.length<=1">
+                                                        {{p.likes.length}} like</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="commentIndicator">
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length>=2">{{p.comments.length}}
+                                                        comments</span>
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length<=1">{{p.comments.length}}
+                                                        comment</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="alignCommentSection[posts.indexOf(p)]">
+                                        <app-all-comments [post]="p"></app-all-comments>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="4" (click)="getSaved()">
+                            <a ngbNavLink>Saved posts <span class="buttonBadge">{{mySavedPosts}}</span></a>
+                            <ng-template ngbNavContent>
+                                <div class="section-body" *ngIf="ReversedSaved.length==0">
+                                    <div class="row">
+                                        <h3>You have no saved posts yet.</h3>
+                                    </div>
+                                </div>
+                                <div *ngFor="let p of ReversedSaved">
+                                    <div class="post-container">
+                                        <div class="row post-header">
+                                            <div class="col-1">
+                                                <img class="proPic" src="{{picsUrl+p.user.image}}"
+                                                    alt="user image">
+                                            </div>
+                                            <div class="col">
+                                                <div class="name">
+                                                    <strong style="margin-left: 5px;">{{p.user.firstName+"
+                                                        "+p.user.lastName}}</strong>
+                                                    <i *ngIf="p.status === 'Approved'"
+                                                        class="fas fa-check-circle statusBadgeApprove"></i>
+                                                    <i *ngIf="p.status === 'Declined'"
+                                                        class="fas fa-window-close statusBadgeDecline"></i>
+                                                    <i *ngIf="p.status === 'Pending'"
+                                                        class="fas fa-clock statusBadgePending"></i>
+                                                </div>
+                                                <div class="date" style="margin-left: 5px;">{{p.createdAt| date:'MMM d,y, h:mm a'}}</div>
+                                            </div>
+                                            <div class="col-1" *ngIf="p.status=='Approved' && p.isAccepted==true">
+                                                <i class="fas fa-ellipsis-v" *ngIf="p.user._id===userID"
+                                                    [matMenuTriggerFor]="appMenu" style="cursor:pointer;"></i>
+                                                <mat-menu #appMenu="matMenu">
+                                                    <button mat-menu-item (click)="openEditPostModal(p)">Edit</button>
+                                                    <button mat-menu-item (click)="deletePost(p._id)">Delete</button>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                        <div class="row post-body-description">
+                                            {{p.description}}
+                                        </div>
+                                        <div class="row post-body-carrousel">
+                                            <ngb-carousel [interval]="0" *ngIf="p.images.length!=0">
+                                                <ng-template ngbSlide *ngFor="let image of p.images">
+                                                    <div class="picsum-img-wrapper">
+                                                        <img [src]="postPics+image" alt="" class="carousel-img-size">
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-carousel>
+                                        </div>
+                                        <div class="row post-body-indicator">
+                                            <div class="col-6">
+                                                <div class="likeIndicator">
+                                                    <span class="likeIndicator" (click)="showLikes(p.likes)" *ngIf="p.likes.length>=2">
+                                                        {{p.likes.length}} likes</span>
+                                                    <span class="likeIndicator" (click)="showLikes(p.likes)" *ngIf="p.likes.length<=1">
+                                                        {{p.likes.length}} like</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="commentIndicator">
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length>=2" (click)="showSection(posts.indexOf(p))">{{p.comments.length}}
+                                                        comments</span>
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length<=1" (click)="showSection(posts.indexOf(p))">{{p.comments.length}}
+                                                        comment</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row post-footer">
+                                            <div class="col-4">
+                                                <button class="action-container" (click)="addLik(p._id)">
+                                                    <i class="fas fa-heart action"
+                                                        [ngStyle]="{'color':isLike(p._id) ? 'red' : '' }"></i>
+                                                    <span class="label-icon">{{!isLike(p._id)?"Like":"Dislike"}}</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="action-container"
+                                                    (click)="showSection(posts.indexOf(p))">
+                                                    <i class="fas fa-comment action"></i>
+                                                    <span class="label-icon">Comment</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-4">
+                                                <button class="action-container" (click)="savePost(p._id,userID)">
+                                                    <i class="fas fa-bookmark action"
+                                                        [ngStyle]="{'color':isSave(p._id) ? '#2e6bed' : '' }"></i>
+                                                    <span class="label-icon">{{!isSave(p._id)?"Save":"Unsave"}}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="alignCommentSection[posts.indexOf(p)]">
+                                        <app-all-comments [post]="p"></app-all-comments>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                        <li [ngbNavItem]="5" *ngIf="userRole=='ADMIN'" (click)="getPostRequest()">
+                            <a ngbNavLink>Post requests <span class="buttonBadge">{{postRequests}}</span></a>
+                            <ng-template ngbNavContent>
+                                <div class="section-body" *ngIf="ReversedRequest.length==0">
+                                    <div class="row">
+                                        <h3>No post requests yet.</h3>
+                                    </div>
+                                </div>
+                                <div *ngFor="let p of ReversedRequest">
+                                    <div class="post-container">
+                                        <div class="row post-header">
+                                            <div class="col-1">
+                                                <img class="proPic" src="{{picsUrl+p.user.image}}"
+                                                    alt="user image">
+                                            </div>
+                                            <div class="col">
+                                                <div class="name">
+                                                    <strong style="margin-left: 5px;">{{p.user.firstName+"
+                                                        "+p.user.lastName}}</strong>
+                                                    <i *ngIf="p.status === 'Approved'"
+                                                        class="fas fa-check-circle statusBadgeApprove"></i>
+                                                    <i *ngIf="p.status === 'Declined'"
+                                                        class="fas fa-window-close statusBadgeDecline"></i>
+                                                    <i *ngIf="p.status === 'Pending'"
+                                                        class="fas fa-clock statusBadgePending"></i>
+                                                </div>
+                                                <div class="date" style="margin-left: 5px;">{{p.createdAt| date:'MMM d,y, h:mm a'}}</div>
+                                            </div>
+                                            <div class="col-1" *ngIf="p.status=='Approved' && p.isAccepted==true">
+                                                <i class="fas fa-ellipsis-v" *ngIf="p.user._id===userID"
+                                                    [matMenuTriggerFor]="appMenu" style="cursor:pointer;"></i>
+                                                <mat-menu #appMenu="matMenu">
+                                                    <button mat-menu-item (click)="openEditPostModal(p)">Edit</button>
+                                                    <button mat-menu-item (click)="deletePost(p._id)">Delete</button>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                        <div class="row post-body-description">
+                                            {{p.description}}
+                                        </div>
+                                        <div class="row post-body-carrousel">
+                                            <ngb-carousel [interval]="0" *ngIf="p.images.length!=0">
+                                                <ng-template ngbSlide *ngFor="let image of p.images">
+                                                    <div class="picsum-img-wrapper">
+                                                        <img [src]="postPics+image" alt="" class="carousel-img-size">
+                                                    </div>
+                                                </ng-template>
+                                            </ngb-carousel>
+                                        </div>
+                                        <div class="row post-body-indicator">
+                                            <div class="col-6">
+                                                <div class="likeIndicator">
+                                                    <span class="likeIndicator" *ngIf="p.likes.length>=2">
+                                                        {{p.likes.length}} likes</span>
+                                                    <span class="likeIndicator" *ngIf="p.likes.length<=1">
+                                                        {{p.likes.length}} like</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="commentIndicator">
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length>=2">{{p.comments.length}}
+                                                        comments</span>
+                                                    <span class="commentIndicator"
+                                                        *ngIf="p.comments.length<=1">{{p.comments.length}}
+                                                        comment</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="userRole=='ADMIN' && p.status=='Pending'">
+                                            <div class="col-6 acceptRequestAction" (click)="acceptPost(p._id)">
+                                                <span class="requestAction"> Accept post <i
+                                                        class="fas fa-check"></i></span>
+                                            </div>
+                                            <div class="col-6 declineRequestAction" (click)="declinePost(p._id)">
+                                                <span class="requestAction"> Decline post <i
+                                                        class="far fa-trash-alt"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="alignCommentSection[posts.indexOf(p)]">
+                                        <app-all-comments [post]="p"></app-all-comments>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5 col-md-5 col-lg-5" *ngIf="news">
+            <div class="card">
+                <h5 class="card-header">Technology News</h5>
+                <ng-scrollbar style="height: 1200px" visibility="hover">
+                    <div class="card-body" *ngFor="let n of news.articles">
+                        <div *ngIf="n.content !== null || n.title!='' || n.url!='' || n.publishedAt!='' ">
+                            <h5>{{n.title}}</h5>
+                            <div class="row">
+                                <span>{{n.content| shortPipe}}<a href="{{n.url}}" target="_blank">[read more]</a></span>
+                            </div><br>
+                            <div class="row">
+                                <span>{{n.publishedAt|date:'MMM d,y, h:mm a'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-scrollbar>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,15 @@
+<div class="p-y-12 p-b-16 gap-8" style="display: flex;justify-content: space-evenly;">
+    @for(item of [1, 2, 3, 4, 5];track item;let idx = $index){
+        <div (click)="handleSelect(idx+1)" style="display: flex;flex-direction: column;align-items: center;gap: 1rem;" class="pill-wrapper">
+            @if(selected && selected !== idx + 1){
+                <div class="backdrop">
+                    <i-tabler name="check" class="icon-18 text-white"></i-tabler>
+                </div>
+            }
+            <div class="face" style="width: 70px;height: 70px;" [class.selected]="selected === (idx + 1)">
+                <img src="../../../assets/images/ratings/face_rating/face-{{ idx + 1 }}.png" alt="image of face {{ idx+1 }}" width="100%">
+            </div>
+            <div [class.f-w-600]="selected === (idx+1)" class="p-x-10 p-y-4 pill-bg-{{ idx + 1 }} text-white f-w-600 rounded-pill text-center">{{ labels[idx] | translate }}</div>
+        </div>
+    }
+</div>

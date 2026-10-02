@@ -1,0 +1,9 @@
+<div style="display: flex;align-items: center;justify-content: space-between;padding: 1rem 0;">
+    <span style="font-weight: bold;">Not satisfied</span>
+    <div style="display: flex;gap: 2rem;">
+        @for(star of stars;track star){
+            <img [src]="star.path" width="40px" height="40px" (click)="handleClick(star.id)">
+        }
+    </div>
+    <span style="font-weight: bold;">Satisfied</span>
+</div>

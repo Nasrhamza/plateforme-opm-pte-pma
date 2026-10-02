@@ -1,0 +1,168 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeicons/primeicons.css";
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.style-success {
+    color: #13deb9;
+    background-color: rgb(230 255 250);
+}
+
+.style-success .mat-simple-snackbar-action {
+    color: #13deb9;
+}
+
+.style-error {
+    color: #fa896b;
+    background-color: #fdede8;
+}
+
+.style-error .mat-simple-snackbar-action {
+    color: #fa896b;
+}
+
+
+.bg-blue {
+    background-color: #5d87ff !important;
+}
+
+.bg-pink {
+    background-color: #f76aa4 !important;
+}
+
+.bg-green {
+    background-color: #24c651 !important;
+}
+
+.bg-red {
+    background-color: #fe4a23 !important;
+}
+
+.bg-yellow {
+    background-color: #ff9901 !important;
+}
+
+.bg-accent {
+    background-color: #02c775 !important;
+}
+
+.bg-grey {
+    background-color: #f3f5f6 !important;
+}
+
+.border-round {
+    border-radius: 100px;
+}
+
+.clickeable-card{
+    cursor: pointer;
+}
+
+// files wrapper sidebar
+.files-wrapper {
+    position: absolute;
+    // transition: all 0.2s ease-in-out;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    height: 100vh;
+    max-width: 50vw;
+    background-color: white;
+    overflow: hidden;
+}
+.files-wrapper-backdrop{
+    content: "";
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.253);
+    height: 100vh;
+    max-width: 100vw;
+    position: absolute;
+    z-index: 3;
+    overflow: hidden;
+}
+
+.files-wrapper .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    z-index: 999;
+    color: ccc;
+}
+
+@media screen and (max-width : 600px) {
+    .files-wrapper {
+        max-width: 100vw;
+    }
+}
+
+// scrollbar
+/* You can add global styles to this file, and also import other style files */
+/* Scrollbar track */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Width of the entire scrollbar */
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Roundness of the scrollbar thumb */
+    border: 2px solid #fff;
+    /* Adds a border around the scrollbar thumb */
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color of the scrollbar track */
+}
+
+/* Hover state for the scrollbar handle */
+::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+    /* Darken the scrollbar thumb on hover */
+}
+
+/* You can add global styles to this file, and also import other style files */
+/* Scrollbar track */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Width of the entire scrollbar */
+}
+
+/* Scrollbar handle */
+::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Roundness of the scrollbar thumb */
+    border: 2px solid #fff;
+    /* Adds a border around the scrollbar thumb */
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color of the scrollbar track */
+}
+
+/* Hover state for the scrollbar handle */
+::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+    /* Darken the scrollbar thumb on hover */
+}

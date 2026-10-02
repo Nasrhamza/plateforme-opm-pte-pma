@@ -1,0 +1,8 @@
+.image-preview img {
+    max-width: 100%; /* Ensures the image does not exceed the modal width */
+    max-height: 70vh; /* Limits the image height to 70% of the viewport height */
+    display: block;
+    margin: auto;
+    object-fit: contain; /* Ensures the image scales correctly without distortion */
+  }
+  

@@ -1,0 +1,60 @@
+.proPic{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.proPicCom{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: -10px;
+}
+.date{
+    font-size: 12px;
+    padding: 2px;
+    //color: rgb(191, 190, 190);
+}
+.name{
+    margin-bottom: -5px;
+    //color: ;
+}
+.comment{
+    font-size: 14px;
+    //color: rgb(27, 95, 154);
+}
+.commentSection{
+    background-color: rgba(228, 227, 227, 0.161);
+    padding: 10px;
+    border-radius: 5px 5px 5px 5px ;
+}
+.butt-comment{
+height: 40px;
+position: relative;
+}
+.action{
+    height: 30px;
+    color: rgb(123, 125, 128);
+    font-size: x-small;
+    padding: auto;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    width: 45px;
+    font-weight: bold;
+}
+.action:hover{
+  background-color: transparent;
+  color: rgb(27, 95, 154);
+}
+.cardBody{
+    margin-top:10px ;
+}
+.editActions{
+    margin-top: 5px;
+}
+.hide{
+    display: none;
+}
+.box{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

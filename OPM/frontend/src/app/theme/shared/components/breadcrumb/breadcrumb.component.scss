@@ -1,0 +1,22 @@
+.arrow-icon {
+    cursor: pointer;
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-right: 14px;
+    /* Adjust size as needed */
+}
+
+.link-class {
+    cursor: pointer;
+    /* Makes it clickable */
+    text-decoration: none;
+    color: inherit;
+    /* Keeps default text color */
+    display: flex;
+    align-items: center;
+}
+
+.arrow-icon:hover {
+    color: #2196F3;
+    /* Changes text/icon color to blue on hover */
+}

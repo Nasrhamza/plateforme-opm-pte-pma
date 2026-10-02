@@ -1,0 +1,54 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Evaluate the task :' | translate }} {{ data.task.Title }}</h5>
+
+<mat-dialog-content>
+    
+    <!-- <div class="d-flex">
+        <div>
+            <img src="../../../../assets/images/ratings/face_rating/face_pas_du_tout.png" alt="image de face pas  du tout" height="60px" width="60px">
+        </div>
+        <div>
+            <img src="../../../../assets/images/ratings/face_rating/face_peu_satisfaisant.png" alt="image de face peu satisfaisant" height="60px" width="60px">
+        </div>
+        <div>
+            <img src="../../../../assets/images/ratings/face_rating/face_acceptable.png" alt="image de face acceptable" height="60px" width="60px">
+        </div>
+        <div>
+            <img src="../../../../assets/images/ratings/face_rating/face_satisfaisant.png" alt="image de face satisfaisant" height="60px" width="60px">
+        </div>
+        <div>
+            <img src="../../../../assets/images/ratings/face_rating/face_tres_satisfaisant.png" alt="image de face tres satisfaisant" height="60px" width="60px">
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Complexity' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 f-s-14 m-b-12 d-block">{{ 'Does the task require advanced or specific skills ?' | translate }}</mat-label>
+            <app-duration-rating-pills (onSelect)="handleAnswerSelect($event, 'q1')" [typeInput]="ratingTypes.Complexity"></app-duration-rating-pills>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Estimated duration' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 f-s-14 m-b-12 d-block">{{ 'How long is the task expected to take compared to an average task ?' | translate }}</mat-label>
+            <app-duration-rating-pills (onSelect)="handleAnswerSelect($event, 'q2')" [typeInput]="ratingTypes.Duration"></app-duration-rating-pills>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Impact' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 f-s-14 m-b-12 d-block">{{ 'How important is the task to the project ?' | translate }}</mat-label>
+            <app-duration-rating-pills (onSelect)="handleAnswerSelect($event, 'q3')" [typeInput]="ratingTypes.Intensity"></app-duration-rating-pills>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Emergency' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 f-s-14 m-b-12 d-block">{{ 'Does the task need to be completed quickly to avoid delays ?' | translate }}</mat-label>
+            <app-duration-rating-pills (onSelect)="handleAnswerSelect($event, 'q4')" [typeInput]="ratingTypes.Urgency"></app-duration-rating-pills>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Autonomy required' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 f-s-14 m-b-12 d-block">{{ 'Does the task require independent work ?' | translate }}</mat-label>
+            <app-duration-rating-pills (onSelect)="handleAnswerSelect($event, 'q5')" [typeInput]="ratingTypes.Autonomy"></app-duration-rating-pills>
+        </div>
+        <div class="col-12">
+            <button mat-flat-button color="primary" class="w-100" [disabled]="this.nq1 == 0 || this.nq2 == 0 || this.nq3 == 0 ||  this.nq4 == 0 || this.nq5 == 0 " (click)="submit()">
+                {{ 'Submit' | translate }}
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>

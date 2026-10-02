@@ -1,0 +1,27 @@
+.msg-user-chat {
+  background-color: rgb(217, 240, 248);
+  border-radius: 17px;
+}
+
+.file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.bg-light-green {
+  border: 3px solid #33c909d8;
+}
+
+.icon-hover {
+  cursor: pointer;
+  transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.icon-hover:hover {
+  transform: scale(1.15);
+}
+.formatted-text {
+  white-space: pre-wrap;
+}

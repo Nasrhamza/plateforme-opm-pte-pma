@@ -1,0 +1,15 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ (data.action == 'Add' ? 'Configure ' : 'Update ') + 'required file for this projet' | translate }}</h5>
+<h5 mat-dialog-title class="mat-subtitle-1">{{ ('Selected types : ' | translate)  + '(' + selectedTypes.length + ')' }}</h5>
+
+<mat-dialog-content style="max-width: 700px">
+
+    <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block p-y-12">{{ 'Select which documents have to be uploaded for rating' | translate }}</mat-label>
+        <div class="d-flex gap-10 m-b-12" style="flex-wrap: wrap;">
+            @for(t of types;track t){
+                <div class="item p-12 bg-{{ isTypeSelected(t) ? '' : 'light-'}}primary rounded text-{{ isTypeSelected(t) ? 'white' : 'primary' }}" style="cursor: pointer;" (click)="handleTypeSelect(t)">{{ t }}</div>
+            }
+        </div>
+        <button mat-flat-button color="primary" class="w-100 m-t-20" (click)="handleSubmit()" [disabled]="loading">
+            {{ 'Submit' | translate }}
+        </button>
+</mat-dialog-content>

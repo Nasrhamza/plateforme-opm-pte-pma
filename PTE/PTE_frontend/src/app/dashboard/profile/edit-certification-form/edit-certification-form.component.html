@@ -1,0 +1,75 @@
+
+
+
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Edit Certification 
+          </div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+  <div class="modal-body">
+      
+        <form class="register-form" [formGroup]="editCertiForm"  (ngSubmit)="onSubmit(editCertiForm)" >
+      
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                  <label>Domaine<span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" placeholder="Domaine" formControlName="domaine" required>
+                  <small class="form-text text-danger"
+                      *ngIf="!editCertiForm.get('domaine')?.valid && editCertiForm.get('domaine')?.touched"> Domaine
+                      is required
+                  </small>
+              </div>
+            </div>
+                
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Issue date<span class="text-danger">*</span></label>
+                <input type="date" class="form-control" value="{{certDate}}" formControlName="date" required>
+                <small class="form-text text-danger"
+                  *ngIf="!editCertiForm.get('date')?.valid && editCertiForm.get('date')?.touched"> Date is required
+              </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                  <label>Credential<span class="text-danger">*</span></label>
+                  <textarea class="form-control" placeholder="Put your Credential here..." formControlName="credential"></textarea>            
+                  <small class="form-text text-danger"
+                      *ngIf="!editCertiForm.get('credential')?.valid && editCertiForm.get('credential')?.touched"> Description
+                      is required
+                  </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <label>Certification file<span class="text-danger">*</span></label>
+                  <ngx-dropzone style="background-color: transparent;" [multiple]="false" (change)="onSelect($event)" >
+                      <ngx-dropzone-label>You can click or drag & drop here!</ngx-dropzone-label>
+                      <ngx-dropzone-image-preview style="width: 250px;" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                          <!-- <ngx-dropzone-label>
+                            <div style="color: rgb(151, 82, 82);width: 150px;height: 150px;"></div>
+                          </ngx-dropzone-label> -->
+                      </ngx-dropzone-image-preview>
+                  </ngx-dropzone>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button  type="submit" class="btn btn-primary">Submit</button>
+              
+              <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+            </div>
+          </form>
+  </div>
+ 

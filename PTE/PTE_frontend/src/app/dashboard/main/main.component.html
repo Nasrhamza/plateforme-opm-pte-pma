@@ -1,0 +1,752 @@
+<section class="main-content">
+  <ul class="breadcrumb breadcrumb-style ">
+    <li class="breadcrumb-item">
+      <h5 class="page-title m-b-0">Dashboard</h5>
+    </li>
+    <li class="breadcrumb-item bcrumb-1">
+      <a routerLink="/dashboard/main">
+        <i class="fas fa-home font-17"></i></a>
+    </li>
+    <li class="breadcrumb-item">Dashboard</li>
+  </ul>
+  <div class="section-body">
+    <div class="row ">
+      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20">Users</h5>
+                    <h2 class="mb-3 font-18">{{userCount}}</h2>
+                    <span class="col-red"><a routerLink="/dashboard/userList">See more <i
+                          class="fas fa-arrow-right"></i></a></span>
+                  </div>
+                  <!-- <ngb-progressbar type="success" [value]="42" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/1.jpg" alt="">
+                    <!-- <i class="fas fa-user-tie" style="font-size: 50px;"></i> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20"> Vehicles</h5>
+                    <h2 class="mb-3 font-18">{{vehicleCount}}</h2>
+                    <span *ngIf="userRoles==='ADMIN' || userRoles==='ASSISTANT'" class="col-red"><a routerLink="/dashboard/vehicle">See more <i class="fas fa-arrow-right"></i></a></span>
+                    <span *ngIf="userRoles!=='ADMIN' && userRoles!=='ASSISTANT'" class="col-red"><a class="noLink">See more <i class="fas fa-arrow-right"></i></a></span>
+                  </div>
+                  <!-- <ngb-progressbar type="warning" [value]="33" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/2.jpg" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20">Rooms</h5>
+                    <h2 class="mb-3 font-18">{{roomCount}}</h2>
+                    <span class="col-red"><a routerLink="/dashboard/room">See more <i
+                          class="fas fa-arrow-right"></i></a></span>
+                  </div>
+                  <!-- <ngb-progressbar type="info" [value]="25" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/3.jpg" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20">All Posts</h5>
+                    <h2 class="mb-3 font-18">{{approvedCount}}</h2>
+                    <span class="col-red"><a routerLink="/allnews">See more <i
+                          class="fas fa-arrow-right"></i></a></span>
+                  </div>
+                  <!-- <ngb-progressbar type="danger" [value]="65" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/4.png" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="userRoles==='ADMIN' || userRoles==='ASSISTANT'">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20">Selected interns</h5>
+                    <h2 class="mb-3 font-18">{{allSelectedInterns}}</h2>
+                    <span class="col-red"><a routerLink="/dashboard/selected-intern">See more <i
+                          class="fas fa-arrow-right"></i></a></span>
+                  </div>
+                  <!-- <ngb-progressbar type="success" [value]="42" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/5.png" height="150px" alt="">
+                    <!-- <i class="fas fa-user-tie" style="font-size: 50px;"></i> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20">Internship offers</h5>
+                    <h2 class="mb-3 font-18">{{allInternshipOffers}}</h2>
+                    <span class="col-red"><a routerLink="/dashboard/offer">See more <i
+                          class="fas fa-arrow-right"></i></a></span>
+                  </div>
+                  <!-- <ngb-progressbar type="success" [value]="42" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/6.png" height="150px" alt="">
+                    <!-- <i class="fas fa-user-tie" style="font-size: 50px;"></i> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <h5 class="font-20">Internship labs</h5>
+                    <h2 class="mb-3 font-18">{{allInternshipLabs}}</h2>
+                    <!-- <span class="col-red"><a routerLink="/dashboard/offer">See more <i
+                          class="fas fa-arrow-right"></i></a></span> -->
+                  </div>
+                  <!-- <ngb-progressbar type="success" [value]="42" height=".3rem"></ngb-progressbar> -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 right-grid-spacing">
+                  <div class="banner-img">
+                    <img src="assets/images/banner/7.png" height="150px" alt="">
+                    <!-- <i class="fas fa-user-tie" style="font-size: 50px;"></i> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="user">
+      <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-xs-5" *ngIf="user.roles[0]!=='ADMIN'">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row">
+                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+                  <div class="card-content">
+                    <a routerLink="/allnews"> <h5 class="font-20">{{user.firstName}}'s Posts Statistics </h5></a>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey">{{MyApprovedPostsCount+MyDeclinedPostsCount+MyPendingPostsCount}} </h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 ">
+                  <div class="card-content">
+                    <h5 class="font-20">Approved Posts</h5>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey">{{MyApprovedPostsCount}} </h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 ">
+                  <div class="card-content">
+                    <h5 class="font-20">Declined Posts</h5>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey">{{MyDeclinedPostsCount}} </h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 ">
+                  <div class="card-content">
+                    <h5 class="font-20">Pending Posts</h5>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey">{{MyPendingPostsCount}} </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="user.roles[0]==='ADMIN'">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                  <div class="card-content">
+                    <a routerLink="/allnews"> <h5 class="font-20" *ngIf="user.roles[0]!=='ADMIN'">{{user.firstName}}'s Posts Statistics </h5></a>
+                    <a routerLink="/allnews"> <h5 class="font-20" *ngIf="user.roles[0]==='ADMIN'">All Posts Statistics </h5></a>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]!=='ADMIN'">{{MyApprovedPostsCount+MyDeclinedPostsCount+MyPendingPostsCount}} </h5>
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]==='ADMIN'">{{postCount}}</h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+                  <div class="card-content">
+                    <h5 class="font-20">Approved Posts</h5>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]!=='ADMIN'">{{MyApprovedPostsCount}} </h5>
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]==='ADMIN'">{{approvedCount}} </h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 ">
+                  <div class="card-content">
+                    <h5 class="font-20">Declined Posts</h5>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]!=='ADMIN'">{{MyDeclinedPostsCount}} </h5>
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]==='ADMIN'">{{declinedCount}} </h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                  <div class="card-content">
+                    <h5 class="font-20">Pending Posts</h5>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" >
+                  <div class="card-content">
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]!=='ADMIN'">{{MyPendingPostsCount}} </h5>
+                    <h5 class="font-20 col-blue-grey" *ngIf="user.roles[0]==='ADMIN'">{{pendingCount}} </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12" *ngIf="user.roles[0]!=='ADMIN'">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 left-grid-spacing">
+                  <div class="card-content">
+                    <a routerLink="/dashboard/myLeave"><h5 class="font-20">{{user.firstName}}'s Leave</h5></a>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 left-grid-spacing">
+                    <h2 class="mb-3 font-18"style="color: rgb(37, 164, 147);"  >{{MyLeave}}</h2>
+                </div>
+              </div>
+              <div class="row" *ngIf="user.roles[0]==='ADMIN'">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 left-grid-spacing">
+                  <div class="card-content">
+                    <a routerLink="/dashboard/myLeave"><h5 class="font-20" >All Leave</h5></a>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 left-grid-spacing">
+                 <h2 class="mb-3 font-18"style="color: rgb(37, 164, 147);">{{allLeave}}</h2>
+                </div>
+              </div>
+              <hr>
+              <div class="row" *ngIf="user.roles[0]==='ADMIN' || user.roles[0]!=='ADMIN'">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content" style="text-align: center;">
+                    <span class="font-14">My Pending Leave</span>
+                    <div style="text-align: center;color: rgb(37, 164, 147);"><strong>{{MyPendingLeave}}</strong></div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 left-grid-spacing" style="border-left: 2px solid rgb(44, 133, 197);height: 50px;"></div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 left-grid-spacing">
+                  <div class="card-content" style="margin-left:-20px">
+                    <span class="font-14">My Accepted Leave</span>
+                    <div style="text-align: center;color: rgb(37, 164, 147);"><strong>{{MyAcceptedLeave}}</strong></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="user.roles[0]==='ADMIN'">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content" style="text-align: center;">
+                    <span class="font-14" >All Pending Leave</span>
+                    <div style="text-align: center;color: rgb(37, 164, 147);"><strong>{{allPendingLeave}}</strong></div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 left-grid-spacing" style="border-left: 2px solid rgb(44, 133, 197);height: 50px;"></div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 left-grid-spacing">
+                  <div class="card-content" style="margin-left:-20px">
+                    <span class="font-14">All Accepted Leave</span>
+                    <div style="text-align: center;color: rgb(37, 164, 147);"><strong>{{allAcceptedLeave}}</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-12" *ngIf="user.roles[0]==='ADMIN'">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 left-grid-spacing">
+                  <div class="card-content">
+                    <a routerLink="/dashboard/myLeave"><h5 class="font-20">{{user.firstName}}'s Leave</h5></a>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 left-grid-spacing">
+                    <h2 class="mb-3 font-18"style="color: rgb(37, 164, 147);"  >{{MyLeave}}</h2>
+                </div>
+              </div>
+              <div class="row" *ngIf="user.roles[0]=='ADMIN'">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 left-grid-spacing">
+                  <div class="card-content">
+                    <a routerLink="/dashboard/myLeave"><h5 class="font-20" >All Leave</h5></a>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 left-grid-spacing">
+                 <h2 class="mb-3 font-18"style="color: rgb(37, 164, 147);">{{allLeave}}</h2>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content" style="text-align: center;">
+                    <span class="font-14">My Pending Leave</span>
+                    <div style="text-align: center;color: rgb(37, 164, 147);"><strong>{{MyPendingLeave}}</strong></div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 left-grid-spacing" style="border-left: 2px solid rgb(44, 133, 197);height: 50px;"></div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 left-grid-spacing">
+                  <div class="card-content" style="text-align: center;margin-left: -60px;">
+                    <span class="font-14">My Accepted Leave</span>
+                    <div style="color: rgb(37, 164, 147);"><strong>{{MyAcceptedLeave}}</strong></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content" style="text-align: center;">
+                    <span class="font-14" >All Pending Leave</span>
+                    <div style="text-align: center;color: rgb(37, 164, 147);"><strong>{{allPendingLeave}}</strong></div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 left-grid-spacing" style="border-left: 2px solid rgb(44, 133, 197);height: 50px;"></div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 left-grid-spacing">
+                  <div class="card-content" style="text-align: center;margin-left: -60px;">
+                    <span class="font-14">All Accepted Leave</span>
+                    <div style="color: rgb(37, 164, 147);"><strong>{{allAcceptedLeave}}</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12" *ngIf="user.roles[0]!=='ADMIN' && user.roles[0]!=='ASSISTANT'">
+        <div class="card">
+          <div class="card-statistic-4">
+            <div class="align-items-center justify-content-between">
+              <div class="row ">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 left-grid-spacing">
+                  <div class="card-content">
+                    <a routerLink="/dashboard/myRequest"><h5 class="font-20" *ngIf="user.roles[0]!='LAB-MANAGER'">{{user.firstName}}'s Labs</h5></a>
+                    <a routerLink="/dashboard/myRequest"><h5 class="font-20" *ngIf="user.roles[0]=='LAB-MANAGER'">All Labs</h5></a>
+                    <!-- <h2 class="mb-3 font-18">{{MyActiveLabs}}</h2> -->
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 left-grid-spacing">
+                    <h2 class="mb-3 font-18 col-blue-grey" *ngIf="user.roles[0]!='LAB-MANAGER'">{{labRequestCount}}</h2>
+                    <h2 class="mb-3 font-18 col-blue-grey" *ngIf="user.roles[0]=='LAB-MANAGER'">{{labRequestCount}}</h2>
+                </div>
+              </div>
+              <hr>
+              <div class="row" >
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 left-grid-spacing">
+                  <div class="card-content">
+                    <span class="font-14" style="text-align: center;">Pending Labs </span>
+                    <div style="text-align: center;margin-left:-20px;">{{MyPendingLabs}}</div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 left-grid-spacing" style="border-left: 2px solid rgb(44, 133, 197);height: 50px;"></div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 left-grid-spacing">
+                  <div class="card-content">
+                    <span class="font-14"style="margin-left:-20px">Accepted Labs</span>
+                    <div style="text-align: center;margin-left:-20px;">{{MyAcceptedLabs}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" *ngIf="userRoles==='ADMIN' || userRoles==='ASSISTANT'">
+      <div class="card-body" >
+        <button type="button" class="collapseButton mb-3" (click)="isCollapsedCalendar = !isCollapsedCalendar"
+          [attr.aria-expanded]="!isCollapsedCalendar" aria-controls="collapseCalendar">
+          Show all booking events 
+          <i class="fas fa-angle-down icon" *ngIf="isCollapsedCalendar"></i>
+          <i class="fas fa-angle-up icon" *ngIf="!isCollapsedCalendar"></i>
+        </button>
+        <div class="row" id="collapseCalendar" [ngbCollapse]="isCollapsedCalendar">
+          <div class="row">
+            <div class="col-md-2 col-sm-12 p-l-30">
+              <br><br><br>
+              <div class="filter-container">
+                <div class="control-label"><strong>Switch category</strong></div>
+                <div class="custom-switches-stacked mt-2">
+                  <label class="custom-switch">
+                    <input type="radio" name="option" value="vehicle" (change)="changeCalendar()"
+                      class="custom-switch-input" [(ngModel)]="selectedOption">
+                    <span class="custom-switch-indicator"></span>
+                    <span class="custom-switch-description v"><strong>Vehicles</strong></span>
+                  </label>
+                  <label class="custom-switch">
+                    <input type="radio" name="option" value="room" (change)="changeCalendar()" class="custom-switch-input"
+                      [(ngModel)]="selectedOption">
+                    <span class="custom-switch-indicator"></span>
+                    <span class="custom-switch-description r"><strong>Rooms</strong></span>
+                  </label>
+                  <label class="custom-switch">
+                    <input type="radio" name="option" value="technician" (change)="changeCalendar()"
+                      class="custom-switch-input" [(ngModel)]="selectedOption">
+                    <span class="custom-switch-indicator"></span>
+                    <span class="custom-switch-description t"><strong>Technicians</strong></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-10 col-sm-12">
+              <div class="panel-body">
+                <full-calendar [options]='calendarOptions'>
+                </full-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" *ngIf="userRoles==='ADMIN' || userRoles==='LAB-MANAGER' ">
+      <div class="card-body">
+        <button type="button" class="collapseButton mb-3" (click)="isCollapsedLabs = !isCollapsedLabs"
+          [attr.aria-expanded]="!isCollapsedLabs" aria-controls="collapseLabs">
+          Show all active Labs
+          <i class="fas fa-angle-down icon" *ngIf="isCollapsedLabs"></i>
+          <i class="fas fa-angle-up icon" *ngIf="!isCollapsedLabs"></i>
+        </button>
+        <div class="row" id="collapseLabs" [ngbCollapse]="isCollapsedLabs">
+          <ngx-datatable #table class="material" [rows]="rows" [loadingIndicator]="loadingIndicator" columnMode="force"
+            [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="5" [scrollbarH]="scrollBarHorizontal"
+            [reorderable]="reorderable" (page)="onPage($event)">
+          <!-- Row Detail Template -->
+          <ngx-datatable-row-detail [rowHeight]="150" #myDetailRow (toggle)="onDetailToggle($event)">
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+              <table>
+                <tr>
+                  <th>
+                    <div>
+                      <div style="padding-right: 10px;margin-top: -45%;">
+                        <strong>Ressource info :</strong>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <div style="margin-left: 5%;width: 200px;">
+                      <div><span>Type : </span>{{ row.type }} </div>
+                      <div><span>Backup : </span>{{ row.backup }} </div>
+                      <div><span>RAM : </span>{{ row.ram }} </div>
+                      <div><span>Disk storage : </span>{{ row.disk }} </div>
+                      <div><span>Processor : </span>{{ row.processor }} </div>
+                    </div>
+                  </td>
+                  <th>
+                    <div>
+                      <div style="padding-right: 10px;margin-top: -50%;">
+                        <strong>Booking info :</strong>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <div style="margin-left: 5%;width: 200px;margin-top: -25%;">
+                      <div><span>Start Date : </span>{{ row.start| date:"dd/MM/YYYY" }} </div>
+                      <div><span>End Date : </span>{{ row.end| date:"dd/MM/YYYY"}} </div>
+                    </div>
+                  </td>
+                  <th>
+                    <div>
+                      <div style="padding-right: 10px;margin-top: -65%;">
+                        <strong>Objective :</strong>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <div style="width: 200px;margin-top: -5%;position: fixed;">
+                      <div>{{ row.goals }} </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </ng-template>
+          </ngx-datatable-row-detail>
+          <!-- Column Templates -->
+          <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="true" [draggable]="false"
+            [canAutoResize]="true">
+            <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+              <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
+                [class.datatable-icon-down]="expanded" title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
+              </a>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column [width]="100" name="LAB Ref">
+            <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+              <!-- <img src="{{ row.img }}" class="data-table-img" /> -->
+              <div class="name-col-style">
+                <div>{{ row.code }} </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="100" name="Name">
+            <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+              <!-- <img src="{{ row.img }}" class="data-table-img" /> -->
+              <div class="name-col-style">
+                <div>{{ row.firstName }} {{ row.lastName }}</div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="100" name="Email">
+            <ng-template let-row="row" let-value="value" let-i="index" ngx-datatable-cell-template>
+              <!-- <img src="{{ row.img }}" class="data-table-img" /> -->
+              <div class="name-col-style">
+                <div>{{ row.email }} </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="100" name="Departement">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.departement}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Status">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div *ngIf="row.status==='Active'" class="badge-outline col-green">
+                {{row.status}}
+              </div>
+              <div *ngIf="row.status==='Declined'" class="badge-outline col-red">
+                {{row.status}}
+              </div>
+              <div *ngIf="row.status==='Expired'" class="badge-outline col-red">
+                {{row.status}}
+              </div>
+              <div *ngIf="row.status==='Pending'" class="badge-outline col-indigo">
+                {{row.status}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <!-- <div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-12 ">
+      <div class="card">
+        <div class="card-header">
+          <h4>User stat</h4>
+        </div>
+        <div class="card-body">
+            <apx-chart [series]="lineChartOptions.series!" [chart]="lineChartOptions.chart!"
+              [xaxis]="lineChartOptions.xaxis!" [stroke]="lineChartOptions.stroke!" [colors]="lineChartOptions.colors!"
+              [dataLabels]="lineChartOptions.dataLabels!" [legend]="lineChartOptions.legend!"
+              [tooltip]="lineChartOptions.tooltip!" [markers]="lineChartOptions.markers!"
+              [grid]="lineChartOptions.grid!" [yaxis]="lineChartOptions.yaxis!" [title]="lineChartOptions.title!"
+              [fill]="lineChartOptions.fill!">
+            </apx-chart>
+          </div>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-6 ">
+      <div class="card">
+        <div class="card-header">
+          <h4>Chart Sample</h4>
+        </div>
+        <div class="card-body">
+            <apx-chart [series]="barChartOptions.series!" [chart]="barChartOptions.chart!"
+              [dataLabels]="barChartOptions.dataLabels!" [stroke]="barChartOptions.stroke!"
+              [colors]="barChartOptions.colors!" [title]="barChartOptions.title!" [grid]="barChartOptions.grid!"
+              [tooltip]="barChartOptions.tooltip!" [plotOptions]="barChartOptions.plotOptions!"
+              [yaxis]="barChartOptions.yaxis!" [xaxis]="barChartOptions.xaxis!"></apx-chart>
+          </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- <div class="row">
+    <div class="col-md-12 col-lg-6 col-xl-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>Registered Users</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+             <div class="col-sm-12">
+              <div class="d-flex justify-content-between mt-2 text-dark mb-2">
+                <div><span class="fw-bold">3487</span> Hits</div>
+                <div>Target: 10000</div>
+              </div>
+              <div class="progress traffic-bar mb-2">
+                <div class="progress-bar bg-red" style="width: 33%"></div>
+                <div class="progress-bar bg-blue" style="width: 25%"></div>
+                <div class="progress-bar bg-amber" style="width: 12%"></div>
+                <div class="progress-bar bg-purple" style="width: 10%"></div>
+                <div class="progress-bar bg-green" style="width: 7%"></div>
+                <div class="progress-bar bg-blue-grey" style="width: 13%"></div>
+              </div>
+            </div> 
+            <div class="col-sm-12">
+              <div class="search-traffic">
+                <div class="d-flex justify-content-between mb-1 mt-2">
+                  <div class="fw-bold">NAME</div>
+                  <div class="fw-bold">TITLE</div>
+                </div>
+                <ng-scrollbar style="height: 300px;" visibility="hover">
+                  <div class="d-flex justify-content-between traffic-source" *ngFor="let user of users">
+                    <div>
+                      <span>
+                        <i class="fa fa-user-tie col-blue-grey msr-2"></i>
+                      </span>
+                      {{user.firstName +" "+ user.lastName}}
+                    </div>
+                    <div>{{user.title}}</div>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-6">
+      <div class="card">
+        <div class="card-header">
+          <h4>User Statistics</h4>
+        </div>
+        <div class="card-body">
+          <ng-scrollbar style="height: 340px;" visibility="hover">
+          <ul class="list-unstyled user-details list-unstyled-border list-unstyled-noborder" *ngFor="let user of users">
+            <li class="items-list-compo">
+              <img alt="image" class="msr-3 rounded-circle" width="50" src="{{picsUrl+user.image}}">
+              <div class="set-flex">
+                <div class="media-title fw-bold font-16">{{user.firstName+" "+user.lastName}}</div>
+                <div class="text-job text-muted">{{user.roles[0]}}</div>
+              </div>
+              <div class="items-list">
+                <div class="item-list">
+                  <div class="item-value">1,821</div>
+                  <div class="item-label">Posts</div>
+                </div>
+                <div class="item-list">
+                  <div class="item-value">14k</div>
+                  <div class="media-label">Comments</div>
+                </div>
+                <div class="item-list">
+                  <div class="item-value">2,864</div>
+                  <div class="media-label">Likes</div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </ng-scrollbar>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</section>

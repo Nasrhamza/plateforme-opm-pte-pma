@@ -1,0 +1,38 @@
+.language-flag {
+  width: 20px;  /* Adjust width as needed */
+  height: 20px; /* Adjust height as needed */
+  margin-right: 5px;  /* Space between the flag and the language name */
+  border-radius: 50%;  /* Optional: make flag round */
+}
+
+.search-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.search-btn img.language-flag {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.dropdown-menu {
+  padding: 0;
+  max-height: 150px; /* Adjust dropdown height */
+  min-width: 160px; /* Set the width of the dropdown */
+}
+
+.dropdown-item {
+  max-height: 40px;
+
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #d9eefe;  /* Change background color on hover */
+}

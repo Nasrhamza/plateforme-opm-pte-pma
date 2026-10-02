@@ -1,0 +1,14 @@
+.lab-banner {
+    position: absolute;
+    height: 30px;
+    width: 200px;
+    background-color: red;
+    top: 0;
+    right: 0;
+    transform: rotate(45deg) translateX(20px) translateY(-50px);
+}
+
+.pill-lab{
+    background-color: red !important; 
+    color: white !important;
+}

@@ -1,0 +1,87 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Internship offers</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Internship</li>
+        <li class="breadcrumb-item">List</li>
+    </ul>
+    <div class="section-body">
+        <div class="col-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="col-6">
+                        <h4>Internship offers</h4>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="btn btn-outline-primary" *ngIf="userRole!=='ADMIN'" (click)="createOffer()">Add offer</button>
+                    </div>
+                </div>
+                <div class="filter row">
+                    <div class="col-sm-9">
+                        <div class="d-flex">
+                            <!-- <label class="col-form-label msr-3">Search:</label> -->
+                            <input type="text" placeholder="Filter offers" class="form-control"
+                                (keyup)='updateFilter($event)'>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row offers-list">
+                        <div class="col-9 col-md-9 col-lg-9"  *ngFor="let offer of offers">
+                            <div class="card author-box card-primary" style="border: 0.5px solid rgba(202, 202, 202, 0.098);" (click)="redirectDetails(offer._id)">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="author-box-name col-10">
+                                            <h5 style="color: #6777EF;">{{offer.title}}</h5>
+                                        </div>
+                                        <div class="col-2 actions" *ngIf="offer.encadrant===userId">
+                                            <i class="fas fa-pen icon" ngbPopover="Edit internship offer"
+                                                triggers="mouseenter:mouseleave" placement="top"
+                                                (click)="editOfferModal(offer)">
+                                            </i>
+                                            <i class="fas fa-trash icon" ngbPopover="Delete internship offer"
+                                                triggers="mouseenter:mouseleave" placement="top"
+                                                (click)="deleteOffer(offer._id)">
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <div class="author-box-job">
+                                        <span class="badge badge-dark"
+                                            *ngIf="offer.departement==='Cyber Security'">{{offer.departement}}</span>
+                                        <span class="badge badge-primary"
+                                            *ngIf="offer.departement==='Development'">{{offer.departement}}</span>
+                                        <span class="badge badge-secondary"
+                                            *ngIf="offer.departement==='System'">{{offer.departement}}</span>
+                                        <span class="badge badge-info"
+                                            *ngIf="offer.departement==='Networking'">{{offer.departement}}</span>
+                                    </div>
+                                    <div class="author-box-description">
+                                        <p>{{offer.description|offer}}</p>
+                                    </div>
+                                    <div class="mb-2 mt-3">
+                                        <div class="text-small fw-bold">Technologies required</div>
+                                        <span>{{offer.technologies}}</span>
+                                    </div>
+                                    <br>
+                                    <span><strong>Expiration date:
+                                        </strong>{{offer.expirationDate|date:'mediumDate'}}</span>
+                                    <div class="w-100 d-sm-none"></div>
+                                    <div class="float-end mt-sm-0 mt-3">
+                                        <a routerLink="/dashboard/offerDetails/{{offer._id}}" class="btn btn-outline-primary">View Details</a>
+                                        <!-- <a  (click)="FillQuizModal(offer._id)" class="btn">Fill quiz</a> -->
+                                        <a routerLink="/dashboard/offerTasks/{{offer._id}}" class="btn">Manage tasks ></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

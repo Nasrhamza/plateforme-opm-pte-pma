@@ -1,0 +1,53 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title class="m-b-24"> {{ 'My notifications' | translate }} </mat-card-title>
+        @if(loading$ | async ){
+            <app-loader></app-loader>
+        }@else{
+            @if(notifications.total === 0){
+                <p class="p-y-24 text-center"> {{ 'Seems you have no notifications yet in this moment' | translate  }} </p>
+            }@else{
+                @for(notification of notifications?.notifications; track notification._id) {
+                    <div class="d-flex align-items-center notif-item p-12 gap-12" [class.bg-light-accent]="notification.status === 'unread'">
+                        <div class="bg-light-primary d-flex align-items-center justify-content-center rounded-circle" style="height: 50px;width: 50px;aspect-ratio: 1/1;">
+                            <i-tabler [name]="getNotificationIcon(notification)"></i-tabler>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-start w-100">
+                            <div (click)="openNotification(notification)">
+                                <h5 class="f-s-14 f-w-600 m-0 mat-subtitle-1">
+                                    {{ notification.title }}
+                                </h5>
+                                @if(notification.details){
+                                <span>{{ notification.details }}</span>
+                                }
+                                <br>
+                                @if(notification.createdAt){
+                                <span class="f-s-12 f-w-600" style="color: rgb(177, 177, 177);">{{ notification.createdAt | date : 'short' }}</span>
+                                }
+                            </div>
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>
+                                    <i-tabler name="dots" class="icon-20"></i-tabler>
+                                </mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" class="cardWithShadow" xPosition="before">
+                                <button mat-menu-item>
+                                    <div class="d-flex align-items-center gap-4" (click)="markAsRead(notification)">
+                                        <i-tabler [name]="notification.status === 'read' ? 'eye-x' : 'eye'"></i-tabler>
+                                        <span class="f-s-14">{{ (notification.status === 'read' ? 'Mark as unread' : 'Mark as read') | translate }}</span>
+                                    </div>
+                                </button>
+                                <button mat-menu-item (click)="delete(notification._id)">
+                                    <div class="d-flex align-items-center gap-4">
+                                        <i-tabler name="trash"></i-tabler>
+                                        <span class="f-s-14">{{ 'Delete' | translate }}</span>
+                                    </div>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </mat-card-content>
+</mat-card>

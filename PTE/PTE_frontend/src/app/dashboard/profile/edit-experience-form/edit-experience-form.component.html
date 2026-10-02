@@ -1,0 +1,79 @@
+
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Edit experience </div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="register-form" [formGroup]="editExpForm"  (ngSubmit)="onSubmit(editExpForm)" >
+      
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Company<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Company" formControlName="company" required>
+              <small class="form-text text-danger"
+                  *ngIf="!editExpForm.get('company')?.valid && editExpForm.get('company')?.touched"> Company
+                  is required
+              </small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Job<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="Job" formControlName="job" required>
+              <small class="form-text text-danger"
+                  *ngIf="!editExpForm.get('job')?.valid && editExpForm.get('job')?.touched"> Job
+                  is required
+              </small>
+          </div>
+        </div>
+            
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <label>Start<span class="text-danger">*</span></label>
+            <input type="date" class="form-control"  formControlName="start" required>
+            <small class="form-text text-danger"
+              *ngIf="!editExpForm.get('start')?.valid && editExpForm.get('start')?.touched"> Start Date is required
+          </small>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <label>End<span class="text-danger">*</span></label>
+            <input type="date" class="form-control" formControlName="end">
+            <div class="form-check" style="margin-top: 3px;">
+              <input type="checkbox" class="form-check-input" formControlName="present" id="present">
+              <label class="form-check-label" for="present">
+                To present
+              </label>
+            </div>
+            <!-- <small class="form-text text-danger"
+              *ngIf="!editExpForm.get('end')?.valid && editExpForm.get('end')?.touched"> End Date is required
+          </small> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Description<span class="text-danger">*</span></label>
+              <textarea class="form-control" placeholder="Write your description here..." formControlName="task_description"></textarea>            
+              <small class="form-text text-danger"
+                  *ngIf="!editExpForm.get('task_description')?.valid && editExpForm.get('task_description')?.touched"> Description
+                  is required
+              </small>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button  type="submit" class="btn btn-primary">Submit</button>
+          
+          <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+      </form>
+  </div>

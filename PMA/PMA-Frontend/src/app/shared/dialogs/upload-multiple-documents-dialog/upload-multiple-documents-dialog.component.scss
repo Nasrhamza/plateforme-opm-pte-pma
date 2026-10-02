@@ -1,0 +1,46 @@
+
+.drag-area {
+    padding: 20px;
+    border: 1px dashed #5d87ff;
+    border-radius: 12px;
+    text-align: center;
+    color: ccc;
+    cursor: pointer;
+}
+
+.drag-area.drag-over {
+    background-color: rgb(194, 223, 247);
+    border-color: rgb(0, 110, 255);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-infos {
+    margin-top: 10px;
+}
+
+.bar-btn {
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.filled-btn {
+    background-color: #5d87ff;
+    color: white;
+    border: none;
+}
+.filled-btn:hover {
+    background-color: #7c9fff;
+}
+.border-btn {
+    border: 1px solid #5d87ff;
+    color: #5d87ff;
+}
+.border-btn:hover {
+    background-color: #5d87ff;
+    color: white;
+}

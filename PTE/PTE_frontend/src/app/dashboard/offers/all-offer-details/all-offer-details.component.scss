@@ -1,0 +1,124 @@
+.section-detail{
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    margin-right: 10px;
+    height: 65vh;
+}
+.section-create{
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    margin-right: 10px;
+    width: 560px;
+    height: 50vh;
+}
+.details-bottom{
+    padding: 20px;
+    background-color: #c5d8f1;
+    border-radius: 15px;
+    // position: inherit;
+}
+.techs-bottom{
+    padding: 20px;
+    background-color: #d37ef553;
+    border-radius: 15px;
+    // position: inherit;
+}
+.assign-quiz{
+    padding: 20px;
+    background-color: #fac88a70;
+    border-radius: 15px;
+}
+.body-section-detail{
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.quiz-title{
+    background-color: #f7f9d4;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    
+}
+.quiz-title:hover{
+    background-color: #f3f6c3;
+    cursor: pointer;
+}
+
+.icon{
+    padding: 5px;
+    color: rgb(247, 148, 109);
+}
+.icon:hover{
+    color: #ff6532;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    font-size: 15px;
+}
+
+.quiz-title .icon {
+    transition: opacity 0.3s ease;
+    float: right;
+}
+
+.quiz-title .icon {
+    opacity: 0;
+}
+
+.quiz-title:hover .icon {
+    opacity: 1; 
+}
+
+
+.enc-img{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #8a8989;
+}
+
+.user-result-container{
+    padding: 10px 10px 5px 10px;
+    // border: 1px solid #8a8989;
+    border-radius: 15px;
+    background-color: #a6d1f44d;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.user-result-container:hover{
+    background-color: #a6d1f4;
+}
+
+
+.iconQuiz{
+    margin-top: -10px;
+    font-size: 20px;
+    padding: 10px;
+    color: rgb(133, 156, 250);
+}
+.iconQuiz:hover{
+    color: #3235ffa7;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    font-size: 25px;
+}
+
+.select-icon{
+    color: #f27f59ca;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.select-icon:hover{
+    background-color: #4db8ffa1;
+    color: whitesmoke;
+}

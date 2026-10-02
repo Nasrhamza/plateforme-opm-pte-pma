@@ -1,0 +1,36 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Evaluate your team leader :' | translate }}</h5>
+
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Communication and Transparency' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Does the Team Leader clearly communicate the objectives and tasks to be accomplished ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q1')" [labels]="labels[0].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Management and Organization' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Does the Team Leader effectively organize tasks and responsibilities within the team ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q2')" [labels]="labels[1].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Leadership and Motivation' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Does the Team Leader motivate you to achieve your goals and perform at your best ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q3')" [labels]="labels[2].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Problem Solving' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Does the Team Leader provide clear and practical solutions to the obstacles encountered in the project ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q4')" [labels]="labels[3].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Fairness and Respect' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Do you feel that your contributions are acknowledged and appreciated by the Team Leader ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q5')" [labels]="labels[4].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <button mat-flat-button color="primary" class="w-100" [disabled]="this.nq1 == 0 || this.nq2 == 0 || this.nq3 == 0 ||  this.nq4 == 0 || this.nq5 == 0 " (click)="submit()">
+                {{ 'Submit' | translate }}
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>

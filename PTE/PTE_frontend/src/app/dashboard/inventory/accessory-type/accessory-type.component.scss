@@ -1,0 +1,33 @@
+.input{
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
+.goback{
+    padding: 10px;
+    color: rgb(58, 189, 232);
+    font-size: 15px;
+}
+.goback:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgb(26, 84, 177);
+}
+.accessoryContainer{
+    border: 1px dashed rgba(98, 92, 92, 0.319);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    background-color: rgba(164, 76, 236, 0.133);
+    margin-bottom: 20px;
+}
+.accessoryContainer:hover{
+    border: 1px solid rgba(146, 144, 144, 0.319);
+    background-color: rgba(164, 76, 236, 0.603);
+    color: whitesmoke;
+}
+.icon{
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+}

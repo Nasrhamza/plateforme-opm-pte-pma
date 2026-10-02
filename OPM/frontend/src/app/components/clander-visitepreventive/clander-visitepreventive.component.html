@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Full Calendar" cardClass="elite-calendar" [options]="false">
+      <div class="table-responsive">
+        <div class="status-boxes">
+          <input type="text" class="form-control form-control-sm" placeholder="Search..." [(ngModel)]="searchQuery"
+            (input)="filterEvents()" style="max-width: 250px; background-color: #EFF3F6;">
+          <div class="status-box bg-warning text-dark">
+            <span>Pending</span>
+          </div>
+          <div class="status-box bg-primary text-white">
+            <span>In progress</span>
+          </div>
+          <div class="status-box bg-success text-white">
+            <span>Done</span>
+          </div>
+        </div>
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+<app-animation-modal [modalID]="'modal-1'" [modalClass]="'md-effect-1'">
+
+  <h3 *ngIf="infoEvent.title" [ngClass]="{
+    'bg-primary': infoEvent.status == 'In progress' && !infoEvent.title.startsWith('Infogerance'),
+    'bg-warning': infoEvent.status == 'Pending' && !infoEvent.title.startsWith('Infogerance'),
+    'bg-success': infoEvent.status == 'Done' && !infoEvent.title.startsWith('Infogerance')
+  }" [ngStyle]="infoEvent.title.startsWith('Infogerance') ? {'background-color': '#17A2B8'} : {}"
+    class="text-white text-center py-2">
+    {{ infoEvent.title }}
+  </h3>
+
+  <div class="row invoice-info">
+    <div class="col-md-6 col-xs-12">
+      <h6 class="font-weight-bold text-center">Contract & Ticket Information :</h6>
+      <table class="table table-borderless table-responsive">
+        <tbody>
+          <tr *ngIf="infoEvent.id">
+            <th><i class="fas fa-id-badge mr-1"></i> ID :</th>
+            <td>{{ infoEvent.id }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.ticketNumber!=='123--123'">
+            <th><i class="fas fa-ticket-alt mr-1"></i> Ticket Number :</th>
+            <td>{{ infoEvent.ticketNumber }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.client">
+            <th><i class="fas fa-user mr-1"></i> Client :</th>
+            <td>{{ infoEvent.client }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.endDateContract">
+            <th><i class="fas fa-calendar-alt mr-1"></i> End Date :</th>
+            <td>{{ infoEvent.endDateContract | date:'d MMMM, y' }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.typeContract">
+            <th><i class="fas fa-file-alt mr-1"></i> Type:</th>
+            <td>{{ infoEvent.typeContract }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.natureContract">
+            <th><i class="fas fa-tag mr-1"></i> Nature:</th>
+            <td>{{ infoEvent.natureContract }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-6 col-sm-6">
+      <h6 class="font-weight-bold text-center">Visit Information :</h6>
+      <table class="table table-borderless table-responsive">
+        <tbody>
+          <tr *ngIf="infoEvent.startDate">
+            <th><i class="fas fa-calendar-alt mr-1"></i> Start Date :</th>
+            <td>{{ infoEvent.startDate | date:'d MMMM, y' }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.endDate">
+            <th><i class="fas fa-calendar-check mr-1"></i> End Date :</th>
+            <td>{{ infoEvent.endDate | date:'d MMMM, y' }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.siteName && infoEvent.siteName!=='123--123'">
+            <th><i class="fas fa-map-marker-alt mr-1"></i> Site Name :</th>
+            <td>{{ infoEvent.siteName }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.siteAdres && infoEvent.siteAdres!=='123--123'">
+            <th><i class="fas fa-map-marker-alt mr-1"></i> Site Address :</th>
+            <td>{{ infoEvent.siteAdres }}</td>
+          </tr>
+          <tr *ngIf="infoEvent.technicienName && infoEvent.technicienName!=='123--123'">
+            <th><i class="fas fa-user-cog mr-1"></i> Technician :</th>
+            <td>{{ infoEvent.technicienName }}</td>
+          </tr>
+          <tr *ngIf="!(infoEvent.title?.startsWith('Infogerance'))">
+            <th><i class="fas fa-hourglass-start mr-1"></i> Status :</th>
+            <td *ngIf="infoEvent.status == 'Pending'"><span class="badge bg-warning">Pending</span></td>
+            <td *ngIf="infoEvent.status == 'In progress'"><span class="badge bg-primary">In progress</span></td>
+            <td *ngIf="infoEvent.status == 'Done'"><span class="badge bg-success">Done</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</app-animation-modal>

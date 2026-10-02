@@ -1,0 +1,125 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="Onsubmit(form)">
+
+    <!-- ID Field -->
+    <div class="form-group">
+      <label for="inputId">ID:</label>
+      <input type="text" class="form-control" id="inputId" formControlName="id" />
+      <div *ngIf="form.get('id').touched && form.get('id').errors?.required" class="error">ID required</div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label for="inputState">Type:</label>
+        <select id="inputState" class="form-control" formControlName="type" required>
+          <option value="SUPPORT AND MAINTENANCE HARD">Support & maintenance hard</option>
+          <option value="SUPPORT AND MAINTENANCE SOFT">Support & maintenance soft</option>
+          <option value="SUPPORT AND MAINTENANCE SOFT AND HARD">Support & maintenance soft & hard</option>
+          <option value="INFOGERANCE">Infogerance</option>
+        </select>
+        <div *ngIf="form.get('type').touched && form.get('type').errors?.required" class="error">Type required</div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="inputState">Nature:</label>
+        <select id="inputState" class="form-control" formControlName="nature" required>
+          <option value="SYSTEME">System</option>
+          <option value="DEVELOPMENT">Development</option>
+          <option value="RESEAUX">Network</option>
+          <option value="CYBER-SECURITY">Cyber security</option>
+          <option value="SUPPORT">Support</option>
+        </select>
+        <div *ngIf="form.get('nature').touched && form.get('nature').errors?.required" class="error">Nature required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label for="startDate">Start date:</label>
+        <input type="date" class="form-control" id="startDate" formControlName="startDate" />
+        <div *ngIf="form.get('startDate').touched && form.get('startDate').errors?.required" class="error">Start date
+          required</div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="endDate">End date:</label>
+        <input type="date" class="form-control" id="endDate" formControlName="endDate" />
+        <div *ngIf="form.get('endDate').touched && form.get('endDate').errors?.required" class="error">End date required
+        </div>
+        <div *ngIf="form.get('endDate').errors?.dateLessThan" class="error">End date must be after start date</div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label for="sla">SLA:</label>
+        <input type="number" class="form-control" placeholder="SLA" min="0" max="72" formControlName="sla" required />
+        <span>The SLA must be in Hours</span>
+        <div *ngIf="form.get('sla').touched && form.get('sla').errors?.required" class="error">SLA required</div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="dueDate">Due Date:</label>
+        <select id="dueDate" class="form-control" formControlName="dueDate" required>
+          <option value="3 MONTHS">3 Months</option>
+          <option value="6 MONTHS">6 Months</option>
+        </select>
+        <div *ngIf="form.get('dueDate').touched && form.get('dueDate').errors?.required" class="error">Due Date required
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Support Type Fields -->
+    <div formArrayName="listTypeSupport">
+      <div *ngFor="let support of listTypeSupportArray.controls; let i = index" [formGroupName]="i"
+        class="form-group row">
+        <div class="col-md-6">
+          <label for="listTypeSupport">List Type Support:</label>
+          <select class="form-control" formControlName="typeSupport" required>
+            <option value="" disabled>Select Support Type</option>
+            <option *ngFor="let type of listTypeSupport" [value]="type._id">{{ type.supportName }}</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="idSupport">ID Support:</label>
+          <input type="text" class="form-control" formControlName="idSupport" placeholder="Enter ID Support" required />
+        </div>
+        <button type="button" class="btn btn-danger btn-sm d-flex align-items-center mt-2 ml-3"
+          (click)="removeSupportType(i)">
+          <i class="fas fa-trash-alt me-2"></i> Remove
+        </button>
+      </div>
+    </div>
+    
+    <button type="button" class="btn btn-success btn-sm d-flex align-items-center" (click)="addSupportType()">
+      <i class="fas fa-plus-circle me-2"></i> Add Support Type
+    </button>
+
+    <div *ngIf="form.get('type').value === 'INFOGERANCE'" class="form-group">
+      <label for="jourInfogerance">Day:</label>
+      <select class="form-control" id="jourInfogerance" formControlName="jourInfogerance" required>
+        <option value="" disabled>Select One Day</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+    </div>
+
+    <div class="modal-footer">
+      <button *ngIf="!add" type="submit" [disabled]="form.invalid" class="btn btn-outline-warning">Update</button>
+      <button *ngIf="add" type="submit" [disabled]="form.invalid" class="btn btn-outline-primary">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(null)">Close</button>
+    </div>
+  </form>
+</div>

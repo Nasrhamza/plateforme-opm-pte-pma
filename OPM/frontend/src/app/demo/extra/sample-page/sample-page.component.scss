@@ -1,0 +1,62 @@
+.cardSize {
+    height: 650px;
+    // background-color: rgb(238, 237, 237);
+}
+
+.dropdown-container {
+    max-height: 150px;
+    /* Adjust based on item height */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    margin-top: 28px;
+    height: fit-content;
+    width: fit-content;
+}
+
+.avatar-stack-multiple .avatar-img {
+    transition: transform 0.2s ease;
+}
+
+.avatar-stack-multiple .avatar-img:hover {
+    transform: scale(1.1);
+    z-index: 100 !important;
+}
+
+.card-header {
+    background-color: #242E3E !important;
+    color: #ffffff !important;
+    border-bottom: none;
+}
+
+.card-header h5,
+.card-header h6,
+.card-header i,
+.card-header span {
+    color: #ffffff !important;
+}
+.table td, .table th {
+  vertical-align: middle; /* center content vertically */
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.tech-badge img {
+  object-fit: cover;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.tech-name {
+  line-height: 1; /* ensures text is vertically centered with image */
+}

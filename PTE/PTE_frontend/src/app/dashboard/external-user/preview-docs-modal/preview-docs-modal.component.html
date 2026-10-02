@@ -1,0 +1,30 @@
+<!-- <div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                    Download external's documents</div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()" style="float: right;">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div> -->
+<div class="modal-body">
+    <!-- <ul>
+        <li *ngFor="let doc of payload.external_docs">{{doc}}</li>
+    </ul> -->
+    <!-- <div class="container"> -->
+        <h2>{{payload.firstName}}'s files</h2>
+        <h6>This is the list of {{payload.firstName}}'s files, click on a file to download it.</h6>
+        <ul class="directory-list">
+            <ng-scrollbar style="height: 400px" visibility="hover">
+                <li *ngFor="let doc of payload.external_docs" (click)="downloadFile(doc)">
+                    <span class="icon"><i class="far fa-file-pdf" style="color: rgb(238, 126, 126); font-size: 20px;" ></i></span>
+                    <strong>{{doc}}</strong>
+                </li>
+            </ng-scrollbar>
+        </ul>
+    <!-- </div> -->
+</div>

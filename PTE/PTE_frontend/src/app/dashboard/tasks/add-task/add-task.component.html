@@ -1,0 +1,89 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div *ngIf="payload.action==='add'" class="fw-bold p-t-10 font-17">
+                    Create task </div>
+                <div *ngIf="payload.action==='edit'" class="fw-bold p-t-10 font-17">
+                    Edit task </div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form class="register-form" [formGroup]="taskForm" (ngSubmit)="onSubmit(taskForm)">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Title<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Title" formControlName="title" required>
+                <small class="form-text text-danger"
+                    *ngIf="!taskForm.get('title')?.valid && taskForm.get('title')?.touched"> Title is required
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Description<span class="text-danger">*</span></label>
+                <textarea class="form-control" placeholder="Write the offer description here..."
+                    formControlName="description"></textarea>
+                <small class="form-text text-danger"
+                    *ngIf="!taskForm.get('description')?.valid && taskForm.get('description')?.touched"> Description
+                    is required
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                <label>Priority<span class="text-danger">*</span></label>
+                <select class="form-control" formControlName="priority">
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div  class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+              <label>Assigne To</label>
+              <select  class="form-select form-control" formControlName="assignedTo" required>
+                <option selected disabled>Please select executor</option>
+                <option  *ngFor="let applicant of offerApplicants" [value]="applicant._id">{{applicant.firstName+" "+applicant.lastName}}</option>
+              </select>
+            </div>
+          </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group position-relative">
+                    <label>Start date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="startDate" >
+                    <small class="form-text text-danger"
+                        *ngIf="!taskForm.get('startDate')?.valid && taskForm.get('startDate')?.touched">
+                        Start date is invalid
+                    </small>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group position-relative">
+                    <label>End date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" formControlName="endDate" >
+                    <small class="form-text text-danger"
+                        *ngIf="!taskForm.get('endDate')?.valid && taskForm.get('endDate')?.touched">
+                        End date is invalid
+                    </small>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" *ngIf="payload.action==='edit'" class="btn btn-primary">Edit task</button>
+            <button type="submit" *ngIf="payload.action==='add'" class="btn btn-primary">Add task</button>
+
+            <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

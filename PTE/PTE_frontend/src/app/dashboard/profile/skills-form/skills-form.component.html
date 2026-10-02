@@ -1,0 +1,47 @@
+
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Add skill 
+          </div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="register-form" [formGroup]="skillsForm"  (ngSubmit)="onSubmit(skillsForm)" >
+      
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Name<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Name" formControlName="name" required>
+            <small class="form-text text-danger"
+                *ngIf="!skillsForm.get('name')?.valid && skillsForm.get('name')?.touched"> Name
+                is required
+            </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Level<span class="text-danger">*</span></label>
+            <input type="range" class="form-range" formControlName="level" min="0" max="100" step="10" value="0" >
+            <small class="form-text text-danger"
+                *ngIf="!skillsForm.get('level')?.valid && skillsForm.get('level')?.touched"> Level
+                is required
+            </small>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button  type="submit" class="btn btn-primary">Submit</button>
+        
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>

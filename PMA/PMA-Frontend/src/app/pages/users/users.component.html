@@ -1,0 +1,150 @@
+<mat-card class="shadow-none b-radius-30 theme-card">
+    <mat-card-header class="d-flex justify-content-between">
+        <mat-card-title>{{ tableTitle | translate}}</mat-card-title>
+        <!-- <mat-card-subtitle class="mat-body-1">get nore item with pagination</mat-card-subtitle> -->
+        <div class="d-flex gap-8">
+            <mat-form-field appearance="outline" class="w-100 hide-hint theme-select">
+                <input matInput placeholder="{{'Search' | translate}}..." (keyup)="applyFilter($event)" />
+                <mat-icon matSuffix>
+                    <i-tabler name="search" class="icon-20"></i-tabler>
+                </mat-icon>
+            </mat-form-field>
+            <button mat-button (click)="addUser('Add', {})" mat-flat-button color="primary">{{'Add User' |
+                translate}}</button>
+            <button mat-button (click)="fetchUsers()" mat-flat-button color="primary" class="m-l-6">{{'Refresh' |
+                translate}}</button>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        @if(loading){
+            <app-loader></app-loader>
+        }@else{
+            @if(filteredUsers.length == 0){
+                <app-empty-data></app-empty-data>
+            }@else{
+                <div class="table-responsive m-t-30">
+                    <mat-table #table [dataSource]="dataSource">
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
+                                {{ 'User' | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="p-16 p-l-0" *matCellDef="let element" (click)="showDetails(element._id)"
+                                style="cursor: pointer;">
+                                <div class="d-flex align-items-center">
+                                    <img [src]="element.image ?? '../assets/images/profile/user-1.jpg'" [alt]="element.fullName"
+                                        width="40" style="aspect-ratio: 1/1;" class="rounded-circle" />
+                                    <div class="m-l-16">
+                                        <h6 class="mat-subtitle-1 f-s-14 f-w-600">
+                                            {{ element.fullName }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+        
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                {{ 'Email' | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element" class="mat-body-1">
+                                {{ element.email }}</mat-cell>
+                        </ng-container>
+        
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="hiringDate">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                {{ 'Hiring Date' | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element">
+                                {{ element.hiringDate | date : 'dd/MM/yyyy'}}
+                            </mat-cell>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="roles">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">
+                                {{ 'Roles' | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="p-16" *matCellDef="let element">
+                                <div class="d-flex gap-8" style="flex-wrap: wrap;">
+                                    @for(role of element.roles; track role){
+                                    <span class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-2 f-s-12">
+                                        {{ role }}
+                                    </span>
+                                    }
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+        
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 text-right p-r-0">
+                                {{ 'Actions' | translate }}
+                            </mat-header-cell>
+                            <mat-cell class="p-16 mat-body-1 p-r-0 text-right" *matCellDef="let element">
+                                <button mat-icon-button [matMenuTriggerFor]="menu">
+                                    <mat-icon>
+                                        <i-tabler name="dots" class="icon-20"></i-tabler>
+                                    </mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu" class="cardWithShadow" xPosition="before">
+                                    @if(showDetailsButton){
+                                        <button mat-menu-item (click)="showDetails(element._id)">
+                                            <div class="d-flex align-items-center gap-4">
+                                                <i-tabler name="eye"></i-tabler>
+                                                <span class="f-s-14">{{ 'Details' | translate }}</span>
+                                            </div>
+                                        </button>
+                                    }
+                                    <button mat-menu-item (click)="addUser('update',element)">
+                                        <div class="d-flex align-items-center gap-4">
+                                            <i-tabler name="pencil"></i-tabler>
+                                            <span class="f-s-14">{{ 'Update' | translate }}</span>
+                                        </div>
+                                    </button>
+                                    <button mat-menu-item (click)="delete(element._id)">
+                                        <div class="d-flex align-items-center gap-4">
+                                            <i-tabler name="trash"></i-tabler>
+                                            <span class="f-s-14">{{ 'Delete' | translate }}</span>
+                                        </div>
+                                    </button>
+                                    @if(showEnableButton){
+                                    <button mat-menu-item (click)="enableUser(element._id)">
+                                        <div class="d-flex align-items-center gap-4">
+                                            <i-tabler name="check"></i-tabler>
+                                            <span class="f-s-14">{{ 'Enable' | translate }}</span>
+                                        </div>
+                                    </button>
+                                    }
+                                    @if(role == "Admin"){
+                                    <button mat-menu-item (click)="changeRole(element)">
+                                        <div class="d-flex align-items-center gap-4">
+                                            <i-tabler name="switch-3"></i-tabler>
+                                            <span class="f-s-14">{{ 'Change role' | translate }}</span>
+                                        </div>
+                                    </button>
+                                    }
+                                    @if(role == "Admin"){
+                                    <button mat-menu-item (click)="updateAvatar(element)">
+                                        <div class="d-flex align-items-center gap-4">
+                                            <i-tabler name="photo-edit"></i-tabler>
+                                            <span class="f-s-14">{{ 'Update image' | translate }}</span>
+                                        </div>
+                                    </button>
+                                    }
+                                </mat-menu>
+                            </mat-cell>
+                        </ng-container>
+        
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                    </mat-table>
+        
+                    <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+                    </mat-paginator>
+                </div>
+            }
+        }
+    </mat-card-content>
+</mat-card>

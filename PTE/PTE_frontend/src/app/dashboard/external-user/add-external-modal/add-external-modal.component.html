@@ -1,0 +1,102 @@
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Add external user</div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="loading===true" class="d-flex justify-content-center align-items-center loading">
+      <div class="spinner-border">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+  </div>
+    <form class="register-form" [formGroup]="externalForm"  (ngSubmit)="onSubmit(externalForm)" >
+      
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>First name<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="First name" formControlName="fname" required>
+          <small class="form-text text-danger"
+            *ngIf="!externalForm.get('fname')?.valid && externalForm.get('fname')?.touched"> Title is required
+            </small>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+          <label>Last name<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" placeholder="Last name" formControlName="lname" required>
+          <small class="form-text text-danger"
+            *ngIf="!externalForm.get('lname')?.valid && externalForm.get('lname')?.touched"> Title is required
+            </small>
+        </div>
+      </div>
+      <div class="rox">
+        <div class="col-md-12">
+            <div class="form-group position-relative">
+              <label>Departement <span class="text-danger">*</span></label>
+              <select formControlName="departement" class="form-select">
+                <option  disabled selected>Choose...</option>
+                <option value="Administration">Administration</option>
+                <option value="System">System</option>
+                <option value="Networking">Networking</option>
+                <option value="Development">Development</option>
+                <option value="Cyber Security">Cyber Security</option>
+              </select>
+              <small class="form-text text-danger"
+                *ngIf="!externalForm.get('departement')?.valid && externalForm.get('departement')?.touched">
+                Departement is invalid
+              </small>
+            </div>
+          </div>
+      </div>
+      <!-- <div class="row">
+        <div class="form-group col-md-12" >
+            <label>Resumee<span class="text-danger">*</span></label>
+            <ngx-dropzone style="background-color: transparent;" [multiple]="false" (change)="onSelect($event)">
+                <ngx-dropzone-label>You can click or drag & drop!</ngx-dropzone-label>
+                <ngx-dropzone-preview  style="width: 250px;" *ngFor="let f of files"  [removable]="true"  (removed)="onRemove(f)">
+                    <ngx-dropzone-label><div style="color: rgb(151, 82, 82);width: 150px;height: 150px;">{{ f.name }}</div></ngx-dropzone-label>
+                    <small class="form-text text-danger" *ngIf="!f"> Medical certificate is required</small>
+                </ngx-dropzone-preview>
+            </ngx-dropzone>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-7"></div>
+        <div class="col-5" >
+            <label class="custom-switch mt-2">
+                <input type="checkbox" formControlName="switch" class="custom-switch-input">
+                <span class="custom-switch-indicator"></span>
+                <span class="custom-switch-description">Add Certifications</span>
+            </label>
+        </div>
+      </div> -->
+
+    <div class="row" >
+        <div class="col-md-12">
+          <label>Resumee & Certifications & External picture<span class="text-danger">*</span></label>
+            <ngx-dropzone style="background-color: transparent;"
+                [multiple]="true" (change)="onSelect($event)">
+                <ngx-dropzone-label>
+                    You can click or drag & drop here! <br>
+                    <small><strong>(Only pdf files allowed)</strong></small>
+                </ngx-dropzone-label>
+                <ngx-dropzone-preview style="width: 250px;" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                  <ngx-dropzone-label><div style="color: rgb(151, 82, 82);width: 150px;height: 150px;">{{ f.name }}</div></ngx-dropzone-label>
+                </ngx-dropzone-preview>
+            </ngx-dropzone>
+        </div>
+    </div>
+      <div class="modal-footer">
+        <button  type="submit" class="btn btn-primary">Add External</button>
+        
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>

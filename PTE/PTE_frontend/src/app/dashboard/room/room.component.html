@@ -1,0 +1,103 @@
+<section class="main-content">
+  <ul class="breadcrumb breadcrumb-style ">
+    <li class="breadcrumb-item">
+      <h5 class="page-title m-b-0">Resource managment</h5>
+    </li>
+    <li class="breadcrumb-item bcrumb-1">
+      <a routerLink="/dashboard/main">
+        <i class="fas fa-home font-17"></i></a>
+    </li>
+    <li class="breadcrumb-item">Room</li>
+    <li class="breadcrumb-item">Calendar</li>
+  </ul>
+  <div class="section-body">
+    <div class="row">
+      <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Rooms calendar</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-sm-10 p-l-30">
+                <div class="m-b-25">
+                  <button class="btn btn-icon icon-left btn-primary" *ngIf="role=='ASSISTANT'" (click)="addRoomWindowCall()">
+                    Add Room</button>
+                </div>
+                
+                <h5 class="roomContainer">Rooms <i class="fas fa-level-down-alt"></i></h5>
+
+                <ng-scrollbar style="height: 400px" visibility="hover">
+                  <div class="roomContainer">
+                    <ul class="list-group">
+                      <li *ngFor="let room of rooms" class="list-group-item">
+                        <strong class="rooms">{{room.label}}</strong>
+                        <div>
+                          <strong class="roomsModel">L:{{room.location}}</strong><br>
+                          <strong class="roomsModel">C: {{room.capacity}}</strong>
+                        </div>
+                        <div>
+                          <button class="btn btn-outline-danger actionButtons" *ngIf="role=='ASSISTANT'" ngbPopover="Delete room"
+                            triggers="mouseenter:mouseleave" (click)="deleteRoom(room._id)"><i class="fas fa-trash"></i></button>
+                          <button class="btn btn-outline-warning actionButtons" *ngIf="role=='ASSISTANT'" ngbPopover="Edit room"
+                            triggers="mouseenter:mouseleave" (click)="editRoomWindowCall(room)"><i class="fas fa-pen"></i></button>
+                          <button class="btn btn-outline-primary actionButtons" ngbPopover="Book room" triggers="mouseenter:mouseleave"
+                            (click)="ToggleCalendar(room)"><i class="far fa-calendar-alt"></i></button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </ng-scrollbar>
+
+                <!-- <div class="col-md-12 col-md-10">
+                  <div class="filter-container">
+                    <div ngbAccordion class="roomContainer" *ngFor="let room of rooms">
+                      <div ngbAccordionItem style="background-color: rgb(142, 197, 197);">
+                        <h4 ngbAccordionHeader>
+                          <button ngbAccordionButton>
+                            <strong class="rooms">{{room.label}}</strong>
+                          </button>
+                        </h4>
+                        <div ngbAccordionCollapse>
+                          <div ngbAccordionBody>
+                            <ng-template>
+                              <div>
+                                <strong style="font-size: 13px;color: rgb(8, 69, 122);">L:
+                                  {{room.location}}</strong><br>
+                                <strong style="font-size: 13px;color: rgb(8, 69, 122);">C: {{room.capacity}}</strong>
+                              </div>
+                              <div>
+                                <button class="btn btn-outline-danger actionButtons" ngbPopover="Delete room"
+                                  triggers="mouseenter:mouseleave" (click)="deleteRoom(room._id)"><i
+                                    class="fas fa-trash"></i></button>
+                                <button class="btn btn-outline-warning actionButtons" ngbPopover="Edit room"
+                                  triggers="mouseenter:mouseleave" (click)="editRoomWindowCall(room)"><i
+                                    class="fas fa-pen"></i></button>
+                                <button class="btn btn-outline-primary actionButtons" ngbPopover="Book room"
+                                  triggers="mouseenter:mouseleave" (click)="ToggleCalendar(room)"><i
+                                    class="far fa-calendar-alt"></i></button>
+                              </div>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+              <div class="col-md-8 col-md-9">
+                <div class="panel-body">
+                  <full-calendar [options]='calendarOptions' *ngIf="showCalendar">
+                  </full-calendar>
+                </div>
+                <div class="panel-body" *ngIf="!showCalendar">
+                  <h1 class="empty">Please select a room</h1>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

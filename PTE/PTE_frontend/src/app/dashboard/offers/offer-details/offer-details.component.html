@@ -1,0 +1,43 @@
+<!-- <div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">
+                   Internship details</div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div> -->
+
+<!-- <div class="modal-body">
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4"> -->
+            <h3>{{data.title}}</h3> 
+            <span class="badge badge-dark" *ngIf="data.departement==='Cyber Security'">{{data.departement}}</span>
+            <span class="badge badge-primary" *ngIf="data.departement==='Development'">{{data.departement}}</span>
+            <span class="badge badge-secondary" *ngIf="data.departement==='System'">{{data.departement}}</span>
+            <span class="badge badge-info" *ngIf="data.departement==='Networking'">{{data.departement}}</span>
+            <br><br>
+            <p>{{data.description}}</p>
+            <h6>Technologies required :</h6><span>{{data.technologies}}</span><br><br>
+            <div class="row">
+                <div class="col-4">
+                    <h6>Duration : </h6>
+                    <span *ngIf="data.period!>=2">{{data.period}} months</span>
+                    <span *ngIf="data.period!<=1">{{data.period}} month</span>
+                </div>
+                <div class="col-4">
+                    <h6>Interns needed :</h6>
+                    <span *ngIf="data.internsNumber!>=2"> {{data.internsNumber}} interns</span>
+                    <span *ngIf="data.internsNumber!<=1"> {{data.internsNumber}} intern</span>
+                </div>
+                <div class="col-4">
+                    <h6>Expiration date :</h6><span> {{data.expirationDate| date:'mediumDate'}}</span>
+                </div>
+            </div>
+        <!-- </div>
+    </div>
+</div> -->

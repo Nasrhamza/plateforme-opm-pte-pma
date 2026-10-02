@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .wrapper {
+            margin: 0;
+            padding: 50px;
+            background-color: #f7f9fb;
+        }
+
+        .container {
+            margin: 0 auto;
+            font-family: 'Arial', sans-serif;
+            background-color: #fff;
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header img {
+            max-width: 120px;
+            margin-bottom: 15px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00796b;
+            margin: 0;
+        }
+
+        .content {
+            text-align: left;
+            padding: 30px;
+            background-color: #f3f6f8;
+            color: #333;
+        }
+
+        .content p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .content .text-bold {
+            font-weight: bold;
+            color: #00796b;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #00796b;
+            color: #fff;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body style="padding: 0;margin: 0;">
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <img src="https://opm.prologic.com.tn:5600/assets/logo/logoBlue.png" alt="OPM logo">
+                <h2>Welcome to OPM!</h2>
+            </div>
+            <div class="content">
+                <p>Hello <span class="text-bold">{{name}}</span>,</p>
+                <p>We are thrilled to have you join our platform. Your account has just been enabled by the admin.</p>
+                <p>Welcome aboard, and we’re excited for you to start using OPM for all your ticketing and team
+                    management needs!</p>
+                <p>If you have any questions, feel free to reach out to our support team.</p>
+            </div>
+            <div class="footer">
+                <p>&copy; {{year}} OPM - Prologic</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

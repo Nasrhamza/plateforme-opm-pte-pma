@@ -1,0 +1,117 @@
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Add Vehicle Event</div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <!-- <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+      <li [ngbNavItem]="1">
+          <a ngbNavLink>reservation for ticket </a>
+          <ng-template ngbNavContent>
+              <div class="tab-pane">
+              </div>
+          </ng-template>
+      </li>
+      <li [ngbNavItem]="2">
+          <a ngbNavLink>reservation for task</a>
+          <ng-template ngbNavContent>
+              <div class="tab-pane">
+              </div>
+          </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div> -->
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <button class="navigations w-100" (click)="forTicket = !forTicket">Reservation for ticket</button>
+      </div>
+      <div class="col-md-4">
+        <button class="navigations w-100">Reservation for project</button>
+      </div>
+      <div class="col-md-4">
+        <button class="navigations w-100">Other reservation</button>
+      </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="forTicket">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+        <label>Case Number<span class="text-danger">*</span></label>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Case Number" 
+          (input)="handleCaseNumber($event)"
+          [ngClass]="{'is-invalid': outputRES, 'is-valid': outputRES === '' && !isEmpty}"><br>
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4 warn-box" *ngIf="outputRES.length>0">
+            <!-- <small class="text-danger" *ngIf="outputRES">{{ outputRES }}</small> -->
+            <span class="warning" *ngIf="outputRES">{{ outputRES }}</span>
+          </div>
+      </div>
+      
+    </div>
+    <div class="row" *ngIf="validTicket">
+      <form class="register-form" [formGroup]="vehicleEventForm" (ngSubmit)="onSubmit(vehicleEventForm)">
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Title<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Title" formControlName="title" required>
+            <small class="form-text text-danger"
+              *ngIf="!vehicleEventForm.get('title')?.valid && vehicleEventForm.get('title')?.touched"> Title is required
+          </small>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div  class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Driver<span class="text-danger">*</span></label>
+            <select  class="form-select form-control" formControlName="driver" required>
+              <option selected disabled>Please select driver</option>
+              <option  *ngFor="let driver of drivers" [value]="driver._id">{{driver.firstName+" "+driver.lastName}}</option>
+            </select>
+          </div>
+        </div>
+    
+      
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <label>Start Date<span class="text-danger">*</span></label>
+            <input type="datetime-local" class="form-control"  formControlName="start" required>
+            <small class="form-text text-danger"
+              *ngIf="!vehicleEventForm.get('start')?.valid && vehicleEventForm.get('start')?.touched"> Start Date is required
+          </small>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-4">
+            <label>End Date<span class="text-danger">*</span></label>
+            <input type="datetime-local" class="form-control" placeholder="Start Date" formControlName="end" required>
+            <small class="form-text text-danger"
+              *ngIf="!vehicleEventForm.get('end')?.valid && vehicleEventForm.get('end')?.touched"> End Date is required
+          </small>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Destination<span class="text-danger">*</span></label>
+            <!-- <textarea type="text" class="form-control" placeholder="Destination" formControlName="destination"></textarea> -->
+            <div leaflet style="height: 300px; width: 100%;" [leafletOptions]="mapOptions" (leafletMapReady)="onMapReady($event)"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button  type="submit" class="btn btn-primary" [disabled]="!validTicket">Add Event</button>
+          
+          <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+      </form>
+    </div>
+  </div> 

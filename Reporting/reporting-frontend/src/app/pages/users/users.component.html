@@ -1,0 +1,164 @@
+<main class="pt-24 pb-12 px-8 min-h-screen">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+    <div>
+      <h2 class="text-3xl font-extrabold tracking-tight text-on-surface mb-2">Team Directory</h2>
+      <p class="text-on-surface-variant max-w-lg">Manage access levels and account settings for Reporting Hub users.</p>
+    </div>
+    <button
+      (click)="openCreatePanel()"
+      class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+    >
+      <span class="material-symbols-outlined">person_add</span>
+      Add New User
+    </button>
+  </div>
+
+  <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm mb-8 flex flex-wrap items-center gap-4">
+    <div class="flex-1 min-w-[300px] relative">
+      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+      <input
+        [ngModel]="query()"
+        (ngModelChange)="setQuery($event)"
+        class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-sm"
+        placeholder="Search by name, email or role..."
+        type="text"
+      />
+    </div>
+    <button (click)="load()" class="bg-surface-container-high text-primary px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+      <span class="material-symbols-outlined text-[20px]">refresh</span>
+      Refresh
+    </button>
+    <button (click)="exportCsv()" [disabled]="exporting()" class="bg-surface-container-high text-primary px-4 py-3 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+      <span class="material-symbols-outlined text-[20px]">download</span>
+      {{ exporting() ? 'Exporting...' : 'Export' }}
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="mb-6 bg-error-container text-error rounded-xl p-4 text-sm font-semibold">{{ error() }}</div>
+  }
+
+  <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+    @if (loading()) {
+      <div class="p-6 text-sm font-medium text-on-surface-variant">Loading users...</div>
+    } @else if (filteredUsers().length === 0) {
+      <div class="p-10 text-center text-sm text-on-surface-variant">No users found for current filters.</div>
+    } @else {
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low">
+            <th class="px-6 py-4 text-[10px] uppercase tracking-[0.1em] font-bold text-on-surface-variant">User Identity</th>
+            <th class="px-6 py-4 text-[10px] uppercase tracking-[0.1em] font-bold text-on-surface-variant">Access Role</th>
+            <th class="px-6 py-4 text-[10px] uppercase tracking-[0.1em] font-bold text-on-surface-variant">System Status</th>
+            <th class="px-6 py-4 text-[10px] uppercase tracking-[0.1em] font-bold text-on-surface-variant">Joined Date</th>
+            <th class="px-6 py-4 text-[10px] uppercase tracking-[0.1em] font-bold text-on-surface-variant text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-container">
+          @for (user of filteredUsers(); track user._id) {
+            <tr class="group hover:bg-surface-container/30 transition-colors">
+              <td class="px-6 py-5">
+                <div class="flex items-center gap-4">
+                  <div class="h-10 w-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">
+                    {{ initials(user.fullName).toUpperCase() }}
+                  </div>
+                  <div>
+                    <div class="font-semibold text-on-surface">{{ user.fullName }}</div>
+                    <div class="text-xs text-on-surface-variant">{{ user.email }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-5">
+                <button
+                  (click)="toggleRole(user)"
+                  [disabled]="updatingId() === user._id"
+                  class="text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider"
+                  [class.bg-error-container]="user.role === 'admin'"
+                  [class.text-error]="user.role === 'admin'"
+                  [class.bg-primary-fixed]="user.role === 'viewer'"
+                  [class.text-primary]="user.role === 'viewer'"
+                >
+                  {{ user.role }}
+                </button>
+              </td>
+              <td class="px-6 py-5">
+                <button
+                  (click)="toggleStatus(user)"
+                  [disabled]="updatingId() === user._id"
+                  class="text-xs font-medium px-3 py-1 rounded-full"
+                  [class.bg-primary-fixed]="user.isEnabled"
+                  [class.text-primary]="user.isEnabled"
+                  [class.bg-outline-variant]="!user.isEnabled"
+                  [class.text-white]="!user.isEnabled"
+                >
+                  {{ user.isEnabled ? 'Active' : 'Suspended' }}
+                </button>
+              </td>
+              <td class="px-6 py-5 text-sm text-on-surface-variant">{{ dateLabel(user.createdAt) }}</td>
+              <td class="px-6 py-5 text-right">
+                <button
+                  (click)="deleteUser(user)"
+                  [disabled]="deletingId() === user._id"
+                  class="px-3 py-2 rounded-lg text-xs font-bold bg-error-container/20 text-error hover:bg-error hover:text-white transition-colors"
+                >
+                  {{ deletingId() === user._id ? 'Deleting...' : 'Delete' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+  <div class="mt-4 flex items-center justify-between text-xs text-on-surface-variant">
+    <span>Page {{ page() }} / {{ totalPages() }} ({{ total() }} users)</span>
+    <div class="flex gap-2">
+      <button (click)="prevPage()" class="px-3 py-1 rounded bg-surface-container-high">Prev</button>
+      <button (click)="nextPage()" class="px-3 py-1 rounded bg-surface-container-high">Next</button>
+    </div>
+  </div>
+
+  @if (createPanelOpen()) {
+    <div class="fixed inset-0 bg-inverse-surface/30 z-40" (click)="closeCreatePanel()"></div>
+    <div class="fixed inset-y-0 right-0 w-[420px] bg-white shadow-2xl z-50 border-l border-outline-variant/30 flex flex-col">
+      <div class="p-6 border-b border-surface-container flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-bold text-on-surface">Provision New User</h3>
+          <p class="text-xs text-on-surface-variant mt-1">Setup account access and permissions</p>
+        </div>
+        <button (click)="closeCreatePanel()" class="p-2 hover:bg-surface-container rounded-full text-outline transition-colors">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-6 space-y-4">
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest font-bold text-outline mb-2">Full Name</label>
+          <input [ngModel]="draftFullName()" (ngModelChange)="draftFullName.set($event)" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg text-sm" type="text" />
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest font-bold text-outline mb-2">Work Email</label>
+          <input [ngModel]="draftEmail()" (ngModelChange)="draftEmail.set($event)" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg text-sm" type="email" />
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest font-bold text-outline mb-2">Temporary Password</label>
+          <input [ngModel]="draftPassword()" (ngModelChange)="draftPassword.set($event)" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg text-sm" type="password" />
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase tracking-widest font-bold text-outline mb-2">Access Tier</label>
+          <select [ngModel]="draftRole()" (ngModelChange)="draftRole.set($event)" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-lg text-sm">
+            <option value="viewer">Standard Viewer</option>
+            <option value="admin">Administrator</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="p-6 border-t border-surface-container bg-surface-container-low flex gap-3">
+        <button (click)="closeCreatePanel()" class="flex-1 bg-surface-container-highest text-on-surface py-3 rounded-xl font-bold hover:bg-outline-variant transition-colors">Discard</button>
+        <button (click)="createUser()" [disabled]="creating()" class="flex-[2] bg-gradient-to-br from-primary to-primary-container text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20 disabled:opacity-70">
+          {{ creating() ? 'Creating...' : 'Create Account' }}
+        </button>
+      </div>
+    </div>
+  }
+</main>

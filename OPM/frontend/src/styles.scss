@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "scss/variables";
+
+/* fonts-icon */
+@import "scss/fonts/fontawesome/scss/fontawesome";
+@import "scss/fonts/feather/iconfont";
+
+@import url("scss/fonts/elite/elite-icons.css");
+/** custom font icons - elite **/
+@import "scss/general";
+@import "scss/generic";
+@import "scss/mixins/function";
+
+/* important element */
+@import "scss/menu/menu-lite";
+@import "scss/menu/menu-ng";
+@import "scss/widget/widget";
+
+/* basic elements */
+@import "scss/theme-elements/theme-elements";
+
+
+
+/* advance-other elements */
+@import "scss/other/other";
+
+/* third party modules style*/
+@import "scss/plugins/plugins";
+
+@import "scss/layout/layout";
+@import "scss/custom";
+@import 'ngx-bar-rating/themes/br-movie-theme';
+@import 'ngx-bar-rating/themes/br-default-theme.css';
+@import 'ngx-bar-rating/themes/br-bootstrap-theme.css';
+@import 'ngx-bar-rating/themes/br-fontawesome-theme.css';
+@import 'ngx-bar-rating/themes/br-fontawesome-o-theme.css';
+@import 'ngx-bar-rating/themes/br-horizontal-theme.css';
+@import 'ngx-bar-rating/themes/br-vertical-theme.css';
+@import 'ngx-bar-rating/themes/br-stars-theme.css';
+@import 'ngx-bar-rating/themes/br-movie-theme.css';
+@import 'ngx-bar-rating/themes/br-square-theme.css';
+
+
+.br-text {
+  max-width: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  border-radius: 10px;
+  /* Adjust the radius as needed */
+  overflow: hidden;
+  /* Ensures inner content respects the border radius */
+}
+
+.swal2-container {
+  z-index: 2000 !important;
+  /* Ensure it appears above other modals */
+}
+body, html {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;       /* slightly smaller than default 16px */
+  line-height: 1.5;
+}

@@ -1,0 +1,110 @@
+.navigations{
+    background-color: rgb(139, 206, 234);
+    padding: 10px;
+    text-align: center;
+    color: black;
+    border: none;
+    border-radius: 15px;
+    font-size: medium;
+    font-weight: bolder;
+}
+.navigations:hover{
+    background-color: rgb(31, 160, 215);
+    color: black;
+    transition: background-color 1s ease-out;
+}
+
+
+.is-invalid {
+    border: 2px solid red !important;
+    background-color: #ffe6e6; /* Light red background */
+  }
+  
+  .is-valid {
+    border: 2px solid green !important;
+    background-color: #e6ffe6; /* Light green background */
+  }
+  
+  .warning{
+    color: rgb(255, 254, 253);
+    font-weight: bold;
+    font-size: small;
+  }
+  .warn-box{
+    background-color: #e41f1fc6;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .attachCard{
+    color: rgb(47, 122, 214);
+    text-decoration: underline;
+}
+.attachCard:hover{
+    color: rgb(48, 48, 225);
+    font-size: medium;
+    transform : scale(1.1);
+}
+
+.carContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.car {
+  width: 200px;
+  background-color: #4087de6b;
+  padding: 10px;
+  margin-right: 5px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer; /* Add pointer cursor to indicate clickable */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.car:hover {
+  background-color: #4087dea1;
+}
+
+.selected-car {
+  background-color: #4087dea1; /* Highlight color for selected car */
+  border: 2px solid #4087de; /* Add a border to make it stand out */
+}
+
+.icon {
+  font-size: 20px;
+  color: rgb(102, 105, 105);
+}
+.checkmark {
+  font-size: 20px;
+  color: green;
+  margin-left: 10px;
+}
+
+.no-date-selected{
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  color: rgb(93, 91, 91);
+  background-color: #4087de6b;
+  text-align: center;
+  right: 20px;
+  left: 20px;
+  border-radius: 15px;
+}
+.driver-option {
+  display: flex;
+  align-items: center;
+}
+
+.driver-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+// .driver-select{
+//   padding: ;
+// }

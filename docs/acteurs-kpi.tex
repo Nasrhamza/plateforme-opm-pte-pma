@@ -1,0 +1,252 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{parskip}
+
+\geometry{margin=2.5cm}
+
+\definecolor{primarycolor}{RGB}{99, 77, 189}
+\definecolor{lightgray}{RGB}{245, 245, 250}
+\definecolor{accentcolor}{RGB}{60, 40, 130}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primarycolor,
+    urlcolor=primarycolor
+}
+
+\titleformat{\section}{\large\bfseries\color{accentcolor}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{primarycolor}}{}{0em}{\quad}
+
+\title{
+    \vspace{-1cm}
+    {\color{primarycolor}\rule{\linewidth}{2pt}}\\[0.5em]
+    \textbf{Reporting Hub}\\
+    {\large Acteurs, Rôles, KPI et Écrans}\\[0.3em]
+    {\color{primarycolor}\rule{\linewidth}{1pt}}
+}
+\author{Hamza Baktache}
+\date{Juillet 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────
+\section{Introduction}
+
+\textbf{Reporting Hub} est une plateforme d'aide à la décision centralisant les indicateurs
+de performance (KPI) de trois systèmes sources :
+
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textbf{OPM} — Gestion des opérations de support (tickets, contrats, SLA)
+    \item \textbf{PMA} — Gestion de projets et de tâches (portefeuille, productivité)
+    \item \textbf{PTE} — Gestion des ressources humaines et du terrain (congés, véhicules, salles)
+\end{itemize}
+
+Les données sont extraites, transformées et chargées via un pipeline ETL suivant
+l'architecture \textbf{Medallion} (Bronze → Argent → Or) et un modèle dimensionnel
+\textbf{Constellation} (Kimball). Elles sont exposées à travers une API FastAPI
+et consommées par un frontend Angular.
+
+% ─────────────────────────────────────────────────────────────────────
+\section{Rôles et Acteurs}
+
+L'application définit deux rôles techniques et quatre profils métier :
+
+\vspace{0.5em}
+\begin{center}
+\begin{tabular}{>{\bfseries}p{3.5cm} p{3cm} p{8cm}}
+\toprule
+Acteur & Rôle technique & Description \\
+\midrule
+Administrateur       & \texttt{admin}  & Gère les comptes utilisateurs, déclenche et surveille
+                                          l'ETL, configure les rapports planifiés. \\
+\addlinespace
+Directeur / Décideur & \texttt{viewer} & Consulte le résumé exécutif transversal (OPM + PMA + PTE).
+                                          Prend les décisions stratégiques. \\
+\addlinespace
+Responsable OPM      & \texttt{viewer} & Analyse les performances du support client :
+                                          tickets, SLA, temps de résolution. \\
+\addlinespace
+Responsable PMA      & \texttt{viewer} & Pilote le portefeuille de projets : avancement,
+                                          retards, productivité des équipes. \\
+\addlinespace
+Responsable PTE      & \texttt{viewer} & Supervise les ressources humaines et terrain :
+                                          congés, véhicules, salles, interventions. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ─────────────────────────────────────────────────────────────────────
+\section{KPI par Acteur}
+
+% ── 3.1 Directeur / Décideur ──────────────────────────────────────
+\subsection{Directeur / Décideur — Résumé Exécutif}
+
+\begin{longtable}{>{\bfseries}p{5cm} p{9.5cm}}
+\toprule
+KPI & Description \\
+\midrule
+\endhead
+Débit de l'entreprise        & Nombre total de tickets résolus sur la période. \\
+Contrats à risque             & Contrats dont la date de fin est dépassée ou proche
+                                 (moins de 30 jours). \\
+Clients actifs                & Nombre de clients ayant au moins un contrat en cours. \\
+Disponibilité RH              & Ratio moyen \% de présence effective des équipes
+                                 par rapport aux jours ouvrables. \\
+Score PM moyen                & Score composite des chefs de projet (taux de livraison
+                                 à temps, charge équipe, résolution tickets). \\
+\bottomrule
+\end{longtable}
+
+% ── 3.2 Responsable OPM ──────────────────────────────────────────
+\subsection{Responsable OPM — Support \& Opérations}
+
+\begin{longtable}{>{\bfseries}p{5cm} p{9.5cm}}
+\toprule
+KPI & Description \\
+\midrule
+\endhead
+Tickets par statut            & Distribution des tickets ouverts / en cours / fermés. \\
+Conformité SLA                & Pourcentage de tickets traités dans les délais contractuels
+                                 par contrat et par période. \\
+MTTR                          & \textit{Mean Time To Repair} — durée moyenne de résolution
+                                 d'un ticket (en heures). \\
+MTTA                          & \textit{Mean Time To Assign} — durée moyenne avant
+                                 prise en charge d'un ticket. \\
+Résolution au premier appel   & Taux de tickets résolus sans réouverture. \\
+Charge technicien             & Nombre de tickets assignés par technicien sur la période. \\
+Santé des contrats            & Score de qualité par contrat (SLA + MTTR + FCR agrégés). \\
+\bottomrule
+\end{longtable}
+
+% ── 3.3 Responsable PMA ──────────────────────────────────────────
+\subsection{Responsable PMA — Gestion de Projets}
+
+\begin{longtable}{>{\bfseries}p{5cm} p{9.5cm}}
+\toprule
+KPI & Description \\
+\midrule
+\endhead
+Statut du portefeuille        & Nombre de projets par statut (En cours, Terminé, En attente). \\
+Tâches par statut             & Distribution des tâches : À faire / En cours / Terminées. \\
+Tâches par priorité           & Distribution des tâches selon la priorité (Haute, Moyenne, Basse). \\
+Livraison à temps             & Pourcentage de projets livrés avant ou à la date prévue. \\
+Score chef de projet          & Score individuel par chef de projet (délais, charge, tâches). \\
+Productivité ingénieur        & Nombre de tâches accomplies par ingénieur sur la période. \\
+Indice de retard              & Nombre moyen de jours de retard par projet actif. \\
+\bottomrule
+\end{longtable}
+
+% ── 3.4 Responsable PTE ──────────────────────────────────────────
+\subsection{Responsable PTE — Ressources Humaines \& Terrain}
+
+\begin{longtable}{>{\bfseries}p{5cm} p{9.5cm}}
+\toprule
+KPI & Description \\
+\midrule
+\endhead
+Consommation des congés       & Nombre de jours de congés pris par type et par département. \\
+Effectif actif                & Nombre d'employés actifs par département. \\
+Utilisation des véhicules     & Taux d'utilisation des véhicules de la flotte par période. \\
+Occupation des salles         & Taux d'occupation des salles de réunion / formation. \\
+Délai de virtualisation       & Temps moyen de provisionnement des machines virtuelles. \\
+Débit des interventions       & Nombre d'interventions terrain effectuées par ingénieur. \\
+\bottomrule
+\end{longtable}
+
+% ─────────────────────────────────────────────────────────────────────
+\section{Écrans par Acteur}
+
+Le tableau ci-dessous indique les écrans accessibles selon le profil :
+
+\vspace{0.5em}
+\begin{center}
+\begin{tabular}{p{4.5cm} c c c c c}
+\toprule
+\textbf{Écran} &
+\rotatebox{60}{\textbf{Admin}} &
+\rotatebox{60}{\textbf{Directeur}} &
+\rotatebox{60}{\textbf{Resp. OPM}} &
+\rotatebox{60}{\textbf{Resp. PMA}} &
+\rotatebox{60}{\textbf{Resp. PTE}} \\
+\midrule
+Connexion                  & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+Tableau de bord            & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+Analyse OPM                & \checkmark & \checkmark & \checkmark & --         & --         \\
+Analyse PMA                & \checkmark & \checkmark & --         & \checkmark & --         \\
+Analyse PTE                & \checkmark & \checkmark & --         & --         & \checkmark \\
+Générateur de rapports     & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+Rapports sauvegardés       & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+Gestion des utilisateurs   & \checkmark & --         & --         & --         & --         \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.5em}
+{\small \textit{\checkmark = accès autorisé \quad -- = accès non disponible}}
+
+% ─────────────────────────────────────────────────────────────────────
+\section{Description des Écrans}
+
+\subsection{Tableau de bord}
+Vue synthétique temps réel affichant les KPI exécutifs (débit, contrats à risque,
+clients actifs, disponibilité RH, score PM) ainsi qu'un aperçu OPM, PMA et PTE.
+Un filtre de période (plage de dates) permet de restreindre l'analyse dans le temps.
+
+\subsection{Analyse OPM}
+Écran dédié au suivi du support client. Présente les graphiques de tickets par statut,
+l'évolution du MTTR, le taux de conformité SLA par contrat, et la charge par technicien.
+
+\subsection{Analyse PMA}
+Écran dédié à la gestion de projets. Affiche le portefeuille projets, les tâches par
+priorité/statut, la productivité par ingénieur, et l'indice de retard par projet.
+
+\subsection{Analyse PTE}
+Écran dédié aux ressources humaines et terrain. Présente les congés par type,
+l'effectif actif par département, l'utilisation de la flotte et l'occupation des salles.
+
+\subsection{Générateur de rapports}
+Formulaire permettant de composer un rapport personnalisé : sélection des groupes KPI
+(OPM / PMA / PTE), filtres de dates (Du / Au), département, client, format d'export
+(PDF, XLSX, JSON) et planification d'envoi automatique par e-mail.
+
+\subsection{Rapports sauvegardés}
+Liste des configurations de rapports créées par l'utilisateur. Permet de relancer,
+modifier, exporter ou supprimer un rapport existant.
+
+\subsection{Gestion des utilisateurs}
+Réservé à l'administrateur. Permet de créer, modifier, activer/désactiver des comptes
+utilisateurs et de leur attribuer un rôle (\texttt{admin} ou \texttt{viewer}).
+
+% ─────────────────────────────────────────────────────────────────────
+\section{Synthèse}
+
+\begin{center}
+\begin{tabular}{>{\bfseries}p{4cm} p{4.5cm} p{5.5cm}}
+\toprule
+Acteur & KPI principaux & Écrans principaux \\
+\midrule
+Administrateur       & Aucun KPI dédié           & Gestion utilisateurs, Tableau de bord, ETL \\
+Directeur            & 5 KPI exécutifs           & Tableau de bord, OPM, PMA, PTE, Rapports \\
+Responsable OPM      & 7 KPI support             & Tableau de bord, Analyse OPM, Rapports \\
+Responsable PMA      & 7 KPI projets             & Tableau de bord, Analyse PMA, Rapports \\
+Responsable PTE      & 6 KPI RH \& terrain       & Tableau de bord, Analyse PTE, Rapports \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

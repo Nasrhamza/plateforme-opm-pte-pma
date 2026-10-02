@@ -1,0 +1,34 @@
+<div class="card box">
+    <div class="card-header">
+        <div class="col-1">
+            <img class="proPicCom" src="{{ picsUrl+userImage}}" alt="user image">
+        </div>
+        <div class="col-11">
+            <input type="text" #comment (keyup.enter)="submtComment(comment)" class="form-control"
+                placeholder="Leave a comment...">
+        </div>
+    </div>
+    <div class="cardBody" *ngFor="let c of reversedComments">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-1">
+                <img class="proPicCom" src="{{picsUrl+c.user.image}}" alt="user image">
+            </div>
+            <div class="col-9">
+                <div class="commentSection">
+                    <div class="name"><strong>{{c.user.firstName+" "+c.user.lastName}}</strong></div>
+                    <div class="date">{{c.createdAt| date:'MMM d, y, h:mm a'}}</div>
+                    <div class="comment" >{{c.text}}</div>
+                    <textarea  class="form-control hide" #newComment cols="30" rows="10"></textarea>
+                    <button class="action hide" (click)="cancelChanges(newComment,cancel,edit,action)" #cancel >Cancel</button>
+                    <button class="action hide" (click)="sendChanges(c._id,newComment,cancel,edit,action)" #edit>Send</button>
+                </div>
+                <div class="date" #action >
+                    <button class="action"  *ngIf="c.user._id===userID" (click)="editComment(c._id,newComment,cancel,edit,action)">Edit</button>
+                    <button class="action"  *ngIf="c.user._id===userID" (click)="deleteComment(c._id)">Delete</button>
+                </div>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+</div>

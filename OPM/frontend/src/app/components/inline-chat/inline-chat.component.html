@@ -1,0 +1,395 @@
+<div class="row">
+  <div class="col-sm-5">
+    <div class="card cardSize" cardTitle="Attached Exchanges with Support" *ngIf="currentSender.authority !== 'client'">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <i class="feather icon-file-text mr-2" style="font-size: 1.2rem;"></i>
+          <h6 class="mb-0">{{ 'Exchanges with Support :' | translate }}</h6>
+        </div>
+        <button *ngIf="currentSender.authority === 'technician'&&!['Closed','On Hold'].includes(currentTicket?.status)"
+          class="btn btn-link" type="button" (click)="openAttachExchangesModal()">
+          {{ 'Attach Exchanges' | translate }}
+        </button>
+      </div>
+
+      <!-- Collapsible Section -->
+      <div class="card-body">
+        <div *ngIf="currentTicket?.exchanges else noExchanges">
+          <div class="card mr-3 ml-3 border-info">
+            <div class="card-body">
+              <div class="d-flex align-items-center ml-3">
+                <i class="feather icon-hash text-secondary mr-1"></i>
+                <h6 class="mb-0" style="font-size: 0.90rem;">{{ 'Case ID' | translate }}:</h6>
+                <p class="mb-0 ml-2 font-weight-bold text-dark">{{ currentTicket.caseId }}</p>
+              </div>
+              <p class="chat-cont text-primary"
+                style="cursor: pointer; text-decoration: underline; margin-top: 5px;margin-left: 5px;"
+                (click)="downloadFile(currentTicket.exchanges.path, currentTicket.exchanges.title, currentTicket.exchanges.fileName)">
+                <i class="feather icon-file-text mr-1" style="font-size: 1.1rem;"></i>
+                {{ currentTicket.exchanges.fileName }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- No Solution Found -->
+        <ng-template #noExchanges>
+          <div class="text-center">
+            <img src="assets/images/noticket.jpg" alt="No Solution Found" class="img-fluid" style="max-width: 150px;">
+            <p class="text-muted">{{ 'No Exchanges posted yet' | translate }}</p>
+          </div>
+        </ng-template>
+        <div *ngIf="spare?.length">
+          <div class="card m-3 border-info">
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-4">
+                <i class="feather icon-package text-secondary mr-2"></i>
+                <h6 class="mb-0">{{ 'Spares List' | translate }}</h6>
+              </div>
+              <div class="d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between border rounded p-2 shadow-sm mb-2"
+                  style="cursor: pointer;" *ngFor="let spare of spare" (click)="openSpareModal(spare)">
+
+                  <div class="ml-3 d-flex flex-column">
+                    <div>
+                      <strong class="mr-2">{{ spare.equipmentName }}:</strong>
+                      {{ spare.serialNumber || '-' }}
+
+                      <span *ngIf="spare.typeSupport" class="ml-2">
+                        {{ spare.typeSupport }}
+                      </span>
+
+                      <span class="badge mt-1 ml-2" [ngClass]="{
+                        'badge-info': spare.status === 'Installed',
+                        'badge-success': spare.status === 'Delivered',
+                        'badge-warning': spare.status === 'Ordred',
+                        'badge-secondary': spare.status === 'Stocked'
+                        }">
+                        {{ spare.status | translate }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Edit icon only, clickable -->
+                  <i class="feather icon-edit text-primary icon-hover" style="font-size: 1.2rem"
+                    (click)="onEditSpare(spare); $event.stopPropagation()"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card cardSize" cardTitle="Attach Solution">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h6>
+          <i class="fas fa-lightbulb mr-1"></i> {{ 'Solution' | translate }} :
+        </h6>
+        <!-- Attach Solution -->
+        <button
+          *ngIf=" currentSender.authority === 'technician'&& !['Closed','On Hold'].includes(currentTicket?.status)"
+          class="btn btn-link" type="button" (click)="openAttachSolutionModal()">
+          {{ 'Attach Solution' | translate }}
+        </button>
+
+        <!-- Request Solution -->
+        <button
+          *ngIf="currentSender.authority === 'technician'&& currentTicket?.reminderSent && !currentTicket?.request && currentTicket?.status === 'On Hold' "
+          class="btn btn-warning" type="button" (click)="openRequestSolutionModal()">
+          {{ 'Request Solution' | translate }}
+        </button>
+
+      </div>
+
+      <!-- Display Proposed Solution -->
+      <div *ngIf="currentTicket?.solution?.solution; else noSolution" class="mt-3">
+        <div class="card mr-3 ml-3" [ngClass]="{ 'bg-light-green': currentTicket?.solution?.valid === true }">
+          <div class="card-body">
+            <h6 class="mt-1" style="font-size: 0.90rem;">{{ 'Proposed Solution' | translate }}:</h6>
+            <div class="formatted-text">{{ currentTicket?.solution?.solution }}</div>
+
+            <!-- Right-aligned details -->
+            <div class="text-right text-muted mt-2">
+              <p class="mb-0" style="font-size: 0.72rem;">
+                {{ currentTicket?.solution?.proposedPar?.lastName + ' ' +
+                currentTicket?.solution?.proposedPar?.firstName || 'N/A' }}
+                | {{ currentTicket?.solution?.creationDate | date:'dd-MM-yyyy HH:mm' }}
+              </p>
+            </div>
+            <!-- Attachments Section -->
+            <h6 class="mt-2" style="font-size: 0.90rem;">Attachments:</h6>
+            <ul *ngIf="!currentTicket?.solution?.attachments || currentTicket?.solution?.attachments.length === 0"
+              class="media-list p-0">
+              <li class="media d-flex m-b-15">
+                <div style="text-align: center;" class="media-body">
+                  <p>No Attached Files</p>
+                </div>
+              </li>
+            </ul>
+            <ul *ngIf="currentTicket?.solution?.attachments.length > 0" class="media-list p-0">
+              <li class="media d-flex align-items-center m-b-10"
+                *ngFor="let file of currentTicket?.solution?.attachments" style="padding: 5px 0;">
+
+                <div class="media-body d-flex align-items-center" style="flex-grow: 1; min-width: 0;">
+                  <span class="m-b-2 d-block text-primary"
+                    style="font-size: 0.85rem; cursor: pointer; text-decoration: underline; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; display: block;"
+                    (click)="openFilePreview(file.path, FindTypefile(file.fileName))">
+                    {{ file.fileName }}
+                  </span>
+                </div>
+
+                <div class="ml-auto d-flex align-items-center text-muted">
+                  <i (click)="downloadFile(file.path, file.title, file.fileName)"
+                    class="fas fa-download f-16 text-success ml-2 icon-hover" ngbTooltip="Download"></i>
+                </div>
+
+              </li>
+            </ul>
+          </div>
+
+          <i *ngIf="currentTicket?.solution?.valid === true" class="fas fa-check-circle text-success"
+            style="position: absolute; top: 17px; right: 10px; font-size: 1.5rem;" aria-label="Solution Validated"></i>
+        </div>
+
+        <!-- Validation Buttons -->
+        <div class="text-right mr-2" *ngIf="(currentSender.authority === 'client' && currentTicket?.solution?.valid === false && !currentTicket.isHelpdesk) 
+      || (currentSender.authority === 'admin' && currentTicket?.solution?.valid === false)">
+
+          <!-- Decline Solution Button -->
+          <button class="btn btn-danger mb-4 mr-2" type="button" (click)="declineSolution()">
+            {{ 'Decline Solution' | translate }}
+          </button>
+
+          <!-- Validate Solution Button -->
+          <button class="btn btn-success mb-4" type="button" (click)="validateSolution()">
+            {{ 'Validate Solution' | translate }}
+          </button>
+        </div>
+
+
+      </div>
+
+      <!-- No Solution Found -->
+      <ng-template #noSolution>
+        <div class="text-center">
+
+          <!-- When a request has already been sent -->
+          <ng-container *ngIf="currentTicket?.request && !currentTicket?.request.valid; else checkCondition">
+            <img src="assets/images/request-sent.jpg" alt="Request Already Sent" class="img-fluid mb-2"
+              style="max-width: 190px;">
+            <p class="text-warning">{{ 'A solution request has already been sent' | translate }}</p>
+          </ng-container>
+
+          <!-- Show warning if same condition as the Request Solution button -->
+          <ng-template #checkCondition>
+            <div *ngIf="currentSender.authority === 'technician'&& currentTicket?.reminderSent && !currentTicket?.request && currentTicket?.status === 'On Hold';
+              else noSolutionMsg" class="alert alert-warning p-3">
+              <i class="fas fa-exclamation-triangle mr-2"></i>
+              {{ 'You passed 24 hours without treating your ticket. Admin permission is required.' | translate }}
+            </div>
+          </ng-template>
+
+          <!-- Default message -->
+          <ng-template #noSolutionMsg>
+            <img src="assets/images/noticket.jpg" alt="No Solution Found" class="img-fluid" style="max-width: 150px;">
+            <p class="text-muted">{{ 'No solution proposed yet' | translate }}</p>
+          </ng-template>
+
+        </div>
+      </ng-template>
+
+
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <!-- Chat Messages Card -->
+    <div class="card cardSize" cardTitle="Chat">
+      <div class="card-header">
+        <div class="row">
+          <div class="col text-left">
+            <h6> <i class="feather icon-message-circle mr-2"></i>{{'Messages :' | translate }}
+              [{{currentTicket?.number}}]</h6>
+          </div>
+          <div class="col text-right">
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="flex-grow-1">
+            <div class="h-list-body">
+              <div class="msg-user-chat scroll-div">
+                <perfect-scrollbar ngClass="elite-scroll" #psScroll [style.max-width]="'100%'"
+                  [style.max-height]="'calc(100vh - 300px)'" [usePSClass]="'elite'" [disabled]="null"
+                  [autoPropagation]="true">
+                  <div class="main-friend-chat">
+                    <!-- Display chat messages dynamically -->
+                    <div *ngFor="let msg of chatMessages" class="media chat-messages"
+                      [ngClass]="{'chat-menu-reply': msg.sender._id === currentSenderId}">
+                      <span class="media-left photo-table" *ngIf="msg.sender._id !== currentSenderId">
+                        <img class="media-object img-radius m-t-5"
+                          style="width: 50px; height: 50px; border-radius: 50%; border: 1px solid #FFF; overflow: hidden; display: inline-block; margin-right: 8px;"
+                          [src]="getProfileImage(msg.sender?.image?.fileName)" alt="{{ msg.sender?.firstName }}">
+                      </span>
+
+                      <div class="media-body chat-body" [ngClass]="{'chat-menu-content': msg.sender && msg.sender._id !== currentSenderId, 
+                                  'chat-menu-reply': msg.sender && msg.sender._id === currentSenderId}">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <div class="chat-content" style="flex-grow: 1;">
+                            <p *ngIf="msg.message" class="chat-cont">{{ msg.message }}</p>
+                            <div *ngIf="msg.listOfFiles && msg.listOfFiles.length > 0">
+                              <div *ngFor="let file of msg.listOfFiles">
+                                <ng-container *ngIf="isImage(file.fileName)">
+                                  <!-- If the file is an image, show it inside the chat -->
+                                  <img [src]="file.path"
+                                    style="max-width: 150px; max-height: 100px; margin-right:30px; object-fit: cover;cursor: pointer; border-radius: 8px;"
+                                    (click)="openFilePreview(file.path, FindTypefile(file.fileName),file.title)"
+                                    alt="{{ file.fileName }}">
+                                </ng-container>
+
+                                <ng-container *ngIf="!isImage(file.fileName)">
+                                  <!-- If it's not an image, show it as a file with a file icon -->
+                                  <p class="chat-cont"
+                                    (click)="openFilePreview(file.path, FindTypefile(file.fileName),file.title)"
+                                    style="align-items: center; cursor: pointer; text-decoration: underline;">
+                                    <i class="feather icon-file" style="font-size: 18px; margin: 0px;"></i>
+                                    {{ file.fileName }}
+                                  </p>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                          <button *ngIf="currentSender.authority === 'admin' || currentSender.authority === 'pmo'"
+                            class="delete-btn" style="background: none; border: none; cursor: pointer; padding: 5px;"
+                            (click)="deleteMessage(msg._id)">
+                            <i class="feather icon-trash-2" style="color: red; font-size: 16px;"></i>
+                          </button>
+                        </div>
+                        <p class="chat-time">{{ formatMessageTime(msg.createdAt) }}</p>
+                      </div>
+                    </div>
+                    <div #newChat [innerHTML]="newReplay"></div>
+                  </div>
+                </perfect-scrollbar>
+              </div>
+            </div>
+            <hr>
+            <!-- Display selected file names here -->
+            <div *ngIf="files.length > 0" class="selected-files mt-2 text-right mr-5">
+              <span *ngFor="let file of files" class="file-name text-primary">{{ file.name }}</span>
+            </div>
+            <div class="msg-form" *ngIf="currentSender.authority !== 'admin' && currentTicket?.status !== 'On Hold'">
+              <div *ngIf="!currentTicket?.solution?.valid" class="input-group mb-0">
+                <input type="text" [(ngModel)]="message" class="form-control msg-send-chat" placeholder="Text . . ."
+                  (keyup)="sentMsg(1)" (keyup.enter)="sentMsg(0)">
+                <div class="input-group-append">
+                  <input type="file" id="imgupload" style="display:none" (change)="onFileSelected($event)" multiple />
+                  <button id="OpenImgUpload" class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip"
+                    title="file attachment" (click)="triggerImageUpload()">
+                    <i class="feather icon-paperclip"></i>
+                  </button>
+                </div>
+                <div class="input-group-append">
+                  <button class="btn btn-primary btn-icon btn-msg-send" type="button"
+                    [ngClass]="{'btn-danger': message_error}" (click)="sentMsg(0)">
+                    <i class="feather icon-play"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Spare Details Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="spareModal" aria-labelledby="spareModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="spareModalLabel">{{ selectedSpare?.equipmentName }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeSpareModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body px-4">
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <p>
+              <i class="feather icon-hash text-info mr-2"></i>
+              <strong>{{ 'SN' | translate }}:</strong> {{ selectedSpare?.serialNumber || '-' }}
+            </p>
+
+            <p>
+              <i class="feather icon-layers text-warning mr-2"></i>
+              <strong>{{ 'Status' | translate }}:</strong>
+              <span class="badge mt-1 ml-2" [ngClass]="{
+              'badge-info': selectedSpare?.status === 'Installed',
+              'badge-success': selectedSpare?.status === 'Delivered',
+              'badge-warning': selectedSpare?.status === 'Ordred',
+              'badge-secondary': selectedSpare?.status === 'Stocked'
+            }">
+                {{ selectedSpare?.status | translate }}
+              </span>
+            </p>
+            <p>
+              <i class="feather icon-calendar text-muted mr-2"></i>
+              <strong>{{ 'Created At' | translate }}:</strong>
+              <span class="ml-2">{{ selectedSpare?.createdAt | date:'short' }}</span>
+            </p>
+            <p *ngIf="selectedSpare?.deliveredAt">
+              <i class="feather icon-calendar text-success mr-2"></i>
+              <strong>{{ 'Delivered At' | translate }}:</strong>
+              <span class="ml-2">{{ selectedSpare?.deliveredAt | date:'short' }}</span>
+            </p>
+
+            <p *ngIf="selectedSpare?.installedAt">
+              <i class="feather icon-calendar text-info mr-2"></i>
+              <strong>{{ 'Installed At' | translate }}:</strong>
+              <span class="ml-2">{{ selectedSpare?.installedAt | date:'short' }}</span>
+            </p>
+
+            <p *ngIf="selectedSpare?.stockedAt">
+              <i class="feather icon-calendar text-secondary mr-2"></i>
+              <strong>{{ 'Stocked At' | translate }}:</strong>
+              <span class="ml-2">{{ selectedSpare?.stockedAt | date:'short' }}</span>
+            </p>
+
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <p>
+              <i class="feather icon-shield text-primary mr-2"></i>
+              <strong>{{ 'Support' | translate }}:</strong>
+              {{ selectedSpare?.typeSupport }}
+            </p>
+            <p>
+              <i class="feather icon-user text-dark mr-2"></i>
+              <strong>{{ 'Owner' | translate }}:</strong>
+              {{ selectedSpare?.owner?.firstName }} {{ selectedSpare?.owner?.lastName }}
+            </p>
+
+            <p *ngIf="selectedSpare?.status === 'Stocked' && selectedSpare?.location">
+              <i class="feather icon-map-pin text-secondary mr-2"></i>
+              <strong>{{ 'Location' | translate }}:</strong>
+              {{ selectedSpare?.location }}
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeSpareModal()">{{ 'Close' |
+          translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+ /* Center Table and Adjust Row Styles */
+ .table-wrapper {
+   max-width: 1000px;
+   margin: 20px auto;
+ }
+
+ .custom-table {
+   width: 100%;
+   border-collapse: collapse;
+ }
+
+ .custom-table th,
+ .custom-table td {
+   padding: 8px 12px;
+   line-height: 1.4;
+   vertical-align: middle;
+   text-align: center;
+ }
+
+ /* Profile Container Styling */
+ .profile-container {
+   flex-direction: column;
+   align-items: baseline;
+ }
+
+ .profile-image {
+   border-radius: 50%;
+   flex-direction: column;
+   align-items: baseline;
+ }
+
+ /* Pagination Controls */
+ .pagination-controls {
+   margin-top: 10px;
+ }
+
+ .pagination {
+   display: flex;
+   justify-content: center;
+ }
+
+ /* Pagination Block Margin */
+ .pagination-block {
+   margin-top: 15px;
+ }
+
+ /* Search Input Styling */
+ .search-input {
+   width: 30%;
+   margin-left: auto;
+   margin-right: 0;
+   display: block;
+ }
+
+ /* Card Body Padding */
+ .card-body {
+   padding: 15px;
+ }
+
+ /* Responsive Table */
+ .table-responsive {
+   overflow-x: auto;
+ }
+
+ .quarter-width {
+   width: 25%;
+ }
+
+ .dropdown-toggle::after {
+   display: none !important;
+ }
+
+ p {
+   font-size: 15px;
+ }
+ .icon-style {
+  font-size: 1rem; /* Adjust as needed for size */
+  padding: 0.25rem;  /* Adjust for desired padding */
+}
+.icon-style:hover {
+  color: #ff4500; /* Change to your desired hover color */
+  transform: scale(1.3); /* Slightly enlarge on hover */
+}

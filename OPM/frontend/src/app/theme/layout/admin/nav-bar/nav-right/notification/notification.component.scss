@@ -1,0 +1,8 @@
+.notification .noti-body {
+    max-height: 300px; /* Adjust height as needed */
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .navbar-nav .nav-item .nav-link[ngbDropdownToggle]::after {
+    content: none !important; /* Remove the arrow */
+  }

@@ -1,0 +1,105 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{mytitle}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="this.Onsubmit(f)">
+        <div class="form-group">
+            <label for="sla">Title</label>
+            <input type="text" class="form-control" placeholder="Title" id="title" name="title" ngModel
+                [(ngModel)]="this.model.title" #title="ngModel" required>
+            <!-- <span>The SAL must be in Hour</span> -->
+            <div *ngIf="title.touched && title.errors?.required" class="error">Title required</div>
+        </div>
+        <div class="form-group" *ngIf="!assign">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" [(ngModel)]="this.model.description" #description="ngModel"
+                name="description" required></textarea>
+            <div class="invalid-feedback" *ngIf="description.touched && description.errors?.required" class="error">
+                Description required </div>
+        </div>
+
+        <div class="form-group" *ngIf="assign && (role == 'admin' || role == 'technician')">
+            <label for="technicien">Teams:</label>
+            <ng-select [items]="listTech" bindLabel="firstName" bindValue="_id" [multiple]="true"
+                placeholder="Select team members" [(ngModel)]="this.model.technicienId" name="technicienId"
+                #techniciens="ngModel" [searchable]="true" required [hideSelected]="false">
+
+                <!-- Template for selected options with remove button -->
+                <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                    <div class="d-flex align-items-center">
+                        <img src="{{fileurl + item?.image?.fileName}}" alt=""
+                            style="border-radius: 50%; width: 25px; height: 25px; border: 1px solid #FFF; object-fit: contain;"
+                            class="rounded mr-1 img-fluid">
+                        <span>{{ item.firstName }} {{ item.lastName }}</span>
+                        <span (click)="clear(item)" class="ml-2 text-danger" style="cursor: pointer;">&times;</span>
+                    </div>
+                </ng-template>
+
+                <!-- Template for dropdown options -->
+                <ng-template ng-option-tmp let-item="item">
+                    <img src="{{fileurl + item?.image?.fileName}}" alt=""
+                        style="border-radius: 50%; width: 35px; height: 35px; border: 1px solid #FFF; object-fit: contain;"
+                        class="rounded mr-1 img-fluid">
+                    {{ item.firstName }} {{ item.lastName }}
+                </ng-template>
+            </ng-select>
+
+            <div class="invalid-feedback" *ngIf="techniciens.touched && techniciens.errors?.required">
+                At least one team member is required.
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="!assign && role!=='client'">
+            <label class="form-label">Select Client</label>
+            <ng-select [items]="listClients" bindValue="_id" placeholder="Select Client" [(ngModel)]="this.model.client"
+                name="client" #client="ngModel" [searchable]="true" required>
+                <ng-template ng-label-tmp let-item="item">
+                    <img src="{{fileurl+item?.image?.fileName}}" alt="" class="wid-35 rounded mr-1 img-fluid">{{
+                    item.firstName }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    <img src="{{fileurl+item?.image?.fileName}}" alt="" class="wid-35 rounded mr-1 img-fluid">{{
+                    item.firstName }}
+                </ng-template>
+            </ng-select>
+            <div class="invalid-feedback" *ngIf="client.touched && client.errors?.required" class="error">
+                Client selection is required.
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="!assign">
+            <label class="form-label">Select Equipment</label>
+            <ng-select [items]="listEquipment" bindValue="_id" placeholder="Select Equipment"
+                [(ngModel)]="this.model.equipment" name="equipment" #equipment="ngModel" [searchable]="true"
+                [searchFn]="customSearchFn" required>
+                <ng-template ng-label-tmp let-item="item">
+                    {{ item.name }} : {{ item.SN }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    {{ item.name }} : {{ item.SN }}
+                </ng-template>
+            </ng-select>
+        </div>
+
+        <div class="custom-file" *ngIf="!assign">
+            <input type="file" class="custom-file-input" id="validatedCustomFile" multiple
+                (change)="onFileSelected($event)" #fileInput />
+            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+            <br /><br />
+            <span>{{ fileNames }}</span>
+            <div class="invalid-feedback">Example invalid custom file feedback</div>
+        </div>
+
+        <div class="modal-footer">
+            <button *ngIf="!this.add && assign" type="submit" [disabled]="f.invalid"
+                class="btn btn-outline-success">Assign</button>
+            <button *ngIf="!this.add && !assign" type="submit" [disabled]="f.invalid"
+                class="btn btn-outline-warning">Update</button>
+            <button *ngIf="this.add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

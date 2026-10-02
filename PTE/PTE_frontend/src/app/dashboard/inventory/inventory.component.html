@@ -1,0 +1,298 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">User equipments</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">User</li>
+        <li class="breadcrumb-item">equipments</li>
+    </ul>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col-6 col-md-6 col-lg-6 col-sm-12 col-12">
+                                <h5>User equipments</h5>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-6 col-sm-12 col-12">
+                                <div class="text-end">
+                                    <a class="btn link" *ngIf="userSelected" (click)="dowloadFile(user._id!)"><i class="fas fa-file-download download-file"></i>
+                                        Download user items</a>
+                                    <!-- <a class="btn link"  (click)="downloadFile2()"><i class="fas fa-file-download download-file"></i>
+                                        Download user items2</a> -->
+                                    <a class="btn link" (click)="dowloadAllItems()"><i class="fas fa-file-download download-file"></i>
+                                        Download all items</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display: flex; justify-content: space-between;">
+                            <div class="col-md-3 col-lg-3 col-sm-12 col-12">
+                                <ng-scrollbar style="height: 600px" visibility="hover">
+                                    <div class="row user" *ngFor="let user of users" (click)="getUserItems(user._id!)">
+                                        <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2">
+                                            <img src="{{ picsUrl+user.image }}" class="enc-img" />
+                                        </div>
+                                        <div class="col-lg-10 col-xl-10 col-md-10 col-sm-10 col-10 name-col-style">
+                                            <div class="font-14"><strong>{{user.firstName+" "+user.lastName}}</strong>
+                                            </div>
+                                            <div class="font-12 text-muted">{{user.roles}} | {{user.departement}}</div>
+                                        </div>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                            <div class="col-md-8 col-lg-8 col-sm-12 col-12" *ngIf="userSelected && user">
+                                <div class="row user-equipment-section">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-md-6 col-lg-6 col-sm-12 col-12">
+                                                <h6>{{user.firstName+" "+user.lastName}}'s equipments</h6>
+                                            </div>
+                                            <div class="col-xl-6 col-md-6 col-lg-6 col-sm-12 col-12 text-end">
+                                                <span class="link" (click)="toggleCreateEqui()"><i
+                                                        class="fas fa-plus"></i> Create equipment</span>
+                                                <span class="link" (click)="toggleShowEqui()"><i class="fas fa-eye"></i>
+                                                    Show equipments</span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div *ngIf="createEquipment">
+                                            <form class="register-form" [formGroup]="equipmentForm"
+                                                (ngSubmit)="onSubmitEqui(equipmentForm)">
+                                                <h6>Create new Equipment</h6>
+                                                <div class="row input">
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4 ">
+                                                        <label>Name<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Equipment name..." formControlName="name"
+                                                            required>
+                                                        <small class="form-text text-danger"
+                                                            *ngIf="!equipmentForm.get('name')?.valid && equipmentForm.get('name')?.touched">
+                                                            Equipment type is required
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                                                        <label>Brand<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Brand name..." formControlName="brand"
+                                                            required>
+                                                        <small class="form-text text-danger"
+                                                            *ngIf="!equipmentForm.get('brand')?.valid && equipmentForm.get('brand')?.touched">
+                                                            Equipment brand is required
+                                                        </small>
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                                                        <label>Model<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Model name..." formControlName="model"
+                                                            required>
+                                                        <small class="form-text text-danger"
+                                                            *ngIf="!equipmentForm.get('model')?.valid && equipmentForm.get('model')?.touched">
+                                                            Equipment model is required
+                                                        </small>
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                                                        <label>Serial number<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Serial number..."
+                                                            formControlName="serial_number">
+                                                        <!-- <small class="form-text text-danger"
+                                                        *ngIf="!equipmentForm.get('brand')?.valid && equipmentForm.get('brand')?.touched">
+                                                        Equipment is required
+                                                    </small> -->
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="input">
+                                                        <button type="submit" class="btn btn-primary"
+                                                            [disabled]="!equipmentForm.valid">Create new
+                                                            Equipment</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div *ngIf="showEquipment && userEquipments.length>0">
+                                            <ng-scrollbar style="height: 200px" visibility="hover">
+                                                <div class="row">
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4"
+                                                        *ngFor="let equipment of userEquipments">
+                                                        <div class="equipmentContainer">
+                                                            <div class="row">
+                                                                <strong>{{equipment.name}}</strong><br>
+                                                                <span>
+                                                                    <strong>Brand: </strong>
+                                                                    {{equipment.brand}}
+                                                                </span><br>
+                                                                <span>
+                                                                    <strong>Model: </strong>
+                                                                    {{equipment.model}}
+                                                                </span><br>
+                                                                <span *ngIf="equipment.serial_number">
+                                                                    <strong>Serial number: </strong>
+                                                                    {{equipment.serial_number}}
+                                                                </span>
+                                                            </div><br>
+                                                            <div class="row delete-button-container">
+                                                                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 mb-4">
+                                                                    <button class="btn btn-danger delete" (click)="deleteEquipment(equipment._id)"
+                                                                        ngbPopover="Delete equipment"
+                                                                        triggers="mouseenter:mouseleave"
+                                                                        placement="top">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-warning delete" (click)="editEquipment(equipment._id)"
+                                                                        ngbPopover="Edit equipment"
+                                                                        triggers="mouseenter:mouseleave"
+                                                                        placement="top">
+                                                                        <i class="fas fa-pen-alt"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-4"> 
+                                                                    <i class="fas fa-share-square share" 
+                                                                    ngbPopover="Forward equipment"
+                                                                    triggers="mouseenter:mouseleave"
+                                                                    placement="top"
+                                                                    (click)="forwardEquipment(equipment,'equipment')"
+                                                                    ></i>
+                                                                </div>
+                                                                
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-scrollbar>
+                                        </div>
+                                        <div class="no-items-selected"
+                                            *ngIf="showEquipment && userEquipments.length===0">
+                                            <h5 class="text">{{user.firstName+" "+user.lastName}} has no items listed!
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row user-accessory-section">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-md-6 col-lg-6 col-sm-12 col-12">
+                                                <h6>{{user.firstName+" "+user.lastName}}'s accessories</h6>
+                                            </div>
+                                            <div class="col-xl-6 col-md-6 col-lg-6 col-sm-12 col-12 text-end">
+                                                <span class="link" (click)="toggleCreateAcc()"><i
+                                                        class="fas fa-plus"></i> Create accessory</span>
+                                                <span class="link" (click)="toggleShowAcc()"><i
+                                                        class="fas fa-eye"></i> Show accessories</span>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <div *ngIf="createAccessoiry">
+                                            <form class="register-form" [formGroup]="accessoryForm"
+                                                (ngSubmit)="onSubmitAcc(accessoryForm)">
+                                                <h6>Create new accessory</h6>
+                                                <div class="row input">
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4 ">
+                                                        <label>Name<span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="accessory name..." formControlName="name"
+                                                            required>
+                                                        <small class="form-text text-danger"
+                                                            *ngIf="!accessoryForm.get('name')?.valid && accessoryForm.get('name')?.touched">
+                                                            Accessory type is required
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                                                        <label>Brand</label>
+                                                        <input type="text" class="form-control" placeholder="Brand name..." formControlName="brand">
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                                                        <label>Model</label>
+                                                        <input type="text" class="form-control" placeholder="Model name..." formControlName="model">
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                                                        <label>Serial number</label>
+                                                        <input type="text" class="form-control" placeholder="Serial number..." formControlName="serial_number">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="input">
+                                                        <button type="submit" class="btn btn-primary" [disabled]="!accessoryForm.valid">Create new accessory</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div *ngIf="showAccessoiry && userAccessories.length>0">
+                                            <ng-scrollbar style="height: 200px" visibility="hover">
+                                                <div class="row">
+                                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-4"
+                                                        *ngFor="let accessory of userAccessories">
+                                                        <div class="accessoryContainer">
+                                                            <div class="row">
+                                                                <strong>{{accessory.name}}</strong><br>
+                                                                <span *ngIf="accessory.brand">
+                                                                    <strong>Brand: </strong>
+                                                                    {{accessory.brand}}
+                                                                </span><br>
+                                                                <span *ngIf="accessory.model">
+                                                                    <strong>Model: </strong>
+                                                                    {{accessory.model}}
+                                                                </span><br>
+                                                                <span *ngIf="accessory.serial_number">
+                                                                    <strong>Serial number: </strong>
+                                                                    {{accessory.serial_number}}
+                                                                </span>
+                                                            </div><br>
+                                                            <div class="row delete-button-container" >
+                                                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 mb-4">
+                                                                        <button class="btn btn-danger delete" (click)="deleteAccessory(accessory._id)"
+                                                                            ngbPopover="Delete accessory"
+                                                                            triggers="mouseenter:mouseleave"
+                                                                            placement="top">
+                                                                            <i class="fas fa-trash-alt "></i>
+                                                                        </button>
+                                                                        <button class="btn btn-warning delete" (click)="editAccessory(accessory._id)"
+                                                                            ngbPopover="Edit accessory"
+                                                                            triggers="mouseenter:mouseleave"
+                                                                            placement="top">
+                                                                            <i class="fas fa-pen-alt "></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mb-4"> 
+                                                                        <i class="fas fa-share-square share" 
+                                                                        ngbPopover="Forward accessory"
+                                                                        triggers="mouseenter:mouseleave"
+                                                                        placement="top"
+                                                                        (click)="forwardAccessory(accessory,'accessory')"
+                                                                        ></i>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-scrollbar>
+                                        </div>
+                                        <div class="no-items-selected"
+                                            *ngIf="showAccessoiry && userAccessories.length===0">
+                                            <h5 class="text">{{user.firstName+" "+user.lastName}} has no items listed!
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-8 col-sm-12 col-12 no-user-selected" *ngIf="!userSelected">
+                                <h3 class="text">Pick a user to view their items</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

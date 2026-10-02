@@ -1,0 +1,28 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+      <mat-card-title class="m-b-0">{{ title | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1">
+      <apx-chart
+        [series]="radialbarChartOptions.series"
+        [chart]="radialbarChartOptions.chart"
+        [dataLabels]="radialbarChartOptions.dataLabels"
+        [labels]="radialbarChartOptions.labels"
+        [plotOptions]="radialbarChartOptions.plotOptions"
+        [legend]="radialbarChartOptions.legend"
+        [colors]="radialbarChartOptions.colors"
+        [tooltip]="radialbarChartOptions.tooltip"
+      >
+      </apx-chart>
+      <div class="d-flex flex-column align-items-center">
+        @for(item of radialbarChartOptions.labels;track item;let i = $index){
+          <div class="d-flex gap-8 m-b-6 align-items-center">
+              <span [ngStyle]="{'background-color' : radialbarChartOptions.colors[i], 'height': '20px', 
+              'width': '20px', 'border-radius' : '50px' }"></span>
+              <span>{{item}}</span>
+          </div>
+        }
+
+    </div>
+    </mat-card-content>
+  </mat-card>

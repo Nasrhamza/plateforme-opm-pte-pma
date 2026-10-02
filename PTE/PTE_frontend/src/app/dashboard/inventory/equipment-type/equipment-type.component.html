@@ -1,0 +1,54 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-sm-12">
+            <form class="register-form" [formGroup]="equipmentForm" (ngSubmit)="onSubmit(equipmentForm)">
+                <h6>Create new Equipment</h6>
+                <div class="row input">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4 ">
+                        <label>Name<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Equipment name..." formControlName="name"
+                            required>
+                        <small class="form-text text-danger"
+                            *ngIf="!equipmentForm.get('name')?.valid && equipmentForm.get('name')?.touched">
+                            Equipment type is required
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                        <label>Brand<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Brand name..." formControlName="brand"
+                            required>
+                        <small class="form-text text-danger"
+                            *ngIf="!equipmentForm.get('brand')?.valid && equipmentForm.get('brand')?.touched">
+                            Equipment brand is required
+                        </small>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                        <label>Model<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Model name..." formControlName="model"
+                            required>
+                        <small class="form-text text-danger"
+                            *ngIf="!equipmentForm.get('model')?.valid && equipmentForm.get('model')?.touched">
+                            Equipment model is required
+                        </small>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-4 ">
+                        <label>Serial number</label>
+                        <input type="text" class="form-control" placeholder="Serial number..."
+                            formControlName="serial_number">
+                        <small class="form-text text-danger"
+                                                *ngIf="!equipmentForm.get('serial_number')?.valid && equipmentForm.get('serial_number')?.touched">
+                                                Equipment is required
+                                            </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input">
+                        <button type="submit" class="btn btn-primary" [disabled]="!equipmentForm.valid">Edit Equipment</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+.error {
+    color: red;
+    font-size: 15px;
+    margin-top: 0;
+    /* Ensure there is no additional top margin on the error message */
+}
+
+.collapseLink {
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s ease;
+    color: #007bff;
+}
+
+.collapseLink:hover {
+    color: rgb(41, 44, 134);
+    text-decoration: underline;
+}
+.icon{
+    padding: 5px;
+}

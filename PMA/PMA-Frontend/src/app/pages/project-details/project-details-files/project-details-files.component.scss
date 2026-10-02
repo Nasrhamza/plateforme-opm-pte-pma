@@ -1,0 +1,28 @@
+.selectedTab::before{
+    content: '';
+    width: 5px;
+    background-color: #ff3d57;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+.selectedTab{
+    font-weight: bolder;
+    color: #ff3d57;
+    text-align: center;
+    transition: all 0.2s ease-out;
+}
+.folderTab{
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+}
+#add-files-btn{
+    transition: all 0.2s ease-out;
+    background-color: #f2f5f6;
+}
+#add-files-btn:hover{
+    background-color: #ff3d57;
+    color: white;
+}

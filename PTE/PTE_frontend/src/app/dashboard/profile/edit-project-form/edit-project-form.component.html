@@ -1,0 +1,67 @@
+
+
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+      <div class="table-modal-header">
+        <div class="modal-about">
+          <div class="fw-bold p-t-10 font-17">
+            Edit Project 
+          </div>
+        </div>
+      </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="register-form" [formGroup]="editProjectForm"  (ngSubmit)="onSubmit(editProjectForm)" >
+      
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Organization<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Organization" formControlName="organization" required>
+            <small class="form-text text-danger"
+                *ngIf="!editProjectForm.get('organization')?.valid && editProjectForm.get('organization')?.touched"> Organization
+                is required
+            </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Title<span class="text-danger">*</span></label>
+            <input type="text" class="form-control" placeholder="Title" formControlName="title" required>
+            <small class="form-text text-danger"
+                *ngIf="!editProjectForm.get('title')?.valid && editProjectForm.get('title')?.touched"> Title
+                is required
+            </small>
+        </div>
+      </div>
+          
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+          <label>date<span class="text-danger">*</span></label>
+          <input type="date" class="form-control"  formControlName="date" required>
+          <small class="form-text text-danger"
+            *ngIf="!editProjectForm.get('date')?.valid && editProjectForm.get('date')?.touched"> Date is required
+        </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+            <label>Description<span class="text-danger">*</span></label>
+            <textarea class="form-control" placeholder="Write your description here..." formControlName="description"></textarea>            
+            <small class="form-text text-danger"
+                *ngIf="!editProjectForm.get('description')?.valid && editProjectForm.get('description')?.touched"> Description
+                is required
+            </small>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button  type="submit" class="btn btn-primary">Submit</button>
+        
+        <button type="button" class="btn btn-light" (click)="activeModal.close('Close click')">Close</button>
+      </div>
+    </form>
+  </div>

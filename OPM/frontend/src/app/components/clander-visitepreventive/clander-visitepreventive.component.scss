@@ -1,0 +1,29 @@
+.status-box {
+  padding: 8px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+
+}
+
+.status-boxes {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.invoice-info h6 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.badge {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}

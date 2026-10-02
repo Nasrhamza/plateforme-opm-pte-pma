@@ -1,0 +1,146 @@
+<div class="modal-header editRowModal">
+    <h4 class="modal-title" id="modal-basic-title">
+        <div class="table-modal-header">
+            <div class="modal-about">
+                <div class="fw-bold p-t-10 font-17">Lab infos</div>
+            </div>
+        </div>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close('modal closed')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body" *ngIf="lab">
+    <div class="card cardBorder">
+        <div class="card-body">
+            <h6><u>User Concerned</u></h6><br>
+            <div class="row">
+                <div class="col-1">
+                    <figure class="avatar msr-2 avatar-xl">
+                        <img class="userPic" src="{{picsUrl+lab.applicant.image}}" alt="profile image">
+                    </figure>
+                </div>
+                <div class="col-10" style="margin-left: 20px;">
+                    <strong class="applicant">{{payload_lab.firstName+" "+payload_lab.lastName}}</strong><br>
+                    <span>{{ payload_lab.email }}</span><br>
+                    <span><u>{{ payload_lab.departement }}</u></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card cardBorder">
+        <div class="card-body">
+            <h6><u>Lab info & VM Credentials</u></h6>
+            <form class="register-form m-4" [formGroup]="ressources" (ngSubmit)="onSubmit(ressources)">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>RAM (GO) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" placeholder="Ram..." formControlName="ram" max="24"
+                            min="0">
+                        <small class="form-text text-danger"
+                            *ngIf="!ressources.get('ram')?.valid && ressources.get('ram')?.touched">
+                            Please enter the ram capacity!</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Disk (GO)<span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" placeholder="Disk..." formControlName="disk" max="500"
+                            min="0">
+                        <small class="form-text text-danger"
+                            *ngIf="!ressources.get('disk')?.valid && ressources.get('disk')?.touched">
+                            Please enter the disk capacity!</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Processor <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" placeholder="Processor..." formControlName="processor"
+                            max="14" min="0">
+                        <small class="form-text text-danger"
+                            *ngIf="!ressources.get('processor')?.valid && ressources.get('processor')?.touched">
+                            Processor is required!
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label>IP Address</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" formControlName="ip" placeholder="EX: 443.543.534.535">
+                        </div>
+                        <small class="form-text text-danger"
+                        *ngIf="!ressources.get('ip')?.valid && ressources.get('ip')?.touched">
+                        IP is required!</small>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <h6>IP address rang</h6><br> -->
+                    <div class="form-group col-md-6">
+                        <div class="form-group">
+                            <label>First IP Address</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" formControlName="ip_start" placeholder="EX: 443.543.534.535">
+                            </div>
+                            <small class="form-text text-danger"
+                            *ngIf="!ressources.get('ip_start')?.valid && ressources.get('ip_start')?.touched">
+                            IP is required!</small>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div class="form-group">
+                            <label>Last IP Address</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" formControlName="ip_end" placeholder="EX: 443.543.534.535">
+                            </div>
+                            <small class="form-text text-danger"
+                            *ngIf="!ressources.get('ip_end')?.valid && ressources.get('ip_end')?.touched">
+                            IP is required!</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Username<span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">&#64;</div>
+                            </div>
+                            <input type="text" class="form-control" formControlName="uname" id="inlineFormInputGroup"
+                                placeholder="Username">
+                        </div>
+                        <small class="form-text text-danger"
+                            *ngIf="!ressources.get('uname')?.valid && ressources.get('uname')?.touched">
+                            Username is required!</small>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Password <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="VM password..." formControlName="password">
+                        <small class="form-text text-danger"
+                            *ngIf="!ressources.get('password')?.valid && ressources.get('password')?.touched"> Password is required!
+                        </small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Approve Lab <i class="fas fa-check"></i></button>&nbsp;
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+
+</div>

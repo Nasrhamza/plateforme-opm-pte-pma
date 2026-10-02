@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card cardSize" cardTitle="Hello Card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col text-left d-flex align-items-center">
+            <h6>Support Type List</h6>
+          </div>
+          <div class="col text-right">
+            <div class="input-group"
+              style="display: flex; justify-content: flex-end; align-items: center;background-color: transparent;">
+              <!-- Search Input with smaller width -->
+              <input type="text" class="form-control form-control-sm" placeholder="search..." [(ngModel)]="searchTerm"
+                style="max-width:250px; background-color: #EFF3F6;">
+              <!-- Add Button -->
+              <button id="edit-btn" type="button" class="btn btn-sm btn-primary waves-effect waves-light f-right ml-2"
+                (click)="openAddTypeSupport()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="feather feather-plus">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <section id="task-container">
+          <ul>
+            <li
+              *ngFor="let item of listTypeSupport | filter: searchTerm | paginate: { itemsPerPage: 6, currentPage: page }">
+              <div class="row align-items-center">
+                <div class="col text-left">
+                  <div class="d-inline-block">
+                    <h6 class="d-inline-block mb-0">{{item.supportName}}</h6>
+
+                    <div class="mt-4"> {{item.supportEmail}}</div>
+                  </div>
+
+                </div>
+                <div class="ml-4">
+                  <img [src]="getImagePath(item.logo.fileName)" alt="" width="70" height="70" class="logo">
+                </div>
+
+                <div class="col text-right">
+                  <i (click)="opendelleteTypeSupport(item._id)"
+                    class="fas fa-trash-alt text-danger icon-style"></i>&nbsp;
+                  <i (click)="openUpdateTypeSupport(item)" class="fas fa-edit text-primary icon-style"></i>
+                </div>
+
+              </div>
+            </li>
+          </ul>
+        </section>
+        <div class="pagination-block text-center mt-3">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

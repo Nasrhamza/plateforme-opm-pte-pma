@@ -1,0 +1,111 @@
+<div mat-dialog-content style="max-width: 500px">
+  <h4 class="mat-headline-6 m-b-16">{{ dialogTitle | translate }}</h4>
+
+  <form name="eventForm" [formGroup]="eventForm" class="event-form">
+    <div class="row">
+      <div class="col-12">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Title' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            name="title"
+            formControlName="title"
+            placeholder="Add Title"
+            required
+          />
+          @if(f['title'].touched && f['title'].invalid){
+            <mat-hint class="m-b-16 error-msg">
+                @if(f['title'].errors && f['title'].errors['required']){
+                <div class="text-error">
+                    {{ 'Title cannot be null' | translate }}
+                </div>
+                }
+            </mat-hint>
+        }
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Category' | translate }}</mat-label>
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="category">
+                    @for(type of ['Work', 'Personal', 'Important', 'Travel', 'Friends']; track type){
+                        <mat-option [value]="type">{{ type }}</mat-option>
+                    }
+                </mat-select>
+                @if(f['category'].touched && f['category'].invalid){
+                    <mat-hint class="m-b-16 error-msg">
+                        @if(f['category'].errors && f['category'].errors['required']){
+                        <div class="text-error">
+                            {{ 'Category is required' | translate }}
+                        </div>
+                        }
+                    </mat-hint>
+                }
+            </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Color' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            placeholder="Change Color"
+            type="color"
+            formControlName="color"
+            (change)="handleColorChange($event)"
+          />
+        </mat-form-field>
+      </div>
+      <!-- input -->
+      <div class="col-sm-6">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Start at' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            [matDatepicker]="startDateDP"
+            placeholder="Start Date"
+            name="startDate"
+            formControlName="startDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="startDateDP"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startDateDP></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'End at' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            [matDatepicker]="endDateDP"
+            placeholder="End Date"
+            name="endDate"
+            formControlName="endDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="endDateDP"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endDateDP></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Details' | translate }}</mat-label>
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+            <textarea matInput rows="2" formControlName="details"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="submit()"
+      [disabled]="eventForm.invalid"
+      aria-label="SAVE"
+      class="w-100"
+    >
+      {{ 'Save' | translate }}
+    </button>
+  </form>
+</div>

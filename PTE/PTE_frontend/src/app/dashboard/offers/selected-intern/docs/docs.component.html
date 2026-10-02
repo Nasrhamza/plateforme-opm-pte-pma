@@ -1,0 +1,248 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Intern documents</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Intern</li>
+        <li class="breadcrumb-item">Documents</li>
+    </ul>
+    <div class="section-body" *ngIf="userDoc">
+        <div class="card">
+            
+            <div class="card-header">
+                <a routerLink="/dashboard/selected-intern">
+                    <i class="fas fa-arrow-alt-circle-left goback" > Go back</i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row upload-container" *ngIf="userDoc[0].rapport!=='' && userDoc[0].attestation===''">
+                    <div class="col-lg-3 col-xl-3 col-md-3 col-sm-12">
+                        <h4>Upload internship certificate</h4>
+                    </div>
+                    <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12" style="margin-bottom: 10px;">
+                        <ngx-dropzone style="background-color: transparent;" [multiple]="false" (change)="onSelectCertifFiles($event)" >
+                            <ngx-dropzone-label>You can click or drag & drop here! <br> <strong style="color: rgba(212, 61, 61, 0.738);">(only pdfs & images)</strong> </ngx-dropzone-label>
+                            <ngx-dropzone-preview *ngFor="let f of certifFiles" [file]="f" [removable]="true" (removed)="onRemoveCertifFiles(f)">
+                              <ngx-dropzone-label style="width: 100%;"> 
+                                <i class="far fa-file-pdf" style="color: rgb(220, 46, 46);font-size: 30px;"></i> 
+                                <br>{{ f.name }}
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                        </ngx-dropzone>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-md-3 col-sm-12">
+                        <button class="btn btn-primary upload-button" (click)="uploadCertif()">Upload internship certificate <i class="fas fa-upload"></i></button>
+                    </div>
+                </div>
+                 <h4>{{userDoc[0].user.firstName+" "+userDoc[0].user.lastName}}'s files</h4>
+                 <div class="row">
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Internship request</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].demande_stage!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].demande_stage}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    <a href="{{requestUrl+'/'+userDoc[0].demande_stage}}" target="_blank">
+                                        <i class="fas fa-download download" 
+                                        ngbPopover="Download internship request"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"
+                                        ></i>
+                                    </a> 
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].demande_stage===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Internship agreement</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].convention!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].convention}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    <a href="{{conventionUrl+'/'+userDoc[0].convention}}" target="_blank">
+                                        <i class="fas fa-download download" 
+                                        ngbPopover="Download internship agreement"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"
+                                        ></i>
+                                    </a> 
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].convention===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Identity card</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].cin!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].cin}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    <a href="{{cinUrl+'/'+userDoc[0].cin}}" target="_blank">
+                                        <i class="fas fa-download download" 
+                                        ngbPopover="Download identity card"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"
+                                        ></i>
+                                    </a> 
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].cin===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Assignment letter</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].lettre_affectation!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].lettre_affectation}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    <a href="{{letterUrl+'/'+userDoc[0].lettre_affectation}}" target="_blank">
+                                        <i class="fas fa-download download" 
+                                        ngbPopover="Download assignment letter"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"
+                                        ></i>
+                                    </a> 
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].lettre_affectation===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Attendance sheet</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].fiche_presence!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].fiche_presence}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    <a href="{{presenceUrl+'/'+userDoc[0].fiche_presence}}" target="_blank">
+                                        <i class="fas fa-download download" 
+                                        ngbPopover="Download attendance sheet"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"
+                                        ></i>
+                                    </a> 
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].fiche_presence===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Internship report</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].rapport!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].rapport}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    <a href="{{reportUrl+'/'+userDoc[0].rapport}}" target="_blank">
+                                        <i class="fas fa-download download" 
+                                        ngbPopover="Download internship report"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"
+                                        ></i>
+                                    </a> 
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].rapport===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12">
+                        <div class="file-container">
+                            <h6>Internship certificate</h6>
+                            <hr>
+                            <div class="row" *ngIf="userDoc[0].attestation!==''">
+                                <div class="col-lg-1 col-xl-1 col-md-1 col-sm-1 col-1 text-end">
+                                    <i class="far fa-file-alt"></i>
+                                </div>
+                                <div class="col-lg-9 col-xl-9 col-md-9 col-sm-9 col-9">
+                                    <strong class="file-name">
+                                        {{userDoc[0].attestation}}
+                                    </strong>
+                                </div>
+                                <div class="col-lg-2 col-xl-2 col-md-2 col-sm-2 col-2 text-end">
+                                    
+                                        <i class="far fa-trash-alt download" (click)="deleteCertif(userDoc[0]._id)"
+                                        ngbPopover="Delete internship certificate"
+                                        triggers="mouseenter:mouseleave"
+                                        placement="top"></i>
+                                  
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="userDoc[0].attestation===''">
+                                <strong class="no-file">NO FILE UPLOADED YET</strong>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,47 @@
+.vehicleContainer{
+    width: 180px;
+    // margin-left: -35px;
+    position: inherit;
+    max-width: 200px;
+    padding-bottom: 10px;
+}
+.vehicles{
+    color:rgb(26, 156, 156);
+    font-size: medium;
+    
+}
+.vehiclesModel{
+   
+    color:rgb(42, 117, 167);
+    font-size: small;
+}
+.actionButtons{
+    border: none;
+    margin-left: -10px;
+}
+.empty{
+    color: rgb(171, 169, 169);
+    text-align: center;
+    margin-top: 20%;
+    position: sticky;
+}
+.link{
+    cursor: pointer;
+    color: #6777EF;
+}
+.link:hover{
+    text-decoration: underline;
+    color : #5164ef;
+    
+}
+.vehicle-info{
+    padding: 20px;
+    background-color: #8591f04f;
+    border-radius: 15px;
+    margin-bottom:15px ;
+}
+.km-tot{
+    padding: 15px;
+    background-color: #8591f096;
+    border-radius: 15px; 
+}

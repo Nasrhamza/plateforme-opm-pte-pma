@@ -1,0 +1,39 @@
+<ul class="navbar-nav">
+  <div style="opacity: 0;position: absolute;">{{ notifications$ | async }}</div>
+  <li class="nav-item dropdown" ngbDropdown>
+    <a ngbDropdownToggle href="javascript:" class="nav-link">
+      <i class="icon feather icon-bell"></i>
+      <span *ngIf="newNotifs != 0" class="badge badge-danger">
+        {{ newNotifs }}
+      </span>
+    </a>
+    <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right notification">
+      <div class="noti-head">
+        <h6 class="d-inline-block m-b-0">{{'Notifications' | translate }} </h6>
+        <div class="float-right">
+          <a href="javascript:" class="m-r-10" (click)="markAllAsRead()"> {{'Mark as Read' | translate }}</a>
+          <a href="javascript:" (click)="clearNotifications()"> {{'Clear All' | translate }}</a>
+        </div>
+      </div>
+      <ul class="noti-body">
+        <li class="n-title" *ngIf="notifications.length === 0">
+          <p class="m-b-0">{{'No new notifications' | translate }} </p>
+        </li>
+        <li class="notification" *ngFor="let notification of notifications" style="cursor: pointer;"
+          [ngStyle]="{'background-color': !notification.read ? 'rgb(208, 208, 248)' : 'white'}">
+          <div class="media" (click)="markOneAsRead(notification._id); 
+        (notification.type === 'resolved-ticket' || notification.type === 'closed-ticket') 
+        ? handleGoToChat(notification.ticketId._id) 
+        : handleGoToTicket(notification.ticketId)">
+            <img class="img-radius" src="{{ fileurl + notification?.ticketId?.clientId?.image?.fileName }}"
+              style="height: 35px;width: 35px;" alt="User Avatar">
+            <div class="media-body">
+              <p>{{ notification.message }}</p>
+              <small class="text-muted">{{ notification.createdAt | timeAgo }}</small>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </li>
+</ul>

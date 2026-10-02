@@ -1,0 +1,47 @@
+:host ::ng-deep .leaflet-container {
+  height: 90%;
+  width: 90%;
+}
+
+/* Styles for the geocoder control */
+.leaflet-control-geocoder {
+  margin-top: 10px;
+}
+
+.leaflet-control-geocoder-form {
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.leaflet-control-geocoder-icon {
+  display: none;
+}
+
+.leaflet-control-geocoder input {
+  width: 250px;
+}
+
+.leaflet-control-geocoder .leaflet-bar {
+  box-shadow: none;
+}
+
+.leaflet-control-geocoder .leaflet-bar a {
+  border: none;
+}
+
+.leaflet-control-geocoder .leaflet-bar a:hover {
+  background-color: #f0f0f0;
+}
+
+.leaflet-control-custom {
+  font-size: 18px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 5px;
+}
+
+.leaflet-control-custom:hover {
+  background-color: #f0f0f0;
+}

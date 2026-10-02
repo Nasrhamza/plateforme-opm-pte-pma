@@ -1,0 +1,51 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Update Details' | translate }}</h5>
+
+<mat-dialog-content style="max-width: 500px" class="mat-typography m-t-24">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Full Name' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <input type="text" matInput formControlName="fullName" placeholder="Full Name" />
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Phone' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <input type="text" matInput formControlName="phone" placeholder="Phone number" />
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Birth Date' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <input matInput [matDatepicker]="birthpicker3" formControlName="DateOfBirth"/>
+                    <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="birthpicker3"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #birthpicker3></mat-datepicker>
+                    @if(f['DateOfBirth'].touched && f['DateOfBirth'].invalid){
+                        <mat-hint class="m-b-16 error-msg">
+                            @if(f['DateOfBirth'].errors && f['DateOfBirth'].errors['required']){
+                            <div class="text-error">
+                                {{ 'Birthday cannot be null' | translate }}
+                            </div>
+                            }
+                        </mat-hint>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="col-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">{{ 'Address' | translate }}</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                    <input type="text" matInput formControlName="address" placeholder="Address" />
+                </mat-form-field>
+            </div>
+        <div class="col-12">
+          <button mat-flat-button color="primary" class="w-100" [disabled]="!form.valid || loading">
+            {{ 'Submit' | translate }}
+        </button>
+        </div>
+        </div>
+    </form>
+</mat-dialog-content>

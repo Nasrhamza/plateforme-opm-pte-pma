@@ -1,0 +1,23 @@
+<mat-card class="cardWithShadow">
+    <mat-card-header>
+        <mat-card-title>{{'Company Organigramme' | translate}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p-organizationChart [value]="usersOrganigram" [collapsible]="true">
+            <ng-template let-node pTemplate="person">
+                <div class="p-2 text-center">
+                    <img 
+                        (click)="showDetails(node.data._id)"
+                        src="{{ imagesUrl }}/{{node.data.image}}" 
+                        class="rounded-circle" style="width: 50px;aspect-ratio: 1/1;"/>
+                    <div class="font-bold m-b-4">
+                        {{ node.data.firstName }} {{ node.data.lastName }}
+                    </div>
+                    <span class="p-x-8 p-y-4 bg-light f-w-600 rounded-pill f-s-12">
+                        {{ node.data.currentPosition }}
+                    </span>
+                </div>
+            </ng-template>
+        </p-organizationChart>
+    </mat-card-content>
+</mat-card>

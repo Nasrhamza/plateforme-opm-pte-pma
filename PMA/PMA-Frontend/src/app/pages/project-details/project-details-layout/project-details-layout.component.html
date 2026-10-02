@@ -1,0 +1,26 @@
+<mat-card class="b-radius-30 shadow-none">
+  <mat-card-content class="p-0">
+    <mat-tab-group mat-stretch-tabs="false" 
+      animationDuration="0ms" 
+      (selectedTabChange)="handleTabSelect($event)" 
+      [(selectedIndex)]="activeTabIndex">
+      @for(tab of tabs;track tab.label){
+        <mat-tab [label]="tab.label">
+          <ng-template mat-tab-label>
+            <div class="d-flex align-items-center">
+              <mat-icon>
+                <i-tabler [name]="tab.icon" class="icon-20 m-r-8"></i-tabler>
+              </mat-icon>
+            </div>
+            {{ tab.label | translate }}
+          </ng-template>
+        </mat-tab>
+      }
+    </mat-tab-group>
+    <mat-card-content class="p-y-24 b-t-1">
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </mat-card-content>
+  </mat-card-content>
+</mat-card>
+
+

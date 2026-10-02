@@ -1,0 +1,63 @@
+.search{
+    padding: 10px;
+}
+.text{
+    width: 50%;
+}
+
+.offers-panel{
+    // text-align: center;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: #9ee0cc63;
+    margin-bottom: 10px;
+    color: rgb(75, 72, 72);
+}
+.offers-panel:hover{
+    background-color: #5ddfb863;
+}
+.enc-img{
+    width: 45px;
+    height: 45px;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid #8a8989;
+}
+.not-selected{
+    height: 100px;
+    text-align: center;
+    background-color: #e09ea763;
+    border-radius: 15px;
+}
+
+.icon-approve {
+    color: green;
+    font-size: 18px;
+    margin-right: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+.icon-decline {
+    color: rgb(228, 77, 61);
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+.icon-approve:hover{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid green;
+    font-size: 20px;
+    color: green;
+    transition: color 0.3s ease;
+}
+.icon-decline:hover{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(228, 77, 61);
+    font-size: 20px;
+    color: rgb(228, 77, 61);;
+    transition: color 0.3s ease;
+}

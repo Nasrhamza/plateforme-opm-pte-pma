@@ -1,0 +1,41 @@
+.specs-panel{
+    text-align: center;
+    padding: 20px;
+}
+.item{
+    width: 120px;
+    padding: 10px;
+    background-color: rgba(122, 228, 235, 0.326);
+    border-radius: 10px;
+    cursor: pointer;
+}
+.item:hover{
+    background-color: rgba(122, 228, 235, 0.554);
+}
+.row{
+    padding: 20px 20px 0px 0px;
+}
+
+.icon{
+    font-size: 30px;
+    margin-top: 10px;
+}
+button{
+    width: 90%;
+    font-size: 15px;
+}
+.action-icon{
+    font-size: 15px;
+
+}
+.msg{
+    font-size: 16px;
+    color: rgb(176, 39, 39);
+    background-color: aliceblue;
+    border-radius: 15px;
+    padding: 20px;
+}
+.between{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

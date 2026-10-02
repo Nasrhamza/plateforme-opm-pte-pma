@@ -1,0 +1,14 @@
+.link{
+    text-decoration: none;
+    color: rgb(35, 128, 209);
+}
+.link:hover{
+    text-decoration: underline;
+    color: rgb(12, 77, 135);
+    font-weight: bold;
+    font-size: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+.link-div{
+    padding: 10px;
+}

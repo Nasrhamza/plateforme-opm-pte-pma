@@ -1,0 +1,13 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ title | translate }}</h5>
+
+<mat-dialog-content> 
+    @if(title === 'Members note'){
+        <img src="/assets/images/ratings/face_rating/members_note.jpg" alt="Members note formula" width="100%"> 
+    }
+    @if(title === 'Team Leader note'){
+        <img src="/assets/images/ratings/face_rating/team_leader_note.jpg" alt="Team leader note formula" width="100%"> 
+    }
+    @if(title === 'Project note'){
+        <img src="/assets/images/ratings/face_rating/project_note.jpg" alt="Project note formula" width="100%"> 
+    }
+</mat-dialog-content>

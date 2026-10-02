@@ -1,0 +1,36 @@
+<h5 mat-dialog-title class="mat-subtitle-1">{{ 'Evaluate the task completion :' | translate }} {{ data.task.Title }}</h5>
+
+<mat-dialog-content>
+    <div class="row">
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Quality of work' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Does the task meet the specified expectations and criteria ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q1')" [labels]="labels[0].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Respect for deadlines' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Was the task completed before the set deadline ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q2')" [labels]="labels[1].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Collaboration and communication' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Did the user communicate effectively about the status of the task ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q3')" [labels]="labels[2].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Autonomy' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Was the user able to manage unforeseen events independently ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q4')" [labels]="labels[3].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-800 m-b-12 d-block">{{ 'Impact and results' | translate }}</mat-label>
+            <mat-label class="mat-subtitle-2 m-b-12 d-block">{{ 'Are the results immediately usable, without requiring major corrections ?' | translate }}</mat-label>
+            <app-rating-faces (onSelect)="handleAnswer($event, 'q5')" [labels]="labels[4].values"></app-rating-faces>
+        </div>
+        <div class="col-12">
+            <button mat-flat-button color="primary" class="w-100" [disabled]="this.nq1 == 0 || this.nq2 == 0 || this.nq3 == 0 ||  this.nq4 == 0 || this.nq5 == 0 " (click)="submit()">
+                {{ 'Submit' | translate }}
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>

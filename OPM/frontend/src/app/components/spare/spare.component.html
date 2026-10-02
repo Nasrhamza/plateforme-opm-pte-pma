@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card cardSize" cardTitle="Spare Parts">
+            <!-- ===== Header ===== -->
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <!-- Left: Title -->
+                    <div class="col text-left">
+                        <h6>
+                            {{ 'Spare Parts List' | translate }}
+                            <span class="badge badge-pill badge-secondary ml-2 mb-2">
+                                {{ filteredSpares?.length || spareCount }}
+                            </span>
+                        </h6>
+                    </div>
+
+                    <!-- Right: Search + Filter -->
+                    <div class="col text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <!-- Filter (Status) -->
+                            <select class="form-control form-control-sm mr-2" style="max-width: 180px;"
+                                [(ngModel)]="selectedStatus" (change)="applyStatusFilter()">
+                                <option value="all">{{ 'All Status' | translate }}</option>
+                                <option value="Ordred">{{ 'Ordred' | translate }}</option>
+                                <option value="Delivered">{{ 'Delivered' | translate }}</option>
+                                <option value="Installed">{{ 'Installed' | translate }}</option>
+                                <option value="Stocked">{{ 'Stocked' | translate }}</option>
+                            </select>
+
+                            <!-- Search -->
+                            <input type="text" class="form-control form-control-sm" placeholder="Search..."
+                                [(ngModel)]="searchTerm" style="max-width: 250px; background-color: #EFF3F6;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== Body ===== -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover custom-table">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th class="text-center">{{ 'Client' | translate }}</th>
+                                <th class="text-center">{{ 'Ticket Number' | translate }}</th>
+                                <th class="text-center">{{ 'Equipment Name' | translate }}</th>
+                                <th class="text-center">{{ 'Serial Number' | translate }}</th>
+                                <th class="text-center">{{ 'Owner' | translate }}</th>
+                                <th class="text-center">{{ 'Support Type' | translate }}</th>
+                                <th class="text-center">{{ 'Location' | translate }}</th>
+                                <th class="text-center">{{ 'Status' | translate }}</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of filteredSpares | filter: searchTerm | paginate: { itemsPerPage: pageSize, currentPage: page }"
+                                (click)="handleGoToTicket(item.ticketId)" style="cursor: pointer;">
+                                <td class="text-left">
+                                    <span *ngIf="item.ticketId" class="d-flex align-items-center">
+                                        <img [src]="fileurl + item.ticketId?.clientId?.image?.fileName"
+                                            alt="Owner Image"
+                                            style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 5px;" />
+                                        <span *ngIf="item.ticketId.clientId.company">
+                                            {{ item.ticketId.clientId.company }}
+                                        </span>
+                                    </span>
+                                    <span *ngIf="!item.ticketId">--</span>
+                                </td>
+
+                                <td class="text-center">
+                                    <span *ngIf="item.ticketId">{{ item.ticketId.number }}</span>
+                                    <span *ngIf="!item.ticketId">--</span>
+                                </td>
+                                <td class="text-center">{{ item.equipmentName }}</td>
+                                <td class="text-center">
+                                    <span *ngIf="item.serialNumber !== ''">{{ item.serialNumber }}</span>
+                                    <span *ngIf="item.serialNumber === ''">--</span>
+                                </td>
+
+                                <td class="text-center">
+                                    <div *ngIf="item.owner" class="d-flex align-items-center justify-content-center">
+                                        <img [src]="fileurl + item.owner?.image?.fileName" alt="Owner Image"
+                                            style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 5px;" />
+                                        <span>{{ item.owner?.firstName }} {{ item.owner?.lastName }}</span>
+                                    </div>
+                                    <span *ngIf="!item.owner">--</span>
+                                </td>
+
+                                <td class="text-center">{{ item.typeSupport }}</td>
+                                <td class="text-center">
+                                    {{ item.location ? item.location : '--' }}
+                                </td>
+
+                                <td class="text-center">
+                                    <ng-container [ngSwitch]="item.status">
+                                        <span *ngSwitchCase="'Ordred'" class="badge bg-warning text-dark">Ordred</span>
+                                        <span *ngSwitchCase="'Delivered'" class="badge bg-success">Delivered</span>
+                                        <span *ngSwitchCase="'Installed'"
+                                            class="badge bg-info text-white">Installed</span>
+                                        <span *ngSwitchCase="'Stocked'"
+                                            class="badge bg-secondary text-white">Stocked</span>
+                                    </ng-container>
+                                </td>
+
+                                <td class="text-center">
+                                    <i (click)="updateSpare(item); $event.stopPropagation()"
+                                        class="fas fa-edit text-primary icon-style"></i>
+                                    <i (click)="deleteSpare(item._id); $event.stopPropagation()"
+                                        class="fas fa-trash-alt text-danger icon-style"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-block text-center">
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </div>
+
+                <!-- No spares -->
+                <ng-template #noSparesTemplate>
+                    <div class="alert alert-warning text-center" role="alert">
+                        {{ 'No spare parts found' | translate }}.
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

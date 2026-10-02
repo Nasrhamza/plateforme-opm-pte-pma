@@ -1,0 +1,14 @@
+<ng-container *ngIf="navigationList.length">
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <div class="page-header-title d-flex flex-row align-items-center link-class" (click)="goBack()">
+            <i class="fas fa-arrow-left arrow-icon"> Back</i>
+            <h5 class="link-class">{{ navigationList[navigationList.length - 1]?.title }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

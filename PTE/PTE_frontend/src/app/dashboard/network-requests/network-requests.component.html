@@ -1,0 +1,101 @@
+<section class="main-content">
+    <ul class="breadcrumb breadcrumb-style ">
+        <li class="breadcrumb-item">
+            <h5 class="page-title m-b-0">Network Requests</h5>
+        </li>
+        <li class="breadcrumb-item bcrumb-1">
+            <a routerLink="/dashboard/main">
+                <i class="fas fa-home font-17"></i></a>
+        </li>
+        <li class="breadcrumb-item">Network</li>
+        <li class="breadcrumb-item">Requests</li>
+    </ul>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Network Requests</h4>
+                    </div>
+                    <div class="no-requests-container" *ngIf="requests.length === 0">
+                        <div class="no-requests-icon">
+                          <div class="magnifying-glass">
+                            <div class="glass"></div>
+                            <div class="handle"></div>
+                          </div>
+                        </div>
+                        <p class="no-requests-text">No Requests Found</p>
+                      </div>
+                      
+                    <div class="row" *ngIf="requests.length > 0">
+                            <div class="col-4">
+                                <h5 class="title">Select a user to view network request</h5>
+                                <div class="row user-line" *ngFor="let req of requests">
+                                    <div (click)="selectUser(req)" >
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <img src="{{ picsUrl+req.user.image }}" class="enc-img" />
+                                            </div>
+                                            <div class="col-7 name-col-style">
+                                                <div class="font-16"><strong>{{req.user.firstName+" "+req.user.lastName}}</strong></div>
+                                                <div class="font-14 text-muted">{{req.user.role}} | {{req.user.departement}}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <span class="badge rounded-pill bg-success" *ngIf="req.status==='TREATED'">TREATED</span>
+                                                <span class="badge rounded-pill bg-danger" *ngIf="req.status==='PENDING'">PENDING</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-7 no-task-selected" *ngIf="!userSelected">
+                                <img class="pic" src="assets/images/notSelected.png" alt="">
+                                <h5> Select user to view request.</h5>
+                            </div>
+                            <div class="col-8" *ngIf="userSelected">
+                                <h5 class="card-body title">Update <strong>{{user.firstName+" "+user.lastName}}</strong> request</h5>
+                                <div class="task-details-container">
+                                    <div class="row">
+                                        <form [formGroup]="updateReqForm" (ngSubmit)="onSubmit(updateReqForm)">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                                                    <label>SSID<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="ssid..." formControlName="ssid" required>
+                                                    <small class="form-text text-danger"
+                                                        *ngIf="!updateReqForm.get('ssid')?.valid && updateReqForm.get('ssid')?.touched"> SSID is required
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-4">
+                                                    <label>Login<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="login" formControlName="login" required>
+                                                    <small class="form-text text-danger"
+                                                        *ngIf="!updateReqForm.get('login')?.valid && updateReqForm.get('login')?.touched"> Login is required
+                                                    </small>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-4">
+                                                    <label>Password<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" placeholder="password..." formControlName="password" required>
+                                                    <small class="form-text text-danger"
+                                                        *ngIf="!updateReqForm.get('password')?.valid && updateReqForm.get('password')?.touched"> Password is required
+                                                    </small>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 text-end">
+                                                    <button type="submit" class="btn btn-success">Update Request <i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

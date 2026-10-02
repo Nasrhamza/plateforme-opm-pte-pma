@@ -1,0 +1,587 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{parskip}
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{fancyhdr}
+\usepackage{mdframed}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{colortbl}
+
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, shadows}
+
+\geometry{margin=2.5cm}
+
+% ── Colors ───────────────────────────────────────────────────────────
+\definecolor{primary}{RGB}{99,77,189}
+\definecolor{accent}{RGB}{60,40,130}
+\definecolor{bronze}{RGB}{176,120,60}
+\definecolor{silver}{RGB}{120,130,150}
+\definecolor{gold}{RGB}{195,155,30}
+\definecolor{opmcolor}{RGB}{190,50,50}
+\definecolor{pmacolor}{RGB}{50,130,190}
+\definecolor{ptecolor}{RGB}{40,160,100}
+\definecolor{execcolor}{RGB}{140,60,180}
+\definecolor{factbg}{RGB}{240,245,255}
+\definecolor{dimbg}{RGB}{255,248,235}
+\definecolor{confbg}{RGB}{235,255,240}
+\definecolor{lightpurple}{RGB}{245,242,255}
+
+% ── Section style ────────────────────────────────────────────────────
+\titleformat{\section}{\large\bfseries\color{accent}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{primary}}{}{0em}{\quad}
+\titleformat{\subsubsection}{\small\bfseries\color{primary}}{}{0em}{\qquad}
+
+\hypersetup{colorlinks=true, linkcolor=primary, urlcolor=primary}
+
+% ── Header / Footer ──────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small\color{primary} Architecture ETL \& Data Warehouse}
+\lhead{\small\color{primary} Reporting Hub}
+\rfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── TikZ styles ──────────────────────────────────────────────────────
+\tikzset{
+  factbox/.style={
+    rectangle, rounded corners=4pt,
+    fill=factbg, draw=primary, line width=1.5pt,
+    text width=3.2cm, align=center, font=\small\bfseries,
+    drop shadow
+  },
+  dimbox/.style={
+    rectangle, rounded corners=3pt,
+    fill=dimbg, draw=bronze!70, line width=1pt,
+    text width=2.8cm, align=center, font=\footnotesize
+  },
+  confdim/.style={
+    rectangle, rounded corners=3pt,
+    fill=confbg, draw=ptecolor!80, line width=1.5pt,
+    text width=2.8cm, align=center, font=\footnotesize\bfseries
+  },
+  arrow/.style={-Latex, draw=gray!60, line width=0.8pt},
+  confarrow/.style={-Latex, draw=ptecolor!70, line width=1pt, dashed},
+  layerbox/.style={
+    rectangle, rounded corners=6pt,
+    draw=#1!60, fill=#1!10, line width=1.5pt,
+    text width=2.6cm, minimum height=1.4cm, align=center,
+    font=\small\bfseries, #1
+  }
+}
+
+% ─────────────────────────────────────────────────────────────────────
+\title{
+  \vspace{-1cm}
+  {\color{primary}\rule{\linewidth}{2pt}}\\[0.4em]
+  \textbf{Reporting Hub}\\
+  {\large Architecture Technique, Pipeline ETL\\[0.2em]
+         \& Modélisation Data Warehouse}\\[0.3em]
+  {\color{primary}\rule{\linewidth}{1pt}}
+}
+\author{Hamza Baktache}
+\date{Juillet 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Stack Technologique}
+
+\begin{center}
+\begin{tabular}{>{\bfseries\color{primary}}p{3.5cm} p{4cm} p{6.5cm}}
+\toprule
+\textbf{Couche} & \textbf{Technologie} & \textbf{Rôle} \\
+\midrule
+\multicolumn{3}{l}{\cellcolor{lightpurple}\small\bfseries \quad Sources de données} \\
+\quad Données brutes & Kaggle (datasets publics)  & Jeux de données réels importés dans les trois backends pour simuler un environnement d'entreprise \\
+\quad OPM Backend   & Node.js + Express + MongoDB & API REST du système de gestion des tickets/opérations \\
+\quad PTE Backend   & Node.js + Express + MongoDB & API REST du système de gestion RH \& terrain \\
+\quad PMA Backend   & Node.js + Express + MongoDB & API REST du système de gestion de projets \\
+\midrule
+\multicolumn{3}{l}{\cellcolor{lightpurple}\small\bfseries \quad Data Warehouse \& ETL} \\
+\quad ETL Engine    & Python 3.11 + FastAPI       & Extraction, transformation, chargement (pipeline Medallion) \\
+\quad Base Argent   & MongoDB 7                   & Couche Bronze (données brutes) et Argent (données normalisées) \\
+\quad Base Or       & PostgreSQL 16               & Dimensions, tables de faits et vues matérialisées (data marts) \\
+\quad Scheduler     & APScheduler                 & Planification automatique des runs ETL \\
+\midrule
+\multicolumn{3}{l}{\cellcolor{lightpurple}\small\bfseries \quad API \& Sécurité} \\
+\quad API Reporting & FastAPI 0.110 + Python-JOSE  & Endpoints KPI, rapports, auth JWT (Bearer Token) \\
+\quad Auth          & bcrypt + JWT (HS256)         & Hachage des mots de passe, tokens d'accès \\
+\midrule
+\multicolumn{3}{l}{\cellcolor{lightpurple}\small\bfseries \quad Frontend} \\
+\quad UI            & Angular 17 (Standalone)     & SPA avec composants autonomes, routing lazy-load \\
+\quad Graphiques    & Chart.js + ng2-charts        & Visualisation des KPI (courbes, barres, camembert) \\
+\quad Styles        & Tailwind CSS                 & Utilitaires CSS, design Material You \\
+\quad Réactivité    & RxJS + Angular Signals       & Flux de données réactifs et state management \\
+\midrule
+\multicolumn{3}{l}{\cellcolor{lightpurple}\small\bfseries \quad Infrastructure} \\
+\quad Conteneurs    & Docker + Docker Compose      & Orchestration de 8 services (OPM, PTE, PMA, reporting, seeder, BDD) \\
+\quad Mail          & MailHog                      & Serveur SMTP de test pour les rapports planifiés \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Pipeline ETL — Architecture Medallion}
+
+L'ETL suit l'architecture \textbf{Medallion} à trois couches, garantissant la traçabilité,
+la rejouabilité et la qualité progressive des données.
+
+\vspace{1em}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.6cm, >=Latex]
+  % Layers
+  \node[layerbox=bronze, text=bronze] (bronze) {BRONZE\\{\footnotesize Données brutes}};
+  \node[layerbox=silver, text=silver, right=2cm of bronze] (silver) {ARGENT\\{\footnotesize Normalisé}};
+  \node[layerbox=gold,   text=gold,   right=2cm of silver] (gold)   {OR\\{\footnotesize Dimensionnel}};
+  \node[layerbox=primary, text=primary, right=2cm of gold] (mart)   {MART\\{\footnotesize Agrégats KPI}};
+
+  % Sources
+  \node[above=1cm of bronze, xshift=-0.5cm, font=\tiny\bfseries, text=opmcolor] (opm) {OPM API};
+  \node[above=1cm of bronze, font=\tiny\bfseries, text=ptecolor] (pte) {PTE API};
+  \node[above=1cm of bronze, xshift=0.5cm, font=\tiny\bfseries, text=pmacolor] (pma) {PMA API};
+
+  \draw[->, draw=opmcolor!60, line width=0.8pt] (opm) -- (bronze);
+  \draw[->, draw=ptecolor!60, line width=0.8pt] (pte) -- (bronze);
+  \draw[->, draw=pmacolor!60, line width=0.8pt] (pma) -- (bronze);
+
+  % Flow
+  \draw[->, line width=1.2pt, draw=bronze!80] (bronze) -- node[above, font=\tiny]{normalise} (silver);
+  \draw[->, line width=1.2pt, draw=silver!80] (silver) -- node[above, font=\tiny]{MDM + dims} (gold);
+  \draw[->, line width=1.2pt, draw=gold!80]   (gold)   -- node[above, font=\tiny]{vues mat.} (mart);
+
+  % Storage labels
+  \node[below=0.4cm of bronze, font=\tiny, text=bronze] {MongoDB (raw\_*)};
+  \node[below=0.4cm of silver, font=\tiny, text=silver] {MongoDB (stg\_*)};
+  \node[below=0.4cm of gold,   font=\tiny, text=gold]   {PostgreSQL (core.*)};
+  \node[below=0.4cm of mart,   font=\tiny, text=primary]{PostgreSQL (mart\_*)};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5em}
+
+\subsection{Couche Bronze — Extraction}
+
+\subsubsection{Origine des données — Kaggle}
+
+Les données métier utilisées dans ce projet proviennent de \textbf{jeux de données publics
+issus de la plateforme Kaggle}. Ces datasets ont été sélectionnés pour leur représentativité
+des domaines OPM, PMA et PTE, puis intégrés dans les trois applications sources (backends
+Node.js) qui les exposent via des API REST simulant un environnement d'entreprise réel.
+Cette approche permet de disposer d'un volume de données cohérent et réaliste pour valider
+l'ensemble du pipeline ETL et les calculs de KPI.
+
+\subsubsection{Mécanisme d'extraction}
+
+Les données sont extraites depuis les API REST de chaque application source (OPM, PTE, PMA)
+via le client HTTP \texttt{httpx}. Chaque document brut est stocké dans MongoDB avec :
+\begin{itemize}[leftmargin=1.5cm]
+  \item Un identifiant de run ETL (\texttt{etl\_run\_id}) pour la traçabilité
+  \item Un horodatage d'ingestion (\texttt{ingested\_at})
+  \item Une clé d'unicité \texttt{(source\_id, etl\_run\_id)} pour le replay sans perte
+\end{itemize}
+
+Les collections Bronze suivent la convention \texttt{raw\_\{source\}\_\{entité\}}
+(ex. \texttt{raw\_opm\_tickets}, \texttt{raw\_pte\_leaves}, \texttt{raw\_pma\_tasks}).
+
+Pour les entités à pagination incomplète (congés PTE, réclamations PMA), le pipeline
+effectue une lecture directe sur le MongoDB source en complément de l'API REST.
+
+\subsection{Couche Argent — Transformation}
+
+Chaque document brut est normalisé :
+\begin{itemize}[leftmargin=1.5cm]
+  \item Parsing des dates (ISO 8601, formats mixtes OPM/PTE/PMA)
+  \item Résolution des identifiants imbriqués (dénormalisation des objets référencés)
+  \item Validation des champs obligatoires, suppression des doublons par \texttt{source\_id}
+  \item Chargement par \textit{upsert} en MongoDB (collections \texttt{stg\_*})
+\end{itemize}
+
+\subsection{Couche Or — Chargement Dimensionnel}
+
+À partir des données Argent, le pipeline alimente :
+\begin{enumerate}[leftmargin=1.5cm]
+  \item \textbf{MDM} (Master Data Management) : déduplication cross-app des personnes
+        via l'e-mail normalisé → une seule ligne \texttt{dim\_person} par individu
+  \item \textbf{Dimensions} : chargement par upsert dans les tables \texttt{core.*}
+  \item \textbf{Tables de faits} : insertion par batch (COPY ou INSERT ON CONFLICT IGNORE)
+  \item \textbf{Data Marts} : \texttt{REFRESH MATERIALIZED VIEW} des 25 vues KPI
+\end{enumerate}
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Modèle Dimensionnel — Constellation}
+
+\subsection{Choix du modèle}
+
+Le modèle \textbf{Constellation} (ou \textit{Galaxy Schema}) est une généralisation du
+modèle en étoile de Kimball. Il est composé de \textbf{plusieurs tables de faits}
+partageant des \textbf{dimensions conformées} (conformed dimensions).
+
+Ce choix est justifié par la nature multi-source du projet :
+\begin{itemize}[leftmargin=1.5cm]
+  \item Trois systèmes sources indépendants (OPM, PMA, PTE) génèrent trois faits distincts
+  \item Les employés existent dans les trois systèmes → \texttt{dim\_person} est une
+        \textbf{dimension conformée} (MDM unifié par e-mail normalisé)
+  \item Le temps (\texttt{dim\_date}) est partagé par toutes les tables de faits
+  \item Les marts exécutifs font des jointures \textbf{cross-facts} via \texttt{dim\_person}
+\end{itemize}
+
+\subsection{Schéma du modèle Constellation}
+
+\vspace{0.5em}
+\begin{center}
+\begin{tikzpicture}[node distance=0.6cm and 1.8cm, >=Latex, font=\footnotesize]
+
+  %% ── Fact tables (centre) ─────────────────────────────────────────
+  \node[factbox, fill=opmcolor!10, draw=opmcolor] (fopm)
+    {fact\_opm\_ticket\\{\tiny OPM}};
+
+  \node[factbox, fill=pmacolor!10, draw=pmacolor, below=2.2cm of fopm] (fpma)
+    {fact\_pma\_task\\{\tiny PMA}};
+
+  \node[factbox, fill=ptecolor!10, draw=ptecolor, below=2.2cm of fpma] (fpte)
+    {fact\_pte\_event\\{\tiny PTE}};
+
+  %% ── Conformed dimensions (right) ─────────────────────────────────
+  \node[confdim, right=3.5cm of fpma] (dperson)
+    {\color{ptecolor}dim\_person\\{\tiny (MDM conforme)}\\{\tiny + dim\_person\_xref}};
+
+  \node[confdim, above=0.5cm of dperson] (ddate)
+    {\color{ptecolor}dim\_date\\{\tiny (temps conforme)}};
+
+  \node[confdim, below=0.5cm of dperson] (ddept)
+    {\color{ptecolor}dim\_department};
+
+  \node[confdim, below=0.5cm of ddept] (dstatus)
+    {\color{ptecolor}dim\_status\\{\tiny (junk dim)}};
+
+  %% ── OPM-specific dimensions (left) ───────────────────────────────
+  \node[dimbox, left=2.8cm of fopm, yshift=1.8cm] (dcontract)
+    {dim\_contract};
+
+  \node[dimbox, left=2.8cm of fopm] (dsite)
+    {dim\_site};
+
+  \node[dimbox, left=2.8cm of fopm, yshift=-1.8cm] (dequip)
+    {dim\_equipment};
+
+  \node[dimbox, above=0.4cm of dcontract] (dsource)
+    {dim\_source\_system};
+
+  \node[dimbox, above=0.4cm of dsource] (dtod)
+    {dim\_time\_of\_day};
+
+  %% ── PMA-specific dimensions (left) ───────────────────────────────
+  \node[dimbox, left=2.8cm of fpma, yshift=0.5cm] (dproject)
+    {dim\_project};
+
+  \node[dimbox, left=2.8cm of fpma, yshift=-0.8cm] (dpriority)
+    {dim\_priority};
+
+  %% ── PTE-specific dimensions (left) ───────────────────────────────
+  \node[dimbox, left=2.8cm of fpte, yshift=0.5cm] (dvehicle)
+    {dim\_vehicle};
+
+  \node[dimbox, left=2.8cm of fpte] (droom)
+    {dim\_room};
+
+  \node[dimbox, left=2.8cm of fpte, yshift=-0.8cm] (dleavetype)
+    {dim\_leave\_type};
+
+  %% ── Arrows: OPM fact → dims ──────────────────────────────────────
+  \draw[arrow] (fopm) -- (dcontract);
+  \draw[arrow] (fopm) -- (dsite);
+  \draw[arrow] (fopm) -- (dequip);
+  \draw[arrow] (fopm) -- (dsource);
+  \draw[arrow] (fopm) -- (dtod);
+
+  %% ── Arrows: PMA fact → dims ──────────────────────────────────────
+  \draw[arrow] (fpma) -- (dproject);
+  \draw[arrow] (fpma) -- (dpriority);
+
+  %% ── Arrows: PTE fact → dims ──────────────────────────────────────
+  \draw[arrow] (fpte) -- (dvehicle);
+  \draw[arrow] (fpte) -- (droom);
+  \draw[arrow] (fpte) -- (dleavetype);
+
+  %% ── Arrows to conformed dims ─────────────────────────────────────
+  \draw[confarrow] (fopm) -- (ddate);
+  \draw[confarrow] (fpma) -- (ddate);
+  \draw[confarrow] (fpte) -- (ddate);
+
+  \draw[confarrow] (fopm) -- (dperson);
+  \draw[confarrow] (fpma) -- (dperson);
+  \draw[confarrow] (fpte) -- (dperson);
+
+  \draw[confarrow] (fpma) -- (ddept);
+  \draw[confarrow] (fpte) -- (ddept);
+
+  \draw[confarrow] (fopm) -- (dstatus);
+  \draw[confarrow] (fpma) -- (dstatus);
+  \draw[confarrow] (fpte) -- (dstatus);
+
+  %% ── Legend ───────────────────────────────────────────────────────
+  \node[below=0.5cm of fpte, xshift=-1cm, font=\tiny] (leg1)
+    {\tikz\draw[arrow] (0,0) -- (0.6,0); dim. spécifique};
+  \node[right=0.3cm of leg1, font=\tiny]
+    {\tikz\draw[confarrow] (0,0) -- (0.6,0); dim. conformée (partagée)};
+
+\end{tikzpicture}
+\end{center}
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Dimensions}
+
+\subsection{Dimensions conformées (partagées par tous les faits)}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.5cm} X}
+\toprule
+Dimension & Description \\
+\midrule
+\texttt{dim\_date}         & Calendrier complet (jour, semaine, mois, trimestre, année, week-end).
+                             Clé entière \texttt{YYYYMMDD}. \\
+\texttt{dim\_time\_of\_day}& Granularité horaire (0--23h). \\
+\texttt{dim\_person}       & \textbf{Dimension MDM} : une ligne par individu réel, dédupliqué
+                             par e-mail normalisé entre OPM, PMA et PTE. Contient : nom complet,
+                             département, titre, ancienneté, statut actif. \\
+\texttt{dim\_person\_xref} & Table de correspondance \texttt{(système source, ID source)} →
+                             \texttt{person\_sk}. Méthode de correspondance : \textit{email}. \\
+\texttt{dim\_department}   & Référentiel des départements (nom, centre de coût). \\
+\texttt{dim\_source\_system}& Référentiel des systèmes sources (OPM, PMA, PTE). \\
+\texttt{dim\_status}       & \textbf{Dimension poubelle (Junk Dim)} : combinaisons de flags
+                             booléens et de statuts faible cardinalité :
+                             \texttt{ticket\_status}, \texttt{task\_status}, \texttt{event\_status},
+                             \texttt{is\_overdue}, \texttt{is\_sla\_breach}, \texttt{is\_accepted}. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Dimensions spécifiques OPM}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.5cm} X}
+\toprule
+Dimension & Attributs principaux \\
+\midrule
+\texttt{dim\_contract} & Numéro de contrat, type, nature, SLA (heures), dates,
+                         nom client, pays client, commercial (dénormalisé). \\
+\texttt{dim\_site}     & Nom, adresse, coordonnées GPS (lat/lon), nom client (dénormalisé). \\
+\texttt{dim\_equipment}& Numéro de série, nom, type (HARD/SOFT), version, constructeur,
+                         site et contrat (dénormalisés). \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Dimensions spécifiques PMA}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.5cm} X}
+\toprule
+Dimension & Attributs principaux \\
+\midrule
+\texttt{dim\_project}  & Nom, type, priorité, chef de projet, client, dates début/fin,
+                         date de clôture, compteur de réclamations. \\
+\texttt{dim\_priority} & Niveau de priorité (Haute, Moyenne, Basse) + poids pour le scoring. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Dimensions spécifiques PTE}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.5cm} X}
+\toprule
+Dimension & Attributs principaux \\
+\midrule
+\texttt{dim\_vehicle}    & Immatriculation, modèle, type de véhicule. \\
+\texttt{dim\_room}       & Libellé, localisation, capacité (places). \\
+\texttt{dim\_leave\_type}& Code congé, libellé, indicateur congé payé. \\
+\bottomrule
+\end{tabularx}
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Tables de Faits}
+
+\subsection{\texttt{fact\_opm\_ticket} — Source OPM}
+
+\textit{Grain : un enregistrement par ticket d'intervention.}
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{4.5cm} >{\footnotesize}X}
+\toprule
+\textbf{Colonne} & \textbf{Description} \\
+\midrule
+source\_id              & Identifiant MongoDB du ticket source \\
+ticket\_number          & Référence métier du ticket \\
+created\_date\_sk       & FK → \texttt{dim\_date} (date de création) \\
+assigned\_date\_sk      & FK → \texttt{dim\_date} (date d'assignation) \\
+resolved\_date\_sk      & FK → \texttt{dim\_date} (date de résolution) \\
+closed\_date\_sk        & FK → \texttt{dim\_date} (date de clôture) \\
+created\_hour\_sk       & FK → \texttt{dim\_time\_of\_day} \\
+contract\_sk            & FK → \texttt{dim\_contract} \\
+site\_sk                & FK → \texttt{dim\_site} \\
+equipment\_sk           & FK → \texttt{dim\_equipment} \\
+client\_person\_sk      & FK → \texttt{dim\_person} (client demandeur) \\
+assigned\_tech\_person\_sk & FK → \texttt{dim\_person} (technicien assigné) \\
+status\_sk              & FK → \texttt{dim\_status} \\
+time\_to\_assign\_min   & Mesure : délai d'assignation (minutes) \\
+time\_to\_resolve\_min  & Mesure : délai de résolution (minutes) \\
+time\_to\_close\_min    & Mesure : délai de clôture (minutes) \\
+reopen\_count           & Mesure : nombre de réouvertures \\
+\bottomrule
+\end{tabularx}
+
+\subsection{\texttt{fact\_pma\_task} — Source PMA}
+
+\textit{Grain : un enregistrement par tâche de projet.}
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{4.5cm} >{\footnotesize}X}
+\toprule
+\textbf{Colonne} & \textbf{Description} \\
+\midrule
+source\_id              & Identifiant MongoDB de la tâche source \\
+task\_ref               & Référence métier de la tâche \\
+project\_sk             & FK → \texttt{dim\_project} \\
+executor\_person\_sk    & FK → \texttt{dim\_person} (ingénieur exécutant) \\
+team\_leader\_person\_sk& FK → \texttt{dim\_person} (chef de projet) \\
+department\_sk          & FK → \texttt{dim\_department} \\
+start\_date\_sk         & FK → \texttt{dim\_date} (début de tâche) \\
+deadline\_date\_sk      & FK → \texttt{dim\_date} (échéance) \\
+closed\_date\_sk        & FK → \texttt{dim\_date} (date de clôture) \\
+status\_sk              & FK → \texttt{dim\_status} \\
+priority\_sk            & FK → \texttt{dim\_priority} \\
+progress\_pct           & Mesure : avancement en pourcentage \\
+note                    & Mesure : note de qualité de la tâche \\
+rating\_weight          & Mesure : poids pour le calcul du score PM \\
+duration\_days          & Mesure : durée planifiée (jours) \\
+\bottomrule
+\end{tabularx}
+
+\subsection{\texttt{fact\_pte\_event} — Source PTE}
+
+\textit{Grain : un enregistrement par événement RH ou terrain.}\\
+\textit{Types d'événements : \texttt{leave}, \texttt{vehicle\_usage}, \texttt{room\_reservation},
+\texttt{vm\_request}, \texttt{intervention}.}
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{4.5cm} >{\footnotesize}X}
+\toprule
+\textbf{Colonne} & \textbf{Description} \\
+\midrule
+source\_id              & Identifiant MongoDB de l'événement source \\
+event\_type             & Type d'événement (congé, véhicule, salle, VM, intervention) \\
+event\_date\_sk         & FK → \texttt{dim\_date} (date de début) \\
+end\_date\_sk           & FK → \texttt{dim\_date} (date de fin) \\
+event\_hour\_sk         & FK → \texttt{dim\_time\_of\_day} \\
+applicant\_person\_sk   & FK → \texttt{dim\_person} (demandeur/employé) \\
+engineer\_person\_sk    & FK → \texttt{dim\_person} (ingénieur terrain) \\
+department\_sk          & FK → \texttt{dim\_department} \\
+vehicle\_sk             & FK → \texttt{dim\_vehicle} (si événement véhicule) \\
+room\_sk                & FK → \texttt{dim\_room} (si réservation salle) \\
+leave\_type\_sk         & FK → \texttt{dim\_leave\_type} (si congé) \\
+status\_sk              & FK → \texttt{dim\_status} \\
+duration\_min           & Mesure : durée (minutes) \\
+km                      & Mesure : kilométrage (véhicule) \\
+ram\_gb / disk\_gb      & Mesure : ressources VM allouées \\
+business\_days          & Mesure : nombre de jours ouvrables (congé) \\
+\bottomrule
+\end{tabularx}
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Data Marts — Vues Matérialisées}
+
+Les data marts sont des \textbf{vues matérialisées PostgreSQL} pré-calculées,
+regroupées en 4 schémas. Elles sont rafraîchies à chaque fin de run ETL.
+
+\subsection{mart\_opm — 7 vues}
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{5cm} >{\footnotesize}X}
+\toprule
+\textbf{Vue} & \textbf{Calcul} \\
+\midrule
+v\_tickets\_by\_status     & COUNT tickets GROUP BY statut et période \\
+v\_sla\_compliance         & \% tickets sans dépassement SLA par contrat et période \\
+v\_mttr                    & Moyenne(\texttt{time\_to\_resolve\_min} / 60) par contrat \\
+v\_mtta                    & Moyenne(\texttt{time\_to\_assign\_min} / 60) par contrat \\
+v\_first\_call\_resolution & \% tickets fermés sans réouverture (\texttt{reopen\_count = 0}) \\
+v\_technician\_load        & COUNT tickets par technicien (JOIN \texttt{dim\_person}) \\
+v\_contract\_health        & \% conformité SLA par contrat (identique à SLA, usage distinct) \\
+\bottomrule
+\end{tabularx}
+
+\subsection{mart\_pma — 7 vues}
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{5cm} >{\footnotesize}X}
+\toprule
+\textbf{Vue} & \textbf{Calcul} \\
+\midrule
+v\_portfolio\_status        & COUNT projets distincts par statut de tâche et période \\
+v\_tasks\_by\_status        & COUNT tâches GROUP BY statut \\
+v\_tasks\_by\_priority      & COUNT tâches GROUP BY priorité (JOIN \texttt{dim\_priority}) \\
+v\_on\_time\_delivery       & \% tâches clôturées sans retard (\texttt{is\_overdue = false}) \\
+v\_team\_leader\_score      & Moyenne pondérée(\texttt{note × rating\_weight}) par chef de projet \\
+v\_engineer\_productivity   & COUNT tâches par ingénieur et période \\
+v\_overdue\_index           & \% tâches en retard par projet \\
+\bottomrule
+\end{tabularx}
+
+\subsection{mart\_pte — 6 vues}
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{5cm} >{\footnotesize}X}
+\toprule
+\textbf{Vue} & \textbf{Calcul} \\
+\midrule
+v\_leave\_consumption       & SUM(\texttt{business\_days}) par département, type congé, période \\
+v\_headcount\_active        & COUNT employés actifs internes par département \\
+v\_vehicle\_utilization     & SUM(\texttt{km}) par immatriculation et période \\
+v\_room\_occupancy          & SUM(\texttt{duration\_min} / 60) heures d'occupation par salle \\
+v\_vm\_lead\_time           & Moyenne(\texttt{duration\_min} / 60) pour les requêtes VM \\
+v\_intervention\_throughput & COUNT interventions par ingénieur et période \\
+\bottomrule
+\end{tabularx}
+
+\subsection{mart\_exec — 5 vues transversales}
+
+Ces vues agrègent des données \textbf{cross-sources} via la dimension conformée
+\texttt{dim\_person}.
+
+\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}p{5cm} >{\footnotesize}X}
+\toprule
+\textbf{Vue} & \textbf{Calcul} \\
+\midrule
+v\_company\_throughput  & UNION tickets résolus (OPM) + tâches clôturées (PMA) par période \\
+v\_pm\_scorecard        & JOIN \texttt{fact\_pma\_task} ↔ \texttt{fact\_opm\_ticket} via
+                          \texttt{dim\_person} (chef de projet → ingénieurs → tickets) ;
+                          calcule livraison à temps + délai moyen de résolution \\
+v\_revenue\_at\_risk    & Contrats expirant dans 90 jours ayant eu une rupture SLA
+                          au trimestre précédent \\
+v\_client\_health       & \% conformité SLA par client (nom dénormalisé sur \texttt{dim\_contract}) \\
+v\_workforce\_availability & COUNT employés actifs ayant un événement PTE par département \\
+\bottomrule
+\end{tabularx}
+
+% ═════════════════════════════════════════════════════════════════════
+\section{Récapitulatif Global}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{5cm} >{\centering\arraybackslash}p{1.8cm} X}
+\toprule
+\textbf{Objet} & \textbf{Nombre} & \textbf{Localisation} \\
+\midrule
+Schémas PostgreSQL         & 5  & \texttt{core}, \texttt{mart\_opm}, \texttt{mart\_pma}, \texttt{mart\_pte}, \texttt{mart\_exec} \\
+Dimensions conformées      & 7  & \texttt{core.*} \\
+Dimensions spécifiques     & 8  & \texttt{core.*} \\
+Tables de faits            & 3  & \texttt{core.fact\_opm\_ticket}, \texttt{core.fact\_pma\_task}, \texttt{core.fact\_pte\_event} \\
+Vues matérialisées (KPI)   & 25 & \texttt{mart\_opm} (7) + \texttt{mart\_pma} (7) + \texttt{mart\_pte} (6) + \texttt{mart\_exec} (5) \\
+Collections MongoDB Bronze & 15 & \texttt{raw\_*} \\
+Collections MongoDB Argent & 15 & \texttt{stg\_*} \\
+\bottomrule
+\end{tabularx}
+
+\end{document}

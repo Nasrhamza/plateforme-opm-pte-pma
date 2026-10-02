@@ -1,0 +1,75 @@
+<!-- <div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div> -->
+<div class="modal-body" style="margin-bottom: -40px;" *ngIf="payload">
+    <div class="row">
+        <div class="card author-box back">
+            <div class="card-body">
+                <div class="author-box-center ">
+                    <figure class="avatar msr-2 avatar-xl">
+                        <img src="{{ picsUrl+payload.image }}" />
+                    </figure>
+                    <div class="author-box-name fullName">
+                        <span>{{payload.firstName+" "+payload.lastName}}</span>
+                    </div>
+                    <div class="badge badge-info">{{payload.title}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body ">
+                <p class="clearfix">
+                    <span class="float-start">
+                        Mail
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.email}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Role
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.roles}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Phone
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.phone}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Hiring Date
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.hiringDate | date:'mediumDate'}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Departement
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.departement}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Address
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.address}}
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

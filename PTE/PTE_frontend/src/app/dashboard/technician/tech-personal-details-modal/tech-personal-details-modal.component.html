@@ -1,0 +1,56 @@
+<div class="modal-body" style="margin-bottom: -40px;" *ngIf="payload">
+    <div class="row">
+        <div class="card author-box back bannerV" >
+            <div class="card-body">
+                <div class="author-box-center ">
+                    <div class="author-box-name fullName">
+                        <div>
+                            <img src="{{picsUrl+payload.image}}" alt="User Picture" />
+                        </div>                       
+                        <span style="color: rgb(242, 242, 242);">{{payload.firstName+" "+payload.lastName}}</span>
+                    </div>
+                    <div class="badge badge-info">{{payload.title}}</div><br/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body ">
+                <p class="clearfix">
+                    <span class="float-start">
+                        Email
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.email }}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Phone
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.phone}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Departement
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.departement}}
+                    </span>
+                </p>
+                <p class="clearfix">
+                    <span class="float-start">
+                        Technician level of experience
+                    </span>
+                    <span class="float-end text-muted">
+                        {{payload.experience}} 
+                        <span *ngIf="payload.experience>1">Years</span>
+                        <span *ngIf="payload.experience<=1">Year</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="form" name="form" #f="ngForm" (ngSubmit)="Onsubmit(f)">
+    <br>
+    <!-- Selection for Type -->
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <select name="type" class="form-control form-control-default" [(ngModel)]="selectedType" #type="ngModel" required
+        (change)="onTypeChange($event)">
+        <option value="" disabled selected>Select Type</option>
+        <option value="technician">Technician</option>
+        <option value="commercial">Commercial</option>
+      </select>
+      <div class="invalid-feedback" *ngIf="type.touched && type.errors?.required">
+        Type required
+      </div>
+    </div>
+
+    <div class="form-group" *ngIf="selectedType">
+      <label for="dynamicList">{{ selectedType === 'technician' ? 'Technician' : 'Commercial' }}:</label>
+      <ng-select [items]="dynamicList" bindLabel="fullName" bindValue="_id" [(ngModel)]="model.selectedPerson"
+        #dynamicListInput="ngModel" name="dynamicListInput" required
+        placeholder="Select {{ selectedType === 'technician' ? 'Technician' : 'Commercial' }}">
+        
+        <!-- Template for dropdown options -->
+        <ng-template ng-option-tmp let-item="item">
+          <div class="custom-option">
+            <img style="border-radius: 50%; width: 35px; height: 35px; border: 1px solid #FFF; object-fit: contain;"
+              class="img-fluid img-radius mr-1" src="{{fileurl + item.imageUrl}}">
+            {{ item.fullName }}
+          </div>
+        </ng-template>
+    
+        <!-- Template for selected option -->
+        <ng-template ng-label-tmp let-item="item">
+          <div class="custom-option">
+            <img style="border-radius: 50%; width: 35px; height: 35px; border: 1px solid #FFF; object-fit: contain;"
+              class="img-fluid img-radius mr-1" src="{{fileurl + item.imageUrl}}">
+            {{ item.fullName }}
+          </div>
+        </ng-template>
+    
+      </ng-select>
+    
+      <div class="invalid-feedback" *ngIf="dynamicListInput.touched && dynamicListInput.errors?.required">
+        {{ selectedType === 'technician' ? 'Technician' : 'Commercial' }} required
+      </div>
+    </div>
+    
+
+    <div class="form-group" *ngIf="selectedType === 'technician'">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="model.isTeamLeader" name="isTeamLeader"
+          id="isTeamLeader">
+        <label class="form-check-label" for="isTeamLeader">
+          Is it Team Leader?
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button *ngIf="!add" type="submit" [disabled]="f.invalid" class="btn btn-outline-warning">Update</button>
+      <button *ngIf="add" type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    </div>
+  </form>
+</div>

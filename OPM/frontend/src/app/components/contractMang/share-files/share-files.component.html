@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <form class="form" name="form" #f="ngForm" (ngSubmit)="Onsubmit(f)">
+        <!-- Dropdown for Clients Selection -->
+        <div class="form-group">
+            <label for="technicien">Clients:</label>
+            <ng-select [items]="clients" bindValue="_id" [multiple]="true" placeholder="Select clients to share with"
+                [(ngModel)]="this.model.client" name="client" #client="ngModel" [searchable]="true" required>
+                <ng-template ng-label-tmp let-item="item"  let-clear="clear">
+                    <img src="{{fileurl+item?.image?.fileName}}" style="object-fit: contain; width: 35px;height: 35px;"
+                        class="wid-30 rounded mr-1 img-fluid">
+                    {{item?.firstName }} {{ item?.lastName }}
+                    <span (click)="clear(item)" class="ml-2 text-danger" style="cursor: pointer;">&times;</span>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    <img src="{{fileurl+item?.image?.fileName}}" style="object-fit: contain; width: 30px;height: 30px;" class="wid-35 rounded mr-1 img-fluid">
+                    {{item?.firstName }} {{ item.lastName }}
+                </ng-template>
+            </ng-select>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-primary">Share</button>
+            <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+        </div>
+    </form>
+</div>

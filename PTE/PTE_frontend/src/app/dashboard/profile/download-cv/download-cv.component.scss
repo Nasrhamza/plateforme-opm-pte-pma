@@ -1,0 +1,47 @@
+.full-page{
+    margin: -10px;
+
+}
+.header-section{
+    margin: 20px;
+}
+.body-section{
+    margin: 20px;
+}
+.footer-section{
+    margin: 20px;
+}
+.CV-image{
+    //margin-left: 50px;
+    width: 90px;
+    height: 90px;
+    border-radius: 10px 10px 10px 10px;
+    border: 1px solid rgb(36, 91, 164);
+}
+.eduSection{
+    margin-bottom: 10px;
+}
+.pTask{
+    font-size: 11px;
+}
+.mainSection{
+    padding: 10px;
+    margin-left: 20px;
+}
+.skills{
+    background-color: rgb(185, 185, 185);
+    color: rgb(54, 54, 54);
+    text-align: center;
+    padding: 5px;
+    border: none;
+    border-radius: 10px 10px 10px 10px ;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: inline;
+    margin-right: 10px; /* Adjust the margin as needed */
+}

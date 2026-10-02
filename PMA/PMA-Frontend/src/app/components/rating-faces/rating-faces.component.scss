@@ -1,0 +1,42 @@
+.pill-wrapper{
+    position: relative;
+}
+.face{
+    transition: .2s all ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 100px;
+}
+.face:hover{
+    scale: 1.1;
+}
+.face.selected {
+    scale: 1.1;
+}
+
+.backdrop{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgb(255, 255, 255);
+    opacity: .7;
+    cursor: pointer;
+}
+
+.pill-bg-5{
+    background-color: rgb(86 205 140);
+}
+.pill-bg-3{
+    background-color: rgb(133 210 115);
+}
+.pill-bg-4{
+    background-color: rgb(251 225 24);
+}
+.pill-bg-2{
+    background-color: rgb(250 168 50);
+}
+.pill-bg-1{
+    background-color: rgb(255 100 73);
+}

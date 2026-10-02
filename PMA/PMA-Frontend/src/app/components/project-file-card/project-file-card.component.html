@@ -1,0 +1,54 @@
+<mat-card class="{{ class }} shadow-none">
+    <mat-card-content style="word-break: break-all;">
+        <div class="d-flex align-items-start">
+            <button mat-mini-fab class="bg-light-primary shadow-none rounded icon-48">
+                <i-tabler name="file" class="icon-20 d-flex text-primary"></i-tabler>
+            </button>
+            <div class="m-l-16 w-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="f-s-14">
+                        {{ file.type }}
+                    </span>
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>
+                            <i-tabler name="dots" class="icon-20"></i-tabler>
+                        </mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" class="cardWithShadow" xPosition="before">
+                        <button mat-menu-item (click)="download()">
+                            <div class="d-flex align-items-center gap-4">
+                                <i-tabler name="download"></i-tabler>
+                                <span class="f-s-14">{{ 'Download' | translate }}</span>
+                            </div>
+                        </button>
+                        @if(role != 'Client' && role != 'Engineer'){
+                            <button mat-menu-item (click)="shareFile()">
+                                <div class="d-flex align-items-center gap-4">
+                                    <i-tabler name="share"></i-tabler>
+                                    <span class="f-s-14">{{ 'Share' | translate }}</span>
+                                </div>
+                            </button>
+                        }
+                        @if(role == "Admin"){
+                            <button mat-menu-item (click)="delete()">
+                                <div class="d-flex align-items-center gap-4">
+                                    <i-tabler name="trash"></i-tabler>
+                                    <span class="f-s-14">{{ 'Delete' | translate }}</span>
+                                </div>
+                            </button>
+                        }
+                        @if(isPdf()){
+                            <button mat-menu-item (click)="openPreview()">
+                                <div class="d-flex align-items-center gap-4">
+                                    <i-tabler name="eye"></i-tabler>
+                                    <span class="f-s-14">{{ 'View' | translate }}</span>
+                                </div>
+                            </button>
+                        }
+                    </mat-menu>
+                </div>
+                <h5 class="f-s-14 f-w-600 m-0" matTooltip="{{file.file}}">{{ file.file | shorten : 30 }} </h5>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
